@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-last_updated: "2026-03-26T22:31:34.595Z"
+last_updated: "2026-03-26T22:38:11.921Z"
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 11
-  completed_plans: 7
+  completed_plans: 8
 ---
 
 # State: Solo IT Ops Suite
@@ -30,18 +30,18 @@ See: `.planning/PROJECT.md` (updated 2026-03-26)
 ## Current Position
 
 Phase: 03 (lifecycle-automation) - EXECUTING
-Plan: 3 of 4
+Plan: 4 of 4
 
 - Current Phase: 03 of 06
-- Current Plan: 03-03-PLAN.md ready
-- Last Completed Plan: 03-02-PLAN.md
-- Progress: [██████░░░░] 64%
+- Current Plan: 03-04-PLAN.md ready
+- Last Completed Plan: 03-03-PLAN.md
+- Progress: [███████░░░] 73%
 
 ## Immediate Next Steps
 
-1. Build the lifecycle landing page around template launch and active-run visibility using the new lifecycle API routes.
-2. Reuse the queue-first router and query-client pattern for lifecycle workflow pages instead of introducing a second web data-loading approach.
-3. Carry the tracking-only, audit-first workflow contract into the grouped run detail and close-out UX in Plans 03-03 and 03-04.
+1. Deliver grouped lifecycle run detail with step evidence capture and close-out summary UX in Plan 03-04.
+2. Reuse the lifecycle query keys and helper contracts from the new landing page so detail and summary views stay server-derived.
+3. Preserve the tracking-only, audit-first workflow contract while wiring the non-launch lifecycle mutations into the UI.
 
 ## Decisions
 
@@ -65,6 +65,9 @@ Plan: 3 of 4
 - [Phase 03]: Kept lifecycle HTTP field names in the route layer so repository and Prisma shapes stay internal.
 - [Phase 03]: Validated skipped and blocked step updates at the API boundary so exception reasons fail as 400 responses instead of surfacing as repository errors.
 - [Phase 03]: Used LifecycleRun.updatedAt as the active-run freshness source of truth and updated it on step mutations and close-out.
+- [Phase 03]: Kept lifecycle DTOs local to the web package so the UI could ship without expanding shared exports mid-phase.
+- [Phase 03]: Satisfied the lifecycle launch API's requestedBy requirement with a fixed operator label so the UI still only asks for subject name and email.
+- [Phase 03]: Loaded per-run summary queries for active lifecycle cards so grouped progress and unresolved follow-up stay server-derived.
 
 ## Performance Metrics
 
@@ -76,11 +79,12 @@ Plan: 3 of 4
 | 02 | 04 | 2 min | 2 | 3 | 2026-03-26 |
 | Phase 03 P01 | 5 min | 2 tasks | 8 files |
 | Phase 03 P02 | 6 min | 2 tasks | 4 files |
+| Phase 03 P03 | 5 min | 2 tasks | 5 files |
 
 ## Session Info
 
-- Last session: 2026-03-26T22:30:23Z
-- Stopped at: Completed 03-02-PLAN.md
+- Last session: 2026-03-26T22:38:11Z
+- Stopped at: Completed 03-03-PLAN.md
 
 ## Notes
 
@@ -99,7 +103,7 @@ Plan: 3 of 4
 - Phase 2 Plan 04 executed on 2026-03-26; summary recorded in `.planning/phases/02-asset-health-dashboard/02-04-SUMMARY.md`.
 - Inventory sort controls now ship in the UI, and operator-visible risk labels use the backend `watch` bucket consistently.
 - Phase 3 context captured on 2026-03-26 in `.planning/phases/03-lifecycle-automation/03-CONTEXT.md`.
-- Lifecycle automation decisions currently lock grouped workflow phases, manual execution tracking for Phase 3, required skipped or blocked reasons, structured step evidence, final summaries with unresolved follow-up work, and stable API contracts for route and web layers.
+- Lifecycle automation decisions currently lock grouped workflow phases, manual execution tracking for Phase 3, required skipped or blocked reasons, structured step evidence, final summaries with unresolved follow-up work, stable API contracts for route and web layers, and a queue-first lifecycle landing page for launch plus active-run triage.
 
 ---
-*Last updated: 2026-03-26 after completing 03-02*
+*Last updated: 2026-03-26 after completing 03-03*

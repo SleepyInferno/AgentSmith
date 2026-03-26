@@ -4,16 +4,14 @@ import { DeviceInventoryTable } from "../../components/assets/DeviceInventoryTab
 import { getDeviceInventory, type DeviceInventoryParams } from "../../lib/assets";
 
 function readParams(searchParams: URLSearchParams): DeviceInventoryParams {
-  const params: DeviceInventoryParams = {
-    sortField: "riskScore",
-    sortDirection: "desc",
-  };
-
+  const params: DeviceInventoryParams = {};
   const riskLevel = searchParams.get("riskLevel");
   const riskSignal = searchParams.get("riskSignal");
   const encryptionStatus = searchParams.get("encryptionStatus");
   const antivirusStatus = searchParams.get("antivirusStatus");
   const patchStatus = searchParams.get("patchStatus");
+  const sortField = searchParams.get("sortField");
+  const sortDirection = searchParams.get("sortDirection");
 
   if (riskLevel) {
     params.riskLevel = riskLevel;
@@ -34,6 +32,16 @@ function readParams(searchParams: URLSearchParams): DeviceInventoryParams {
   if (patchStatus) {
     params.patchStatus = patchStatus;
   }
+
+  params.sortField =
+    sortField === "riskScore" ||
+    sortField === "lastCheckInAt" ||
+    sortField === "deviceName" ||
+    sortField === "operatingSystem"
+      ? sortField
+      : "riskScore";
+
+  params.sortDirection = sortDirection === "asc" || sortDirection === "desc" ? sortDirection : "desc";
 
   if (searchParams.get("staleOnly") === "true") {
     params.staleOnly = true;
@@ -148,7 +156,21 @@ export function DeviceInventoryPage() {
             label="riskLevel"
             name="riskLevel"
             value={searchParams.get("riskLevel") ?? ""}
-            options={["critical", "high", "medium", "low"]}
+            options={["critical", "high", "watch", "low"]}
+            onChange={updateFilter}
+          />
+          <FilterSelect
+            label="sortField"
+            name="sortField"
+            value={params.sortField ?? "riskScore"}
+            options={["riskScore", "lastCheckInAt", "deviceName", "operatingSystem"]}
+            onChange={updateFilter}
+          />
+          <FilterSelect
+            label="sortDirection"
+            name="sortDirection"
+            value={params.sortDirection ?? "desc"}
+            options={["desc", "asc"]}
             onChange={updateFilter}
           />
           <FilterSelect

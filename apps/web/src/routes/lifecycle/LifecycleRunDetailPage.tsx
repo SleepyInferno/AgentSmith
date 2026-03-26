@@ -1,9 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import {
+  closeLifecycleRun,
   getLifecycleRun,
+  getLifecycleRunSummary,
 } from "../../lib/lifecycle";
+import { queryClient } from "../../lib/queryClient";
 import { LifecycleRunGroupList } from "../../components/lifecycle/LifecycleRunGroupList";
+import { LifecycleSummaryPanel } from "../../components/lifecycle/LifecycleSummaryPanel";
 
 const panelStyle = {
   padding: 24,
@@ -15,6 +20,7 @@ const panelStyle = {
 
 export function LifecycleRunDetailPage() {
   const { runId = "" } = useParams();
+  const [showSummary, setShowSummary] = useState(false);
 
   const runQuery = useQuery({
     queryKey: ["lifecycle-run", runId],
@@ -23,6 +29,23 @@ export function LifecycleRunDetailPage() {
   });
 
   const run = runQuery.data;
+  const closeRunMutation = useMutation({
+    mutationFn: () => closeLifecycleRun(runId),
+    onSuccess: async () => {
+      setShowSummary(true);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["lifecycle-run", runId] }),
+        queryClient.invalidateQueries({ queryKey: ["lifecycle-runs"] }),
+        queryClient.invalidateQueries({ queryKey: ["lifecycle-run-summary", runId] }),
+      ]);
+    },
+  });
+
+  const summaryQuery = useQuery({
+    queryKey: ["lifecycle-run-summary", runId],
+    queryFn: () => getLifecycleRunSummary(runId),
+    enabled: runId.length > 0 && (showSummary || (run?.status ?? "") !== "active"),
+  });
 
   if (runQuery.isPending) {
     return <div style={panelStyle}>Loading lifecycle-run detail...</div>;
@@ -31,6 +54,8 @@ export function LifecycleRunDetailPage() {
   if (runQuery.isError || !run) {
     return <div style={panelStyle}>Unable to load the selected lifecycle run.</div>;
   }
+
+  const isClosed = run.status !== "active";
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
@@ -85,9 +110,46 @@ export function LifecycleRunDetailPage() {
             <Link to="/lifecycle" style={{ color: "#0f172a", fontWeight: 700 }}>
               Back to lifecycle queue
             </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setShowSummary(true);
+                void closeRunMutation.mutateAsync();
+              }}
+              disabled={isClosed || closeRunMutation.isPending}
+              style={{
+                padding: "12px 18px",
+                borderRadius: 14,
+                border: "none",
+                background: isClosed || closeRunMutation.isPending ? "#cbd5e1" : "#0f172a",
+                color: isClosed || closeRunMutation.isPending ? "#64748b" : "#f8fafc",
+                fontWeight: 700,
+                cursor: isClosed || closeRunMutation.isPending ? "not-allowed" : "pointer",
+              }}
+            >
+              {isClosed
+                ? "Run already closed"
+                : closeRunMutation.isPending
+                  ? "Closing..."
+                  : "Close run and review summary"}
+            </button>
             <Badge label={run.status} />
           </div>
         </div>
+
+        {closeRunMutation.isError ? (
+          <div
+            style={{
+              marginTop: 16,
+              padding: 14,
+              borderRadius: 14,
+              background: "#fef2f2",
+              color: "#991b1b",
+            }}
+          >
+            Unable to close this run right now. {closeRunMutation.error.message}
+          </div>
+        ) : null}
       </article>
 
       <article style={panelStyle}>
@@ -100,6 +162,13 @@ export function LifecycleRunDetailPage() {
       </article>
 
       <LifecycleRunGroupList runId={runId} groups={run.groups} runStatus={run.status} />
+
+      <LifecycleSummaryPanel
+        summary={summaryQuery.data}
+        isLoading={summaryQuery.isPending}
+        isError={summaryQuery.isError}
+        isVisible={showSummary || isClosed}
+      />
     </section>
   );
 }

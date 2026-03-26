@@ -4,6 +4,10 @@ import { NeedsAttentionQueue } from "../../components/assets/NeedsAttentionQueue
 import { getNeedsAttentionQueue } from "../../lib/assets";
 
 function getFreshnessMessage(states: string[]) {
+  if (states.length === 0) {
+    return "No risky devices right now";
+  }
+
   if (states.some((state) => state !== "healthy")) {
     return "Asset data is stale or incomplete";
   }

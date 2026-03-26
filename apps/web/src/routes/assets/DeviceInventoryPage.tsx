@@ -196,7 +196,12 @@ export function DeviceInventoryPage() {
       ) : inventoryQuery.isError ? (
         <div style={panelStyle}>Unable to load inventory right now.</div>
       ) : rows.length === 0 ? (
-        <div style={panelStyle}>No devices match the current filters</div>
+        <div style={panelStyle}>
+          <strong style={{ display: "block", marginBottom: 8 }}>No devices match the current filters</strong>
+          <span style={{ color: "#475569", lineHeight: 1.6 }}>
+            Clear one or more filters to widen the triage view.
+          </span>
+        </div>
       ) : (
         <DeviceInventoryTable rows={rows} />
       )}

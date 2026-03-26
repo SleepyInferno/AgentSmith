@@ -4,14 +4,18 @@ import type { ServerEnv } from "@agentsmith/shared";
 import { parseServerEnv } from "@agentsmith/shared/env";
 import { PrismaClient } from "@prisma/client";
 import { AssetHealthRepository } from "./modules/assets/asset-health.repository.js";
+import { LifecycleRepository } from "./modules/lifecycle/lifecycle.repository.js";
 import type { AssetRoutesDependencies } from "./routes/assets.js";
 import { registerAssetRoutes } from "./routes/assets.js";
 import { registerHealthRoute } from "./routes/health.js";
+import type { LifecycleRoutesDependencies } from "./routes/lifecycle.js";
+import { registerLifecycleRoutes } from "./routes/lifecycle.js";
 
 export type BuildServerOptions = {
   env?: ServerEnv;
   prisma?: PrismaClient;
   assetRoutes?: Partial<AssetRoutesDependencies>;
+  lifecycleRoutes?: Partial<LifecycleRoutesDependencies>;
 };
 
 export function buildServer(options: BuildServerOptions = {}) {
@@ -21,6 +25,7 @@ export function buildServer(options: BuildServerOptions = {}) {
   });
   const prisma = options.prisma ?? new PrismaClient();
   const assetHealthRepository = options.assetRoutes?.assetHealthRepository ?? new AssetHealthRepository(prisma);
+  const lifecycleRepository = options.lifecycleRoutes?.lifecycleRepository ?? new LifecycleRepository(prisma);
   const assetRouteOptions = options.assetRoutes?.preHandler
     ? {
         assetHealthRepository,
@@ -29,9 +34,18 @@ export function buildServer(options: BuildServerOptions = {}) {
     : {
         assetHealthRepository,
       };
+  const lifecycleRouteOptions = options.lifecycleRoutes?.preHandler
+    ? {
+        lifecycleRepository,
+        preHandler: options.lifecycleRoutes.preHandler,
+      }
+    : {
+        lifecycleRepository,
+      };
 
   app.register(registerHealthRoute);
   app.register(registerAssetRoutes, assetRouteOptions);
+  app.register(registerLifecycleRoutes, lifecycleRouteOptions);
 
   app.get("/", async () => ({
     name: "AgentSmith API",

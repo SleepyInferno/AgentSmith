@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-last_updated: "2026-03-26T22:38:11.921Z"
+status: Phase complete — ready for verification
+last_updated: "2026-03-26T22:46:23.693Z"
 progress:
   total_phases: 6
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 11
-  completed_plans: 8
+  completed_plans: 9
 ---
 
 # State: Solo IT Ops Suite
@@ -18,30 +18,30 @@ progress:
 See: `.planning/PROJECT.md` (updated 2026-03-26)
 
 **Core value:** One overextended IT generalist can see the highest-risk issues first and complete critical operational workflows consistently without relying on memory.
-**Current focus:** Phase 03 - lifecycle-automation
+**Current focus:** Phase 04 - identity-risk-auditor
 
 ## Roadmap Status
 
 - Current phase: 3
-- Phases completed: 1 of 6
+- Phases completed: 2 of 6
 - v1 requirements: 20
-- Completed requirements: 8
+- Completed requirements: 9
 
 ## Current Position
 
-Phase: 03 (lifecycle-automation) - EXECUTING
+Phase: 03 (lifecycle-automation) - COMPLETE
 Plan: 4 of 4
 
 - Current Phase: 03 of 06
-- Current Plan: 03-04-PLAN.md ready
-- Last Completed Plan: 03-03-PLAN.md
-- Progress: [███████░░░] 73%
+- Current Plan: Phase complete - ready for verification
+- Last Completed Plan: 03-04-PLAN.md
+- Progress: [████████░░] 82%
 
 ## Immediate Next Steps
 
-1. Deliver grouped lifecycle run detail with step evidence capture and close-out summary UX in Plan 03-04.
-2. Reuse the lifecycle query keys and helper contracts from the new landing page so detail and summary views stay server-derived.
-3. Preserve the tracking-only, audit-first workflow contract while wiring the non-launch lifecycle mutations into the UI.
+1. Verify the completed lifecycle automation slice end-to-end before starting Phase 4 planning.
+2. Begin identity-risk-auditor planning against the stabilized lifecycle and asset patterns.
+3. Keep future sensitive operator actions audit-first and server-derived as additional modules come online.
 
 ## Decisions
 
@@ -68,6 +68,9 @@ Plan: 4 of 4
 - [Phase 03]: Kept lifecycle DTOs local to the web package so the UI could ship without expanding shared exports mid-phase.
 - [Phase 03]: Satisfied the lifecycle launch API's requestedBy requirement with a fixed operator label so the UI still only asks for subject name and email.
 - [Phase 03]: Loaded per-run summary queries for active lifecycle cards so grouped progress and unresolved follow-up stay server-derived.
+- [Phase 03]: Kept lifecycle detail state server-owned by invalidating run, list, and summary queries after each step mutation and on close-out.
+- [Phase 03]: Rendered unresolved follow-up as its own close-out section so remaining manual work stays visible after closure.
+- [Phase 03]: Corrected the web lifecycle status union to use the API's completed state so the close-out UI follows the actual server contract.
 
 ## Performance Metrics
 
@@ -80,11 +83,12 @@ Plan: 4 of 4
 | Phase 03 P01 | 5 min | 2 tasks | 8 files |
 | Phase 03 P02 | 6 min | 2 tasks | 4 files |
 | Phase 03 P03 | 5 min | 2 tasks | 5 files |
+| Phase 03 P04 | 6 min | 2 tasks | 6 files |
 
 ## Session Info
 
-- Last session: 2026-03-26T22:38:11Z
-- Stopped at: Completed 03-03-PLAN.md
+- Last session: 2026-03-26T22:46:23Z
+- Stopped at: Completed 03-04-PLAN.md
 
 ## Notes
 
@@ -104,6 +108,8 @@ Plan: 4 of 4
 - Inventory sort controls now ship in the UI, and operator-visible risk labels use the backend `watch` bucket consistently.
 - Phase 3 context captured on 2026-03-26 in `.planning/phases/03-lifecycle-automation/03-CONTEXT.md`.
 - Lifecycle automation decisions currently lock grouped workflow phases, manual execution tracking for Phase 3, required skipped or blocked reasons, structured step evidence, final summaries with unresolved follow-up work, stable API contracts for route and web layers, and a queue-first lifecycle landing page for launch plus active-run triage.
+- Phase 3 Plan 04 executed on 2026-03-26; summary recorded in `.planning/phases/03-lifecycle-automation/03-04-SUMMARY.md`.
+- Lifecycle automation now includes grouped run detail routing, per-step evidence capture, and close-out summaries with unresolved follow-up called out separately.
 
 ---
-*Last updated: 2026-03-26 after completing 03-03*
+*Last updated: 2026-03-26 after completing 03-04*

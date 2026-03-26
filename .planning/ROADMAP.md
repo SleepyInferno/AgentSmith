@@ -70,7 +70,7 @@ Plans:
 - [x] 03-01-PLAN.md - Define lifecycle run persistence, grouped templates, and summary engine helpers
 - [x] 03-02-PLAN.md - Expose lifecycle launch, active-run, step-update, and summary API routes
 - [x] 03-03-PLAN.md - Build the lifecycle landing page with template launch and active-run visibility
-- [ ] 03-04-PLAN.md - Deliver grouped run detail, evidence capture, and close-out summary UX
+- [x] 03-04-PLAN.md - Deliver grouped run detail, evidence capture, and close-out summary UX
 
 Requirements:
 - LIFE-01
@@ -144,4 +144,4 @@ UI hint: yes
 - Deferred modules such as network visibility and ticket triage should only enter planning after the five-tool v1 is stable.
 
 ---
-*Last updated: 2026-03-26 after completing Phase 03 Plan 03*
+*Last updated: 2026-03-26 after completing Phase 03 Plan 04*

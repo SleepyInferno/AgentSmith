@@ -42,7 +42,7 @@ Goal: Provide a morning-start dashboard that tells the solo IT admin which endpo
 
 Plans:
 - [x] 02-01-PLAN.md - Define canonical asset-health fields, freshness semantics, and risk scoring
-- [ ] 02-02-PLAN.md - Expose read-only inventory, queue, and detail asset APIs
+- [x] 02-02-PLAN.md - Expose read-only inventory, queue, and detail asset APIs
 - [ ] 02-03-PLAN.md - Build the dashboard, queue, inventory, detail, and stale-data UX
 
 Requirements:

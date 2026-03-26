@@ -15,7 +15,7 @@
 
 - [x] **ASST-01**: Operator can view a unified device inventory with owner, department, site, OS, encryption, AV, patch status, and last check-in
 - [x] **ASST-02**: Operator can filter and sort devices by risk indicators such as stale check-in, low disk, missing encryption, missing AV, age, and unsupported OS
-- [ ] **ASST-03**: Operator can open a device detail view showing the health signals contributing to its risk status
+- [x] **ASST-03**: Operator can open a device detail view showing the health signals contributing to its risk status
 - [x] **ASST-04**: Operator can see a prioritized "needs attention" queue for the riskiest devices
 
 ### Lifecycle Automation
@@ -71,7 +71,7 @@
 | PLAT-03 | Phase 1 | Pending |
 | ASST-01 | Phase 2 | Complete |
 | ASST-02 | Phase 2 | Complete |
-| ASST-03 | Phase 2 | Pending |
+| ASST-03 | Phase 2 | Complete |
 | ASST-04 | Phase 2 | Complete |
 | LIFE-01 | Phase 3 | Pending |
 | LIFE-02 | Phase 3 | Pending |

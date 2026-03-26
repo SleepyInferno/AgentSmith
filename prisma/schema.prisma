@@ -27,6 +27,21 @@ enum SyncResult {
   failure
 }
 
+enum AssetSignalStatus {
+  healthy
+  warning
+  missing
+  unsupported
+  unknown
+}
+
+enum AssetRiskLevel {
+  low
+  watch
+  high
+  critical
+}
+
 model User {
   id               String      @id @default(cuid())
   sourceSystem     String
@@ -43,19 +58,44 @@ model User {
 }
 
 model Device {
-  id               String   @id @default(cuid())
-  sourceSystem     String
-  sourceId         String
-  name             String
-  serialNumber     String?
-  operatingSystem  String?
-  complianceState  String?
-  ownerId          String?
-  lastSeenAt       DateTime?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id                  String                @id @default(cuid())
+  sourceSystem        String
+  sourceId            String
+  name                String
+  serialNumber        String?
+  operatingSystem     String?
+  complianceState     String?
+  ownerId             String?
+  departmentSnapshot  String?
+  siteSnapshot        String?
+  encryptionStatus    AssetSignalStatus?
+  antivirusStatus     AssetSignalStatus?
+  patchStatus         AssetSignalStatus?
+  diskFreePercent     Int?
+  deviceAgeDays       Int?
+  supportStatus       AssetSignalStatus?
+  lastCheckInAt       DateTime?
+  lastSeenAt          DateTime?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  riskAssessment      DeviceRiskAssessment?
 
   @@unique([sourceSystem, sourceId])
+}
+
+model DeviceRiskAssessment {
+  id                   String         @id @default(cuid())
+  deviceId             String         @unique
+  device               Device         @relation(fields: [deviceId], references: [id])
+  riskScore            Int
+  riskLevel            AssetRiskLevel
+  queueRank            Int
+  sourceFreshnessState FreshnessState
+  summary              String
+  signals              Json
+  calculatedAt         DateTime       @default(now())
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
 }
 
 model System {

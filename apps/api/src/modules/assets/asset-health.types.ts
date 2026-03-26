@@ -10,6 +10,9 @@ export const assetRiskSignalCodes = [
 ] as const;
 
 export type AssetRiskSignalCode = (typeof assetRiskSignalCodes)[number];
+export const assetInventorySortFields = ["riskScore", "lastCheckInAt", "deviceName", "operatingSystem"] as const;
+export type AssetInventorySortField = (typeof assetInventorySortFields)[number];
+export type AssetInventorySortDirection = "asc" | "desc";
 
 export type AssetRiskSignal = {
   code: AssetRiskSignalCode;
@@ -67,9 +70,11 @@ export type AssetInventoryFilters = {
   department?: string;
   site?: string;
   riskLevel?: string;
+  riskSignal?: AssetRiskSignalCode;
   encryptionStatus?: string;
   antivirusStatus?: string;
   patchStatus?: string;
-  supportStatus?: string;
-  signalCode?: AssetRiskSignalCode;
+  staleOnly?: boolean;
+  sortField?: AssetInventorySortField;
+  sortDirection?: AssetInventorySortDirection;
 };

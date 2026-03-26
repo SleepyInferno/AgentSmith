@@ -4,6 +4,8 @@ import type {
   AssetInventoryFilters,
   AssetInventoryRow,
   AssetQueueItem,
+  AssetInventorySortDirection,
+  AssetInventorySortField,
   AssetRiskSignal,
   AssetRiskSignalCode,
 } from "./asset-health.types.js";
@@ -37,10 +39,13 @@ export class AssetHealthRepository {
     });
 
     const owners = await this.loadOwners(devices);
+    const rows = devices.map((device) => mapInventoryRow(device, owners.get(device.ownerId ?? "")));
 
-    return devices
-      .map((device) => mapInventoryRow(device, owners.get(device.ownerId ?? "")))
-      .filter((device) => filterBySignal(device, filters.signalCode));
+    return sortInventoryRows(
+      rows.filter((device) => filterBySignal(device, filters.riskSignal)).filter((device) => filterByStaleOnly(device, filters.staleOnly)),
+      filters.sortField,
+      filters.sortDirection,
+    );
   }
 
   async listQueue(limit: number): Promise<AssetQueueItem[]> {
@@ -165,10 +170,6 @@ function buildDeviceWhere(filters: AssetInventoryFilters): Prisma.DeviceWhereInp
     where.patchStatus = filters.patchStatus as AssetDeviceRecord["patchStatus"];
   }
 
-  if (filters.supportStatus) {
-    where.supportStatus = filters.supportStatus as AssetDeviceRecord["supportStatus"];
-  }
-
   if (filters.riskLevel) {
     where.riskAssessment = {
       is: {
@@ -218,6 +219,96 @@ function filterBySignal(device: AssetInventoryRow, signalCode?: AssetRiskSignalC
   }
 
   return device.signals.some((signal) => signal.code === signalCode);
+}
+
+function filterByStaleOnly(device: AssetInventoryRow, staleOnly?: boolean): boolean {
+  if (!staleOnly) {
+    return true;
+  }
+
+  return device.freshnessState === "stale" || device.signals.some((signal) => signal.code === "stale_check_in");
+}
+
+function sortInventoryRows(
+  devices: AssetInventoryRow[],
+  sortField?: AssetInventorySortField,
+  sortDirection: AssetInventorySortDirection = "desc",
+): AssetInventoryRow[] {
+  if (!sortField) {
+    return [...devices].sort((left, right) => {
+      const leftRank = left.queueRank ?? Number.MAX_SAFE_INTEGER;
+      const rightRank = right.queueRank ?? Number.MAX_SAFE_INTEGER;
+
+      if (leftRank !== rightRank) {
+        return leftRank - rightRank;
+      }
+
+      return left.name.localeCompare(right.name);
+    });
+  }
+
+  const direction = sortDirection === "asc" ? 1 : -1;
+
+  return [...devices].sort((left, right) => {
+    switch (sortField) {
+      case "riskScore":
+        return compareNullableNumber(left.riskScore, right.riskScore, direction) || left.name.localeCompare(right.name);
+      case "lastCheckInAt":
+        return compareNullableDate(left.lastCheckInAt, right.lastCheckInAt, direction) || left.name.localeCompare(right.name);
+      case "deviceName":
+        return left.name.localeCompare(right.name) * direction;
+      case "operatingSystem":
+        return compareNullableString(left.operatingSystem, right.operatingSystem, direction) || left.name.localeCompare(right.name);
+    }
+  });
+}
+
+function compareNullableNumber(left: number | null, right: number | null, direction: number): number {
+  if (left === right) {
+    return 0;
+  }
+
+  if (left === null) {
+    return 1;
+  }
+
+  if (right === null) {
+    return -1;
+  }
+
+  return (left - right) * direction;
+}
+
+function compareNullableDate(left: string | null, right: string | null, direction: number): number {
+  if (left === right) {
+    return 0;
+  }
+
+  if (left === null) {
+    return 1;
+  }
+
+  if (right === null) {
+    return -1;
+  }
+
+  return (new Date(left).valueOf() - new Date(right).valueOf()) * direction;
+}
+
+function compareNullableString(left: string | null, right: string | null, direction: number): number {
+  if (left === right) {
+    return 0;
+  }
+
+  if (left === null) {
+    return 1;
+  }
+
+  if (right === null) {
+    return -1;
+  }
+
+  return left.localeCompare(right) * direction;
 }
 
 function parseSignals(signals: Prisma.JsonValue | null | undefined): AssetRiskSignal[] {

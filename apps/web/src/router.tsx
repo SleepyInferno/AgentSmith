@@ -2,10 +2,12 @@ import { createBrowserRouter, Link, NavLink, Outlet } from "react-router-dom";
 import { AssetDashboardPage } from "./routes/dashboard/AssetDashboardPage";
 import { DeviceInventoryPage } from "./routes/assets/DeviceInventoryPage";
 import { DeviceDetailPage } from "./routes/assets/DeviceDetailPage";
+import { LifecycleQueuePage } from "./routes/lifecycle/LifecycleQueuePage";
 
 const navigationItems = [
   { to: "/", label: "Needs attention" },
   { to: "/devices", label: "Device inventory" },
+  { to: "/lifecycle", label: "Lifecycle queue" },
 ];
 
 function AppShell() {
@@ -50,32 +52,60 @@ function AppShell() {
                   color: "#7dd3fc",
                 }}
               >
-                Phase 2 asset health
+                Phase 3 lifecycle automation
               </p>
               <h1 style={{ margin: "10px 0 8px", fontSize: "clamp(2rem, 5vw, 3.4rem)" }}>
-                Morning risk queue
+                Operator workflow queues
               </h1>
               <p style={{ margin: 0, maxWidth: 620, lineHeight: 1.6, color: "#cbd5e1" }}>
-                Start with the riskiest endpoints, verify freshness before acting, and move into the
-                full inventory only when you need broader triage.
+                Start with the riskiest endpoints, move into lifecycle runs when joiners or leavers
+                need attention, and keep sensitive work explicit and reviewable.
               </p>
             </div>
-            <Link
-              to="/devices"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                padding: "12px 18px",
-                borderRadius: 999,
-                color: "#f8fafc",
-                textDecoration: "none",
-                background: "rgba(14, 165, 233, 0.2)",
-                border: "1px solid rgba(125, 211, 252, 0.4)",
-              }}
-            >
-              Open device inventory
-            </Link>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+              <Link
+                to="/devices"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "12px 18px",
+                  borderRadius: 999,
+                  color: "#f8fafc",
+                  textDecoration: "none",
+                  background: "rgba(14, 165, 233, 0.2)",
+                  border: "1px solid rgba(125, 211, 252, 0.4)",
+                }}
+              >
+                Open device inventory
+              </Link>
+              <Link
+                to="/lifecycle"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "12px 18px",
+                  borderRadius: 999,
+                  color: "#082f49",
+                  textDecoration: "none",
+                  background: "#bae6fd",
+                  border: "1px solid rgba(125, 211, 252, 0.4)",
+                  fontWeight: 600,
+                }}
+              >
+                Open lifecycle queue
+              </Link>
+            </div>
           </div>
+          <p
+            style={{
+              margin: "18px 0 0",
+              color: "#cbd5e1",
+              fontSize: 14,
+              lineHeight: 1.6,
+            }}
+          >
+            Records work only - no live admin actions are triggered here.
+          </p>
           <nav aria-label="Primary" style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 20 }}>
             {navigationItems.map((item) => (
               <NavLink
@@ -114,6 +144,7 @@ export const router = createBrowserRouter([
       { index: true, element: <AssetDashboardPage /> },
       { path: "devices", element: <DeviceInventoryPage /> },
       { path: "devices/:deviceId", element: <DeviceDetailPage /> },
+      { path: "lifecycle", element: <LifecycleQueuePage /> },
     ],
   },
 ]);

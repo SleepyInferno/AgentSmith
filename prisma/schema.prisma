@@ -42,6 +42,24 @@ enum AssetRiskLevel {
   critical
 }
 
+enum LifecycleRunKind {
+  onboarding
+  offboarding
+}
+
+enum LifecycleRunStatus {
+  active
+  completed
+}
+
+enum LifecycleStepStatus {
+  pending
+  automated
+  manual
+  skipped
+  blocked
+}
+
 model User {
   id               String      @id @default(cuid())
   sourceSystem     String
@@ -178,4 +196,64 @@ model AuditEvent {
   result      String
   metadata    Json
   createdAt   DateTime  @default(now())
+}
+
+model LifecycleRun {
+  id                 String               @id @default(cuid())
+  kind               LifecycleRunKind
+  templateKey        String
+  templateVersion    Int
+  subjectDisplayName String
+  subjectEmail       String?
+  requestedBy        String
+  status             LifecycleRunStatus   @default(active)
+  startedAt          DateTime             @default(now())
+  closedAt           DateTime?
+  updatedAt          DateTime             @updatedAt
+  groups             LifecycleRunGroup[]
+  steps              LifecycleRunStep[]
+
+  @@index([status, updatedAt(sort: Desc)])
+  @@index([templateKey, startedAt(sort: Desc)])
+}
+
+model LifecycleRunGroup {
+  id         String             @id @default(cuid())
+  runId      String
+  run        LifecycleRun       @relation(fields: [runId], references: [id], onDelete: Cascade)
+  key        String
+  title      String
+  position   Int
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+  steps      LifecycleRunStep[]
+
+  @@unique([runId, key])
+  @@index([runId, position])
+}
+
+model LifecycleRunStep {
+  id           String              @id @default(cuid())
+  runId        String
+  run          LifecycleRun        @relation(fields: [runId], references: [id], onDelete: Cascade)
+  groupId      String?
+  group        LifecycleRunGroup?  @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  key          String
+  title        String
+  instructions String
+  groupKey     String
+  position     Int
+  status       LifecycleStepStatus @default(pending)
+  statusReason String?
+  note         String?
+  ticketId     String?
+  assetId      String?
+  mailboxRef   String?
+  handoffRef   String?
+  completedAt  DateTime?
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  @@index([runId, groupKey, position])
+  @@unique([runId, key])
 }

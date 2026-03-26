@@ -1,0 +1,75 @@
+# Solo IT Ops Suite
+
+## What This Is
+
+Solo IT Ops Suite is an internal operations console for a one-person or very small IT team that has to keep devices, accounts, backups, and documentation under control without dropping important tasks. It combines Microsoft tenant visibility with workflow automation so the admin can spot risk fast, act from one place, and leave behind usable operational history instead of scattered notes.
+
+## Core Value
+
+One overextended IT generalist can see the highest-risk issues first and complete critical operational workflows consistently without relying on memory.
+
+## Requirements
+
+### Validated
+
+(None yet - ship to validate)
+
+### Active
+
+- [ ] Asset health dashboard gives a trustworthy daily picture of device risk and maintenance posture.
+- [ ] Onboarding and offboarding workflows reduce skipped steps and produce an audit trail.
+- [ ] Privilege and stale account auditing highlights identity risk before it turns into an incident.
+- [ ] Backup confidence view shows whether protected systems are actually recoverable.
+- [ ] Documentation assistant makes SOPs, contacts, and infrastructure knowledge searchable and maintainable.
+
+### Out of Scope
+
+- Full PSA/help desk replacement - not core to reducing operational risk in the first release.
+- Full RMM replacement - too broad for v1 and overlaps heavily with established tools.
+- Advanced network automation - useful later, but secondary to identity, endpoint, backup, and documentation hygiene.
+- Billing, procurement, and contract management - operationally related but not part of the first high-value workflow set.
+
+## Context
+
+- The starting point is an existing app that already integrates with Intune for foreign IP monitoring.
+- The target user is effectively a solo IT department covering endpoint support, account lifecycle work, maintenance, networking, and general firefighting.
+- The strongest opportunity is reducing repeated manual checking and turning important but easy-to-forget tasks into guided workflows.
+- The environment is likely Microsoft-centric, with Intune, Entra ID, Microsoft 365, and related security/admin data as primary sources.
+- The product should support both read-heavy oversight workflows and a smaller set of high-confidence administrative actions with strong auditability.
+
+## Constraints
+
+- **Security**: Admin data and actions must be tightly permissioned and auditable - the app will touch identity, device, and potentially backup metadata.
+- **Integration**: Microsoft Graph, Intune, and Entra ID need to be first-class connectors - the product is most valuable if it fits the current tenant reality.
+- **Usability**: A solo admin needs immediate signal, not a dense enterprise dashboard - every screen should help prioritize next action.
+- **Delivery**: The first release should focus on the five highest-value tools before expanding into broader IT operations features.
+- **Extensibility**: The architecture should support adding future modules such as license tracking, maintenance scheduling, and network visibility without a rewrite.
+
+## Key Decisions
+
+| Decision | Rationale | Outcome |
+|----------|-----------|---------|
+| Build a modular internal web app instead of separate single-purpose scripts | Shared auth, shared data model, and a common dashboard make each tool more useful together | - Pending |
+| Treat Microsoft tenant data as the primary system of record for v1 | Existing investment and available telemetry make it the fastest path to value | - Pending |
+| Keep future operations ideas in deferred scope instead of mixing them into v1 | Helps preserve focus and ship the highest-value workflows sooner | - Pending |
+| Favor guided workflows and risk summaries over fully automated remediation | A solo IT admin still needs control over sensitive actions | - Pending |
+
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition:**
+1. Requirements invalidated? -> Move to Out of Scope with reason
+2. Requirements validated? -> Move to Validated with phase reference
+3. New requirements emerged? -> Add to Active
+4. Decisions to log? -> Add to Key Decisions
+5. "What This Is" still accurate? -> Update if drifted
+
+**After each milestone:**
+1. Full review of all sections
+2. Core Value check - still the right priority?
+3. Audit Out of Scope - reasons still valid?
+4. Update Context with current state
+
+---
+*Last updated: 2026-03-26 after initialization*

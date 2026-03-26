@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FreshnessState {
+  healthy
+  warning
+  stale
+  error
+}
+
+enum SyncStatus {
+  healthy
+  degraded
+  stale
+  error
+}
+
+enum SyncResult {
+  success
+  partial
+  failure
+}
+
+model User {
+  id               String      @id @default(cuid())
+  sourceSystem     String
+  sourceId         String
+  displayName      String
+  email            String?
+  jobTitle         String?
+  department       String?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  auditEvents      AuditEvent[] @relation("AuditActor")
+
+  @@unique([sourceSystem, sourceId])
+}
+
+model Device {
+  id               String   @id @default(cuid())
+  sourceSystem     String
+  sourceId         String
+  name             String
+  serialNumber     String?
+  operatingSystem  String?
+  complianceState  String?
+  ownerId          String?
+  lastSeenAt       DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([sourceSystem, sourceId])
+}
+
+model System {
+  id               String   @id @default(cuid())
+  sourceSystem     String
+  sourceId         String
+  name             String
+  category         String?
+  ownerTeam        String?
+  criticality      String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([sourceSystem, sourceId])
+}
+
+model Group {
+  id               String   @id @default(cuid())
+  sourceSystem     String
+  sourceId         String
+  name             String
+  groupType        String?
+  description      String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([sourceSystem, sourceId])
+}
+
+model Document {
+  id               String   @id @default(cuid())
+  sourceSystem     String
+  sourceId         String
+  title            String
+  category         String?
+  owner            String?
+  reviewDueAt      DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([sourceSystem, sourceId])
+}
+
+model ConnectorSource {
+  id                  String         @id @default(cuid())
+  key                 String         @unique
+  label               String
+  sourceSystem        String
+  syncStatus          SyncStatus     @default(stale)
+  freshnessState      FreshnessState @default(stale)
+  lastSuccessfulSyncAt DateTime?
+  lastAttemptedSyncAt DateTime?
+  lastError           String?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  syncRuns            SyncRun[]
+}
+
+model SyncRun {
+  id                  String          @id @default(cuid())
+  connectorSourceId   String
+  connectorSource     ConnectorSource @relation(fields: [connectorSourceId], references: [id])
+  startedAt           DateTime
+  completedAt         DateTime?
+  result              SyncResult
+  recordsSeen         Int             @default(0)
+  recordsNormalized   Int             @default(0)
+  metadata            Json?
+  createdAt           DateTime        @default(now())
+}
+
+model AuditEvent {
+  id          String    @id @default(cuid())
+  timestamp   DateTime  @default(now())
+  actorId     String?
+  actor       User?     @relation("AuditActor", fields: [actorId], references: [id])
+  action      String
+  targetType  String
+  targetId    String?
+  result      String
+  metadata    Json
+  createdAt   DateTime  @default(now())
+}

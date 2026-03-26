@@ -67,8 +67,8 @@ Goal: Replace memory-driven joiner/leaver work with reusable templates and guide
 **Plans:** 4 plans
 
 Plans:
-- [ ] 03-01-PLAN.md - Define lifecycle run persistence, grouped templates, and summary engine helpers
-- [ ] 03-02-PLAN.md - Expose lifecycle launch, active-run, step-update, and summary API routes
+- [x] 03-01-PLAN.md - Define lifecycle run persistence, grouped templates, and summary engine helpers
+- [x] 03-02-PLAN.md - Expose lifecycle launch, active-run, step-update, and summary API routes
 - [ ] 03-03-PLAN.md - Build the lifecycle landing page with template launch and active-run visibility
 - [ ] 03-04-PLAN.md - Deliver grouped run detail, evidence capture, and close-out summary UX
 

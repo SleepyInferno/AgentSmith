@@ -20,10 +20,10 @@
 
 ### Lifecycle Automation
 
-- [ ] **LIFE-01**: Operator can start onboarding from a reusable template that includes identity, licensing, group, device, and checklist steps
-- [ ] **LIFE-02**: Operator can run offboarding from a guided workflow that covers access removal, device recovery, mailbox or file handoff, and follow-up tasks
-- [ ] **LIFE-03**: Operator can mark workflow steps as automated, manual, skipped, or blocked and capture notes or evidence for each
-- [ ] **LIFE-04**: Operator can review a final workflow summary showing what completed, what failed, and what still needs manual work
+- [x] **LIFE-01**: Operator can start onboarding from a reusable template that includes identity, licensing, group, device, and checklist steps
+- [x] **LIFE-02**: Operator can run offboarding from a guided workflow that covers access removal, device recovery, mailbox or file handoff, and follow-up tasks
+- [x] **LIFE-03**: Operator can mark workflow steps as automated, manual, skipped, or blocked and capture notes or evidence for each
+- [x] **LIFE-04**: Operator can review a final workflow summary showing what completed, what failed, and what still needs manual work
 
 ### Identity Risk
 
@@ -73,10 +73,10 @@
 | ASST-02 | Phase 2 | Complete |
 | ASST-03 | Phase 2 | Complete |
 | ASST-04 | Phase 2 | Complete |
-| LIFE-01 | Phase 3 | Pending |
-| LIFE-02 | Phase 3 | Pending |
-| LIFE-03 | Phase 3 | Pending |
-| LIFE-04 | Phase 3 | Pending |
+| LIFE-01 | Phase 3 | Complete |
+| LIFE-02 | Phase 3 | Complete |
+| LIFE-03 | Phase 3 | Complete |
+| LIFE-04 | Phase 3 | Complete |
 | IDR-01 | Phase 4 | Pending |
 | IDR-02 | Phase 4 | Pending |
 | IDR-03 | Phase 4 | Pending |

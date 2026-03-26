@@ -3,6 +3,7 @@ import { AssetDashboardPage } from "./routes/dashboard/AssetDashboardPage";
 import { DeviceInventoryPage } from "./routes/assets/DeviceInventoryPage";
 import { DeviceDetailPage } from "./routes/assets/DeviceDetailPage";
 import { LifecycleQueuePage } from "./routes/lifecycle/LifecycleQueuePage";
+import { LifecycleRunDetailPage } from "./routes/lifecycle/LifecycleRunDetailPage";
 
 const navigationItems = [
   { to: "/", label: "Needs attention" },
@@ -145,6 +146,7 @@ export const router = createBrowserRouter([
       { path: "devices", element: <DeviceInventoryPage /> },
       { path: "devices/:deviceId", element: <DeviceDetailPage /> },
       { path: "lifecycle", element: <LifecycleQueuePage /> },
+      { path: "lifecycle/runs/:runId", element: <LifecycleRunDetailPage /> },
     ],
   },
 ]);

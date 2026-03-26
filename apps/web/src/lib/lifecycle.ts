@@ -1,5 +1,5 @@
 export type LifecycleTemplateKey = "employee-onboarding" | "employee-offboarding";
-export type LifecycleRunStatus = "active" | "closed" | string;
+export type LifecycleRunStatus = "active" | "completed" | string;
 export type LifecycleStepStatus = "pending" | "manual" | "automated" | "skipped" | "blocked" | string;
 
 export type LifecycleTemplateStep = {

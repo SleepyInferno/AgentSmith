@@ -11,10 +11,12 @@ function toneForRisk(riskLevel: string) {
       return { color: "#7f1d1d", background: "#fecaca" };
     case "high":
       return { color: "#9a3412", background: "#fed7aa" };
-    case "medium":
+    case "watch":
       return { color: "#854d0e", background: "#fde68a" };
-    default:
+    case "low":
       return { color: "#166534", background: "#bbf7d0" };
+    default:
+      return { color: "#1d4ed8", background: "#dbeafe" };
   }
 }
 

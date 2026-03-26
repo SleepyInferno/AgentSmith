@@ -1,4 +1,4 @@
-export type RiskLevel = "low" | "medium" | "high" | "critical" | string;
+export type RiskLevel = "low" | "watch" | "high" | "critical" | string;
 export type SourceFreshnessState = "healthy" | "warning" | "stale" | "error" | "incomplete" | string;
 
 export type AssetRiskSignal = {

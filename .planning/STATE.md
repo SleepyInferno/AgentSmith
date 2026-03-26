@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Completed Phase 02
-last_updated: "2026-03-26T17:51:06.320Z"
+status: Phase 02 complete
+last_updated: "2026-03-26T18:56:28.092Z"
 progress:
   total_phases: 6
   completed_phases: 1
-  total_plans: 6
-  completed_plans: 4
+  total_plans: 7
+  completed_plans: 5
 ---
 
 # State: Solo IT Ops Suite
@@ -18,7 +18,7 @@ progress:
 See: `.planning/PROJECT.md` (updated 2026-03-26)
 
 **Core value:** One overextended IT generalist can see the highest-risk issues first and complete critical operational workflows consistently without relying on memory.
-**Current focus:** Phase 02 complete - asset-health-dashboard ready for validation and downstream reuse
+**Current focus:** Phase 02 - asset-health-dashboard
 
 ## Roadmap Status
 
@@ -29,10 +29,13 @@ See: `.planning/PROJECT.md` (updated 2026-03-26)
 
 ## Current Position
 
+Phase: 02 (asset-health-dashboard) - COMPLETE
+Plan: Complete
+
 - Current Phase: 02 of 06
 - Current Plan: Complete
-- Last Completed Plan: 02-03-PLAN.md
-- Progress: [#######---] 67%
+- Last Completed Plan: 02-04-PLAN.md
+- Progress: [███████░░░] 71%
 
 ## Immediate Next Steps
 
@@ -54,6 +57,8 @@ See: `.planning/PROJECT.md` (updated 2026-03-26)
 - [Phase 02]: Kept asset DTO typing local to the web package because the shared package dist does not yet export the Phase 2 asset contracts in this workspace.
 - [Phase 02]: Used URL search params plus React Query keys so inventory filters stay bookmarkable while the API remains the source of ranking and filtering truth.
 - [Phase 02]: Made the dashboard queue-first with inventory navigation secondary to match the solo-operator morning triage workflow.
+- [Phase 02]: Kept inventory sorting server-driven by wiring UI controls into URL params instead of adding client-side resorting.
+- [Phase 02]: Aligned operator-visible risk labels to the backend watch bucket while leaving signal severity medium unchanged.
 
 ## Performance Metrics
 
@@ -62,11 +67,12 @@ See: `.planning/PROJECT.md` (updated 2026-03-26)
 | 02 | 01 | 31 min | 3 | 8 | 2026-03-26 |
 | 02 | 02 | 18 min | 3 | 5 | 2026-03-26 |
 | 02 | 03 | 36 min | 3 | 12 | 2026-03-26 |
+| 02 | 04 | 2 min | 2 | 3 | 2026-03-26 |
 
 ## Session Info
 
-- Last session: 2026-03-26T17:51:06Z
-- Stopped at: Completed 02-03-PLAN.md
+- Last session: 2026-03-26T18:56:28Z
+- Stopped at: Completed 02-04-PLAN.md
 
 ## Notes
 
@@ -82,6 +88,8 @@ See: `.planning/PROJECT.md` (updated 2026-03-26)
 - Asset APIs now expose queue, inventory, and device detail contracts with server-side filter and sort semantics.
 - Phase 2 Plan 03 executed on 2026-03-26; summary recorded in `.planning/phases/02-asset-health-dashboard/02-03-SUMMARY.md`.
 - The web app now ships a queue-first asset dashboard, filterable inventory, routeable device detail pages, and explicit stale-data messaging.
+- Phase 2 Plan 04 executed on 2026-03-26; summary recorded in `.planning/phases/02-asset-health-dashboard/02-04-SUMMARY.md`.
+- Inventory sort controls now ship in the UI, and operator-visible risk labels use the backend `watch` bucket consistently.
 
 ---
-*Last updated: 2026-03-26 after completing 02-03*
+*Last updated: 2026-03-26 after completing 02-04*

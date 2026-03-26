@@ -38,6 +38,13 @@ UI hint: yes
 
 Goal: Provide a morning-start dashboard that tells the solo IT admin which endpoints need attention first and why.
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md - Define canonical asset-health fields, freshness semantics, and risk scoring
+- [ ] 02-02-PLAN.md - Expose read-only inventory, queue, and detail asset APIs
+- [ ] 02-03-PLAN.md - Build the dashboard, queue, inventory, detail, and stale-data UX
+
 Requirements:
 - ASST-01
 - ASST-02

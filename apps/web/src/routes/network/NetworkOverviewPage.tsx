@@ -131,25 +131,42 @@ export function NetworkOverviewPage() {
         <div>
           <h2 style={{ margin: "0 0 8px" }}>Inventory navigation</h2>
           <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 720 }}>
-            Open the full inventory when you need site filters, operational status checks, or a
-            denser scan of every tracked network resource.
+            Open the mapper when you need relationship context, then move into the full inventory
+            for site filters, operational status checks, or a denser scan of every tracked resource.
           </p>
         </div>
-        <Link
-          to="/network/inventory"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            padding: "12px 18px",
-            borderRadius: 999,
-            background: "#0f172a",
-            color: "#f8fafc",
-            textDecoration: "none",
-            fontWeight: 600,
-          }}
-        >
-          Open network inventory
-        </Link>
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+          <Link
+            to="/network/map"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "12px 18px",
+              borderRadius: 999,
+              background: "#e0f2fe",
+              color: "#082f49",
+              textDecoration: "none",
+              fontWeight: 700,
+            }}
+          >
+            Open network mapper
+          </Link>
+          <Link
+            to="/network/inventory"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "12px 18px",
+              borderRadius: 999,
+              background: "#0f172a",
+              color: "#f8fafc",
+              textDecoration: "none",
+              fontWeight: 600,
+            }}
+          >
+            Open network inventory
+          </Link>
+        </div>
       </section>
     </section>
   );

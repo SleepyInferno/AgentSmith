@@ -4,10 +4,13 @@ import { DeviceInventoryPage } from "./routes/assets/DeviceInventoryPage";
 import { DeviceDetailPage } from "./routes/assets/DeviceDetailPage";
 import { LifecycleQueuePage } from "./routes/lifecycle/LifecycleQueuePage";
 import { LifecycleRunDetailPage } from "./routes/lifecycle/LifecycleRunDetailPage";
+import { NetworkOverviewPage } from "./routes/network/NetworkOverviewPage";
+import { NetworkInventoryPage } from "./routes/network/NetworkInventoryPage";
 
 const navigationItems = [
   { to: "/", label: "Needs attention" },
   { to: "/devices", label: "Device inventory" },
+  { to: "/network", label: "Network visibility" },
   { to: "/lifecycle", label: "Lifecycle queue" },
 ];
 
@@ -53,14 +56,15 @@ function AppShell() {
                   color: "#7dd3fc",
                 }}
               >
-                Phase 3 lifecycle automation
+                AgentSmith operator console
               </p>
               <h1 style={{ margin: "10px 0 8px", fontSize: "clamp(2rem, 5vw, 3.4rem)" }}>
-                Operator workflow queues
+                Queue-first operations
               </h1>
               <p style={{ margin: 0, maxWidth: 620, lineHeight: 1.6, color: "#cbd5e1" }}>
-                Start with the riskiest endpoints, move into lifecycle runs when joiners or leavers
-                need attention, and keep sensitive work explicit and reviewable.
+                Start with endpoint or network risk, move into lifecycle work when people changes
+                need review, and keep sensitive actions explicit, reviewable, and calm under
+                pressure.
               </p>
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
@@ -78,6 +82,21 @@ function AppShell() {
                 }}
               >
                 Open device inventory
+              </Link>
+              <Link
+                to="/network"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "12px 18px",
+                  borderRadius: 999,
+                  color: "#e0f2fe",
+                  textDecoration: "none",
+                  background: "rgba(14, 165, 233, 0.14)",
+                  border: "1px solid rgba(125, 211, 252, 0.3)",
+                }}
+              >
+                Open network visibility
               </Link>
               <Link
                 to="/lifecycle"
@@ -145,6 +164,8 @@ export const router = createBrowserRouter([
       { index: true, element: <AssetDashboardPage /> },
       { path: "devices", element: <DeviceInventoryPage /> },
       { path: "devices/:deviceId", element: <DeviceDetailPage /> },
+      { path: "network", element: <NetworkOverviewPage /> },
+      { path: "/network/inventory", element: <NetworkInventoryPage /> },
       { path: "lifecycle", element: <LifecycleQueuePage /> },
       { path: "lifecycle/runs/:runId", element: <LifecycleRunDetailPage /> },
     ],

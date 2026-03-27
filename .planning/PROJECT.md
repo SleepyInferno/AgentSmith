@@ -13,10 +13,10 @@ One overextended IT generalist can see the highest-risk issues first and complet
 ### Validated
 
 - [x] Asset health dashboard gives a trustworthy daily picture of device risk and maintenance posture. Validated in Phase 2: Asset Health Dashboard.
+- [x] Onboarding and offboarding workflows reduce skipped steps and produce an audit trail. Validated in Phase 3: Lifecycle Automation.
 
 ### Active
 
-- [ ] Onboarding and offboarding workflows reduce skipped steps and produce an audit trail.
 - [ ] Privilege and stale account auditing highlights identity risk before it turns into an incident.
 - [ ] Backup confidence view shows whether protected systems are actually recoverable.
 - [ ] Documentation assistant makes SOPs, contacts, and infrastructure knowledge searchable and maintainable.
@@ -39,6 +39,7 @@ One overextended IT generalist can see the highest-risk issues first and complet
 ## Current State
 
 - Phase 2 is complete and verified. The app now includes a queue-first asset health dashboard, explainable device detail, and a filterable, sortable device inventory backed by one server-owned risk model.
+- Phase 3 is complete and verified. The app now includes a queue-first lifecycle workflow that launches onboarding and offboarding runs, guides grouped step execution with evidence capture, and closes work out with unresolved follow-up visibility.
 - Phase 1 still has unfinished protected-shell and connector work, so downstream phases should either reconcile that gap explicitly or continue with the dependency risk documented.
 
 ## Constraints
@@ -76,4 +77,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-26 after Phase 2 completion*
+*Last updated: 2026-03-27 after Phase 3 completion*

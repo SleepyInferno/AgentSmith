@@ -1,121 +1,45 @@
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { NeedsAttentionQueue } from "../../components/assets/NeedsAttentionQueue";
-import { getNeedsAttentionQueue } from "../../lib/assets";
-
-function getFreshnessMessage(states: string[]) {
-  if (states.length === 0) {
-    return "No risky devices right now";
-  }
-
-  if (states.some((state) => state !== "healthy")) {
-    return "Asset data is stale or incomplete";
-  }
-
-  return "Asset data is current enough for queue review";
-}
+const hotspots = [
+  { to: "/", label: "Needs Attention navigation", top: 13.4, left: 1.2, width: 17.9, height: 7.6 },
+  { to: "/lifecycle", label: "Lifecycle Queue navigation", top: 21.4, left: 1.2, width: 17.9, height: 7.7 },
+  { to: "/devices", label: "Device Inventory navigation", top: 29.8, left: 1.2, width: 17.9, height: 7.8 },
+  { to: "/network", label: "Identity Risk navigation", top: 38, left: 1.2, width: 17.9, height: 7.8 },
+  { to: "/network/map", label: "Backup Confidence navigation", top: 46.6, left: 1.2, width: 17.9, height: 7.8 },
+  { to: "/devices/agentsmith-1", label: "Ranked issue one", top: 23.3, left: 20.7, width: 56, height: 8.1 },
+  { to: "/lifecycle", label: "Ranked issue two", top: 31.5, left: 20.7, width: 56, height: 8 },
+  { to: "/devices/agentsmith-2", label: "Ranked issue three", top: 39.7, left: 20.7, width: 56, height: 8 },
+  { to: "/lifecycle", label: "Lifecycle runs panel", top: 49.6, left: 20.7, width: 31.6, height: 24.9 },
+  { to: "/devices", label: "Safe actions panel", top: 49.6, left: 53.4, width: 23.3, height: 24.9 },
+  { to: "/devices", label: "Device inventory panel", top: 77.9, left: 20.7, width: 56, height: 17.6 },
+];
 
 export function AssetDashboardPage() {
-  const queueQuery = useQuery({
-    queryKey: ["asset-queue"],
-    queryFn: getNeedsAttentionQueue,
-  });
-
-  const freshnessStates = queueQuery.data?.map((item) => item.sourceFreshnessState) ?? [];
-  const freshnessMessage = getFreshnessMessage(freshnessStates);
-  const isStale = freshnessMessage === "Asset data is stale or incomplete";
-
   return (
-    <section style={{ display: "grid", gap: 20 }}>
-      <section
-        style={{
-          display: "grid",
-          gridTemplateColumns: "2fr 1fr",
-          gap: 18,
-        }}
-      >
-        <article
-          style={{
-            padding: 24,
-            borderRadius: 24,
-            background: "#ffffff",
-            border: "1px solid rgba(148, 163, 184, 0.22)",
-          }}
-        >
-          <p style={{ margin: 0, color: "#0f172a", fontSize: 14, textTransform: "uppercase", letterSpacing: "0.14em" }}>
-            Needs attention
-          </p>
-          <h2 style={{ margin: "12px 0 10px", fontSize: "2rem" }}>Needs attention</h2>
-          <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
-            Review the highest-risk devices first, then open the full inventory if you need a wider
-            pass across the estate.
-          </p>
-        </article>
-        <article
-          style={{
-            padding: 24,
-            borderRadius: 24,
-            background: isStale ? "#fff7ed" : "#ecfeff",
-            border: `1px solid ${isStale ? "rgba(249, 115, 22, 0.28)" : "rgba(14, 165, 233, 0.25)"}`,
-          }}
-        >
-          <h2 style={{ marginTop: 0, fontSize: "1rem" }}>Data freshness</h2>
-          <p style={{ margin: "10px 0 0", color: "#334155", lineHeight: 1.6 }}>{freshnessMessage}</p>
-        </article>
-      </section>
+    <section className="mockup-dashboard" aria-label="AgentSmith dashboard mockup">
+      <div className="mockup-dashboard__frame">
+        <img
+          src="/mockups/dashboard-home.png"
+          alt="AgentSmith dashboard mockup with the Agent Smith character banner, neon sidebar, ranked issues, review panel, and device inventory."
+          className="mockup-dashboard__image"
+        />
 
-      <section>
-        {queueQuery.isPending ? (
-          <div style={panelStyle}>Loading device queue...</div>
-        ) : queueQuery.isError ? (
-          <div style={panelStyle}>Unable to load the queue right now.</div>
-        ) : (
-          <NeedsAttentionQueue items={queueQuery.data} />
-        )}
-      </section>
-
-      <section
-        style={{
-          padding: 20,
-          borderRadius: 24,
-          background: "#ffffff",
-          border: "1px solid rgba(148, 163, 184, 0.22)",
-          display: "flex",
-          justifyContent: "space-between",
-          gap: 16,
-          flexWrap: "wrap",
-          alignItems: "center",
-        }}
-      >
-        <div>
-          <h2 style={{ margin: "0 0 8px" }}>Inventory navigation</h2>
-          <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
-            Move from the ranked queue to the full inventory when you need filters, ownership, or
-            broader source review.
-          </p>
-        </div>
-        <Link
-          to="/devices"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            padding: "12px 18px",
-            borderRadius: 999,
-            background: "#0f172a",
-            color: "#f8fafc",
-            textDecoration: "none",
-          }}
-        >
-          Open device inventory
-        </Link>
-      </section>
+        <nav className="mockup-dashboard__hotspots" aria-label="Dashboard hotspots">
+          {hotspots.map((hotspot) => (
+            <Link
+              key={`${hotspot.label}-${hotspot.to}`}
+              to={hotspot.to}
+              className="mockup-dashboard__hotspot"
+              style={{
+                top: `${hotspot.top}%`,
+                left: `${hotspot.left}%`,
+                width: `${hotspot.width}%`,
+                height: `${hotspot.height}%`,
+              }}
+              aria-label={hotspot.label}
+            />
+          ))}
+        </nav>
+      </div>
     </section>
   );
 }
-
-const panelStyle = {
-  padding: 24,
-  borderRadius: 24,
-  background: "#ffffff",
-  border: "1px solid rgba(148, 163, 184, 0.22)",
-};

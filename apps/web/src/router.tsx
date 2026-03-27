@@ -165,7 +165,7 @@ export const router = createBrowserRouter([
       { path: "devices", element: <DeviceInventoryPage /> },
       { path: "devices/:deviceId", element: <DeviceDetailPage /> },
       { path: "network", element: <NetworkOverviewPage /> },
-      { path: "/network/inventory", element: <NetworkInventoryPage /> },
+      { path: "network/inventory", element: <NetworkInventoryPage /> },
       { path: "lifecycle", element: <LifecycleQueuePage /> },
       { path: "lifecycle/runs/:runId", element: <LifecycleRunDetailPage /> },
     ],

@@ -50,8 +50,7 @@ export type NetworkInventoryRow = {
   managementIp: string | null;
   cidr: string | null;
   ownerLabel: string | null;
-  summary?: string | null;
-  suggestedNextStep?: string | null;
+  summary: string;
 };
 
 export type NetworkMapSiteScope = {
@@ -119,12 +118,12 @@ export type NetworkResourceDetail = {
   relatedResources: NetworkRelatedResource[];
 };
 
-type NetworkFindingsResponse = {
+export type NetworkFindingsResponse = {
   dataMode: NetworkDataMode;
   items: NetworkFinding[];
 };
 
-type NetworkInventoryResponse = {
+export type NetworkInventoryResponse = {
   dataMode: NetworkDataMode;
   items: NetworkInventoryRow[];
 };
@@ -145,7 +144,7 @@ async function apiRequest<T>(input: string): Promise<T> {
 }
 
 export function getNetworkFindings() {
-  return apiRequest<NetworkFindingsResponse>("/api/network/findings").then((response) => response.items);
+  return apiRequest<NetworkFindingsResponse>("/api/network/findings");
 }
 
 export function getNetworkInventory(params: NetworkInventoryParams = {}) {
@@ -162,7 +161,7 @@ export function getNetworkInventory(params: NetworkInventoryParams = {}) {
   const query = searchParams.toString();
   const url = query ? `/api/network/resources?${query}` : "/api/network/resources";
 
-  return apiRequest<NetworkInventoryResponse>(url).then((response) => response.items);
+  return apiRequest<NetworkInventoryResponse>(url);
 }
 
 export function getNetworkMap() {

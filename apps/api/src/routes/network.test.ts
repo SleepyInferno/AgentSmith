@@ -36,6 +36,7 @@ function makeInventoryRow(dataMode: NetworkDataMode, overrides: Partial<NetworkI
     managementIp: "10.10.0.1",
     cidr: null,
     ownerLabel: "Network Operations",
+    summary: "HQ perimeter coverage includes the primary WAN handoff and remote access path.",
     dataMode,
     ...overrides,
   };
@@ -297,7 +298,14 @@ test("GET /api/network/resources returns typed inventory rows with resourceKind,
   assert.equal(response.statusCode, 200);
   const body = response.json() as {
     dataMode: string;
-    items: Array<{ dataMode: string; resourceId: string; resourceKind: string; siteName: string | null; freshnessState: string }>;
+    items: Array<{
+      dataMode: string;
+      resourceId: string;
+      resourceKind: string;
+      siteName: string | null;
+      freshnessState: string;
+      summary: string;
+    }>;
   };
 
   assert.deepEqual(network.getLastFilters(), {
@@ -313,6 +321,7 @@ test("GET /api/network/resources returns typed inventory rows with resourceKind,
   assert.equal(body.items[0]?.resourceKind, "firewall");
   assert.equal(body.items[0]?.siteName, "HQ");
   assert.equal(body.items[0]?.freshnessState, "healthy");
+  assert.equal(body.items[0]?.summary.includes("HQ"), true);
 });
 
 test("GET /api/network/map returns relationships with both confirmed and inferred confidence values", async (t) => {

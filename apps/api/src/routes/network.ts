@@ -169,6 +169,7 @@ function mapInventoryRowResponse(item: NetworkInventoryRow) {
     managementIp: item.managementIp,
     cidr: item.cidr,
     ownerLabel: item.ownerLabel,
+    summary: item.summary,
   };
 }
 

@@ -63,9 +63,18 @@ export class NetworkRepository {
 
   async listInventory(filters: NetworkInventoryFilters = {}): Promise<NetworkInventoryRow[]> {
     const dataset = await this.loadDataset();
+    const queuedFindings = buildNetworkFindingQueue(dataset.resources, dataset.relationships, dataset.findings);
+    const summaryByResourceId = new Map(queuedFindings.map((finding) => [finding.resourceId, finding.summary]));
 
     return dataset.resources
-      .map((resource) => mapInventoryRow(resource, dataset.dataMode))
+      .map((resource) =>
+        mapInventoryRow(
+          resource,
+          dataset.dataMode,
+          summaryByResourceId.get(resource.id) ??
+            buildNetworkScopeSummary(resource, buildRelatedResources(resource.id, dataset.resources, dataset.relationships)),
+        ),
+      )
       .filter((row) => {
         if (filters.kind && row.resourceKind !== filters.kind) {
           return false;
@@ -227,7 +236,11 @@ function normalizeFinding(
   };
 }
 
-function mapInventoryRow(resource: NetworkFixtureResource, dataMode: NetworkDataMode): NetworkInventoryRow {
+function mapInventoryRow(
+  resource: NetworkFixtureResource,
+  dataMode: NetworkDataMode,
+  summary: string,
+): NetworkInventoryRow {
   return {
     resourceId: resource.id,
     resourceName: resource.name,
@@ -241,6 +254,7 @@ function mapInventoryRow(resource: NetworkFixtureResource, dataMode: NetworkData
     managementIp: resource.managementIp,
     cidr: resource.cidr,
     ownerLabel: resource.ownerLabel,
+    summary,
     dataMode,
   };
 }

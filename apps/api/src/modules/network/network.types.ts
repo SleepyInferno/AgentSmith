@@ -43,6 +43,7 @@ export type NetworkInventoryRow = {
   managementIp: string | null;
   cidr: string | null;
   ownerLabel: string | null;
+  summary: string;
   dataMode: NetworkDataMode;
 };
 

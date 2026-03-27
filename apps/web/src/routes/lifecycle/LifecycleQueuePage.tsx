@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { ActiveLifecycleRuns } from "../../components/lifecycle/ActiveLifecycleRuns";
 import { LifecycleTemplateCards } from "../../components/lifecycle/LifecycleTemplateCards";
 import {
@@ -18,6 +19,8 @@ const sectionStyle = {
 } as const;
 
 export function LifecycleQueuePage() {
+  const navigate = useNavigate();
+
   const templatesQuery = useQuery({
     queryKey: ["lifecycle-templates"],
     queryFn: getLifecycleTemplates,
@@ -37,6 +40,8 @@ export function LifecycleQueuePage() {
         queryClient.invalidateQueries({ queryKey: ["lifecycle-run", run.runId] }),
         queryClient.invalidateQueries({ queryKey: ["lifecycle-run-summary", run.runId] }),
       ]);
+
+      navigate(`/lifecycle/runs/${run.runId}`);
     },
   });
 
@@ -101,7 +106,7 @@ export function LifecycleQueuePage() {
           <h3 style={{ margin: "0 0 8px", fontSize: "1.35rem" }}>Active runs</h3>
           <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
             Review grouped progress, scan the last update time, and focus on runs with unresolved
-            follow-up before opening detail pages in the next wave.
+            follow-up before reopening the guided run record.
           </p>
         </div>
         <ActiveLifecycleRuns

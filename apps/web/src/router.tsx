@@ -4,6 +4,7 @@ import { DeviceInventoryPage } from "./routes/assets/DeviceInventoryPage";
 import { DeviceDetailPage } from "./routes/assets/DeviceDetailPage";
 import { LifecycleQueuePage } from "./routes/lifecycle/LifecycleQueuePage";
 import { LifecycleRunDetailPage } from "./routes/lifecycle/LifecycleRunDetailPage";
+import { NetworkDetailPage } from "./routes/network/NetworkDetailPage";
 import { NetworkMapPage } from "./routes/network/NetworkMapPage";
 import { NetworkOverviewPage } from "./routes/network/NetworkOverviewPage";
 import { NetworkInventoryPage } from "./routes/network/NetworkInventoryPage";
@@ -168,6 +169,7 @@ export const router = createBrowserRouter([
       { path: "network", element: <NetworkOverviewPage /> },
       { path: "/network/map", element: <NetworkMapPage /> },
       { path: "network/inventory", element: <NetworkInventoryPage /> },
+      { path: "/network/resources/:resourceId", element: <NetworkDetailPage /> },
       { path: "lifecycle", element: <LifecycleQueuePage /> },
       { path: "lifecycle/runs/:runId", element: <LifecycleRunDetailPage /> },
     ],

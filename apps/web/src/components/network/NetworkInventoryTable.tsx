@@ -4,6 +4,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { Link } from "react-router-dom";
 import type { NetworkInventoryRow } from "../../lib/network";
 
 type NetworkInventoryTableProps = {
@@ -15,7 +16,14 @@ const columnHelper = createColumnHelper<NetworkInventoryRow>();
 const columns = [
   columnHelper.accessor("resourceName", {
     header: "Resource",
-    cell: (info) => <strong style={{ color: "#0f172a" }}>{info.getValue()}</strong>,
+    cell: (info) => (
+      <Link
+        to={`/network/resources/${info.row.original.resourceId}`}
+        style={{ color: "#0f172a", fontWeight: 700, textDecoration: "none" }}
+      >
+        {info.getValue()}
+      </Link>
+    ),
   }),
   columnHelper.accessor("resourceKind", { header: "Kind" }),
   columnHelper.accessor("siteName", { header: "Site" }),
@@ -28,9 +36,20 @@ const columns = [
   columnHelper.accessor("summary", {
     header: "Summary",
     cell: (info) => (
-      <span style={{ display: "block", minWidth: 260, color: "#334155", lineHeight: 1.6 }}>
-        {info.getValue()}
-      </span>
+      <div style={{ display: "grid", gap: 10, minWidth: 260 }}>
+        <span style={{ color: "#334155", lineHeight: 1.6 }}>{info.getValue()}</span>
+        <Link
+          to={`/network/resources/${info.row.original.resourceId}`}
+          style={{
+            color: "#0369a1",
+            fontWeight: 700,
+            textDecoration: "none",
+            fontSize: 13,
+          }}
+        >
+          Review detail
+        </Link>
+      </div>
     ),
   }),
 ];

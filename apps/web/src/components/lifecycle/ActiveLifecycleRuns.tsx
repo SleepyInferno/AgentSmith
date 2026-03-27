@@ -1,4 +1,5 @@
 import { useQueries } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 import { getLifecycleRunSummary, type LifecycleRunListItem } from "../../lib/lifecycle";
 
 type ActiveLifecycleRunsProps = {
@@ -155,6 +156,30 @@ export function ActiveLifecycleRuns(props: ActiveLifecycleRunsProps) {
                   ) : (
                     <p style={{ margin: 0, color: "#475569" }}>No unresolved follow-up right now.</p>
                   )}
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: 12,
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <span style={{ color: "#475569", fontSize: 14 }}>
+                    Reopen the guided run record to update steps and review close-out.
+                  </span>
+                  <Link
+                    to={`/lifecycle/runs/${run.runId}`}
+                    style={{
+                      color: "#0f172a",
+                      fontWeight: 700,
+                      textDecoration: "none",
+                    }}
+                  >
+                    Open run details
+                  </Link>
                 </div>
               </>
             )}

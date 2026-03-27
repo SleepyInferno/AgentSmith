@@ -60,6 +60,29 @@ enum LifecycleStepStatus {
   blocked
 }
 
+enum NetworkResourceKind {
+  site
+  wan_link
+  lan_segment
+  firewall
+  switch
+  access_point
+  dhcp_service
+  vpn_service
+}
+
+enum NetworkRelationConfidence {
+  confirmed
+  inferred
+}
+
+enum NetworkFindingKind {
+  offline_infrastructure
+  stale_telemetry
+  topology_gap
+  unclear_ownership
+}
+
 model User {
   id               String      @id @default(cuid())
   sourceSystem     String
@@ -256,4 +279,68 @@ model LifecycleRunStep {
 
   @@index([runId, groupKey, position])
   @@unique([runId, key])
+}
+
+model NetworkResource {
+  id                    String                @id @default(cuid())
+  sourceSystem          String
+  sourceId              String
+  kind                  NetworkResourceKind
+  name                  String
+  siteName              String?
+  operationalStatus     String?
+  freshnessState        FreshnessState        @default(stale)
+  lastSeenAt            DateTime?
+  managementIp          String?
+  cidr                  String?
+  ownerLabel            String?
+  metadata              Json?
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  outgoingRelationships NetworkRelationship[] @relation("NetworkRelationshipFrom")
+  incomingRelationships NetworkRelationship[] @relation("NetworkRelationshipTo")
+  findings              NetworkFinding[]
+
+  @@unique([sourceSystem, sourceId])
+  @@index([kind, siteName])
+  @@index([freshnessState, lastSeenAt(sort: Desc)])
+}
+
+model NetworkRelationship {
+  id             String                    @id @default(cuid())
+  fromResourceId String
+  fromResource   NetworkResource           @relation("NetworkRelationshipFrom", fields: [fromResourceId], references: [id], onDelete: Cascade)
+  toResourceId   String
+  toResource     NetworkResource           @relation("NetworkRelationshipTo", fields: [toResourceId], references: [id], onDelete: Cascade)
+  relationship   String
+  confidence     NetworkRelationConfidence
+  sourceSystem   String
+  lastSeenAt     DateTime?
+  metadata       Json?
+  createdAt      DateTime                  @default(now())
+  updatedAt      DateTime                  @updatedAt
+
+  @@index([fromResourceId])
+  @@index([toResourceId])
+  @@index([confidence, lastSeenAt(sort: Desc)])
+}
+
+model NetworkFinding {
+  id                String             @id @default(cuid())
+  resourceId        String
+  resource          NetworkResource    @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  kind              NetworkFindingKind
+  severity          AssetRiskLevel
+  summary           String
+  suggestedNextStep String
+  queueRank         Int
+  siteName          String?
+  scopeLabel        String?
+  freshnessState    FreshnessState     @default(stale)
+  lastSeenAt        DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([queueRank, severity])
+  @@index([siteName, freshnessState])
 }

@@ -87,6 +87,7 @@ test("getResourceDetail returns related resources, freshness, confidence context
   assert.ok(detail);
   assert.equal(detail?.dataMode, "live");
   assert.equal(detail?.resource.freshnessState, "warning");
+  assert.equal(detail?.resource.summary, detail?.findings[0]?.summary);
   assert.equal(detail?.relatedResources.length > 0, true);
   assert.equal(detail?.relatedResources.some((resource) => resource.confidence === "inferred"), true);
   assert.equal(typeof detail?.suggestedNextStep, "string");

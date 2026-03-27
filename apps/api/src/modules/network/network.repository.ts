@@ -149,6 +149,7 @@ export class NetworkRepository {
     }
 
     const relatedResources = buildRelatedResources(resource.id, dataset.resources, dataset.relationships);
+    const scopeSummary = buildNetworkScopeSummary(resource, relatedResources);
     const findings = buildNetworkFindingQueue(
       dataset.resources,
       dataset.relationships,
@@ -157,13 +158,14 @@ export class NetworkRepository {
       ...finding,
       dataMode: dataset.dataMode,
     }));
+    const summary = findings[0]?.summary ?? scopeSummary;
 
     return {
       dataMode: dataset.dataMode,
-      resource: mapInventoryRow(resource, dataset.dataMode),
+      resource: mapInventoryRow(resource, dataset.dataMode, summary),
       relatedResources,
       findings,
-      scopeSummary: buildNetworkScopeSummary(resource, relatedResources),
+      scopeSummary,
       suggestedNextStep:
         findings[0]?.suggestedNextStep ??
         (relatedResources.some((related) => related.confidence === "inferred") ? "Confirm uplink relationship" : null),

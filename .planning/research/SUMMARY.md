@@ -24,6 +24,6 @@ Use a TypeScript-first internal web stack with a React frontend, Node API, Postg
 Build the shared foundation first, then ship value in this order:
 1. Asset health dashboard
 2. Onboarding/offboarding automator
-3. Privilege and stale account auditor
+3. Network visibility lite
 4. Backup confidence dashboard
 5. Documentation assistant

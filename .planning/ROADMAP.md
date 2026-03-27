@@ -11,7 +11,7 @@
 | 1 | Foundations and Secure Data Flow | Establish auth, connector sync visibility, audit logging, and the shared data backbone | 3 | 4 |
 | 2 | Asset Health Dashboard | Deliver the first high-signal operational dashboard for device risk | 4 | 4 |
 | 3 | Lifecycle Automation | Ship guided onboarding and offboarding workflows with evidence capture | 4 | 4 |
-| 4 | Identity Risk Auditor | Surface stale, disabled, and privileged-account risk with actionable findings | 3 | 4 |
+| 4 | Network Visibility Lite | Deliver a lightweight network inventory, mapper, and triage view for WAN and LAN health | 3 | 4 |
 | 5 | Backup Confidence Dashboard | Show whether systems are protected and recoverable | 3 | 4 |
 | 6 | Documentation Assistant | Make core IT documentation searchable, structured, and reviewable | 3 | 4 |
 
@@ -87,20 +87,20 @@ Success criteria:
 
 UI hint: yes
 
-### Phase 4: Identity Risk Auditor
+### Phase 4: Network Visibility Lite
 
-Goal: Turn stale-account and privilege hygiene into a focused exception queue instead of occasional manual review.
+Goal: Give the solo IT operator a lightweight, trustworthy view of sites, WAN links, LAN segments, and core network infrastructure without turning the app into a full network management suite.
 
 Requirements:
-- IDR-01
-- IDR-02
-- IDR-03
+- NET-01
+- NET-02
+- NET-03
 
 Success criteria:
-1. Dormant accounts are flagged using configurable inactivity thresholds.
-2. Disabled users with lingering access and stale privileged memberships are surfaced clearly.
-3. Each finding includes reason, severity, and suggested remediation.
-4. Findings can be filtered by type, severity, and ownership context.
+1. Operator can view a normalized network inventory across sites, WAN links, switches, firewalls, APs, and key DHCP or VPN infrastructure with status and freshness context.
+2. A lightweight network mapper shows sites, WAN and LAN segments, and core network devices with clear confirmed versus inferred relationships.
+3. A prioritized queue highlights offline infrastructure, stale telemetry, and topology gaps that need review.
+4. Network detail views explain the affected site or segment, last-seen state, and source-confidence context.
 
 UI hint: yes
 
@@ -142,7 +142,9 @@ UI hint: yes
 
 - Each phase should leave behind something directly useful to the solo IT admin, not only internal plumbing.
 - Asset Health comes first among the feature modules because it proves the data model and delivers immediate daily value.
-- Deferred modules such as network visibility and ticket triage should only enter planning after the five-tool v1 is stable.
+- Network Visibility Lite replaces the former standalone identity module because the existing EDR already covers the broader identity alerting surface while network context remains a real operator gap.
+- Identity hygiene can still land later as a lifecycle enhancement if a concrete gap remains after the EDR plus workflow combination is in use.
+- Deferred modules such as ticket triage and maintenance scheduling should only enter planning after the five-tool v1 is stable.
 
 ---
-*Last updated: 2026-03-26 after completing Phase 03 Plan 05*
+*Last updated: 2026-03-27 after replacing Phase 4 with Network Visibility Lite*

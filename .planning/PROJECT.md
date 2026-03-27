@@ -17,7 +17,7 @@ One overextended IT generalist can see the highest-risk issues first and complet
 
 ### Active
 
-- [ ] Privilege and stale account auditing highlights identity risk before it turns into an incident.
+- [ ] Network visibility shows sites, WAN links, LAN segments, and core network infrastructure health without requiring a full NMS.
 - [ ] Backup confidence view shows whether protected systems are actually recoverable.
 - [ ] Documentation assistant makes SOPs, contacts, and infrastructure knowledge searchable and maintainable.
 
@@ -35,6 +35,8 @@ One overextended IT generalist can see the highest-risk issues first and complet
 - The strongest opportunity is reducing repeated manual checking and turning important but easy-to-forget tasks into guided workflows.
 - The environment is likely Microsoft-centric, with Intune, Entra ID, Microsoft 365, and related security/admin data as primary sources.
 - The product should support both read-heavy oversight workflows and a smaller set of high-confidence administrative actions with strong auditability.
+- Existing EDR coverage reduces the value of a separate identity-risk dashboard, so identity hygiene should live inside the lifecycle workflow surface when it needs tracked follow-through.
+- A lightweight network visibility and mapping surface fills the vacated v1 module slot because it addresses an operational gap that existing endpoint and security tooling does not cover cleanly.
 
 ## Current State
 
@@ -48,7 +50,7 @@ One overextended IT generalist can see the highest-risk issues first and complet
 - **Integration**: Microsoft Graph, Intune, and Entra ID need to be first-class connectors - the product is most valuable if it fits the current tenant reality.
 - **Usability**: A solo admin needs immediate signal, not a dense enterprise dashboard - every screen should help prioritize next action.
 - **Delivery**: The first release should focus on the five highest-value tools before expanding into broader IT operations features.
-- **Extensibility**: The architecture should support adding future modules such as license tracking, maintenance scheduling, and network visibility without a rewrite.
+- **Extensibility**: The architecture should support adding future modules such as license tracking, maintenance scheduling, and deeper network automation without a rewrite.
 
 ## Key Decisions
 
@@ -58,6 +60,8 @@ One overextended IT generalist can see the highest-risk issues first and complet
 | Treat Microsoft tenant data as the primary system of record for v1 | Existing investment and available telemetry make it the fastest path to value | - Pending |
 | Keep future operations ideas in deferred scope instead of mixing them into v1 | Helps preserve focus and ship the highest-value workflows sooner | - Pending |
 | Favor guided workflows and risk summaries over fully automated remediation | A solo IT admin still needs control over sensitive actions | - Pending |
+| Let the EDR own broad identity alerting while AgentSmith owns lifecycle-linked identity follow-through | Avoids duplicating an existing detection surface and keeps this app focused on guided remediation | - Pending |
+| Replace the former security module with Network Visibility Lite | Gives the operator site and infrastructure context that is not already covered by the existing EDR stack | - Pending |
 
 ## Evolution
 
@@ -77,4 +81,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-27 after Phase 3 completion*
+*Last updated: 2026-03-27 after replacing the former security module with Network Visibility Lite*

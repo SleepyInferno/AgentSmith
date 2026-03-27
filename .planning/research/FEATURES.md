@@ -22,12 +22,12 @@
 - License, group, and access assignment suggestions
 - Evidence trail of completed and skipped steps
 
-### Privilege and Stale Account Auditor
+### Network Visibility Lite
 
-- Dormant user detection
-- Dormant device detection
-- Privileged group and role review
-- Drift checks for disabled users, stale admins, and risky service-account patterns
+- Site-aware network inventory covering WAN links, firewalls, switches, APs, and core DHCP or VPN services
+- Lightweight mapper showing site, WAN, and LAN relationships
+- Triage queue for offline network devices, stale telemetry, and topology gaps
+- Confidence labels separating confirmed topology from inferred relationships
 
 ### Backup Confidence Dashboard
 
@@ -44,7 +44,6 @@
 
 ## Deferred Feature Areas
 
-- Network visibility dashboard
 - Maintenance scheduler
 - Ticket intake and triage
 - Printer/share mapping
@@ -52,4 +51,4 @@
 
 ## Product Shape
 
-The best version of this product behaves like a compact internal operations hub: a morning dashboard, a guided workflow runner, a risk scanner, and a knowledge base in one place.
+The best version of this product behaves like a compact internal operations hub: a morning dashboard, a guided workflow runner, a lightweight network map, and a knowledge base in one place.

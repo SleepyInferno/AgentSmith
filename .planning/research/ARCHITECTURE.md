@@ -28,7 +28,7 @@ Responsibilities:
 Responsibilities:
 - Asset health scoring
 - Lifecycle workflow execution
-- Identity risk analysis
+- Network visibility and topology analysis
 - Backup confidence analysis
 - Documentation indexing and search
 
@@ -50,7 +50,7 @@ Responsibilities:
 
 1. External systems feed connector services.
 2. Connector services normalize data into the application database.
-3. Domain modules compute health scores, exceptions, drift findings, and workflow readiness.
+3. Domain modules compute health scores, topology findings, exceptions, and workflow readiness.
 4. API endpoints expose this curated data to the frontend.
 5. Sensitive user actions flow from frontend -> API -> domain module -> connector service -> audit log.
 
@@ -59,5 +59,5 @@ Responsibilities:
 1. Start with platform foundations, canonical data model, and connector shell.
 2. Build asset health first because it proves the shared entity model and creates immediate value.
 3. Add onboarding/offboarding next because it depends on stable user, group, and device context.
-4. Layer in privilege auditing and backup confidence on top of the same synced data foundation.
+4. Layer in network visibility and backup confidence on top of the same synced data foundation.
 5. Add documentation assistant after the core operational entities exist so docs can be linked to real objects.

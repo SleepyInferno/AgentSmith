@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to plan
-last_updated: "2026-03-27T02:29:40.589Z"
+last_updated: "2026-03-27T09:08:09.8491575-04:00"
 progress:
   total_phases: 6
   completed_phases: 2
@@ -15,14 +15,14 @@ progress:
 
 ## Project Reference
 
-See: `.planning/PROJECT.md` (updated 2026-03-26)
+See: `.planning/PROJECT.md` (updated 2026-03-27)
 
 **Core value:** One overextended IT generalist can see the highest-risk issues first and complete critical operational workflows consistently without relying on memory.
-**Current focus:** Phase 03 - lifecycle-automation
+**Current focus:** Phase 04 - network-visibility-lite
 
 ## Roadmap Status
 
-- Current phase: 3
+- Current phase: 4
 - Phases completed: 2 of 6
 - v1 requirements: 20
 - Completed requirements: 10
@@ -30,18 +30,18 @@ See: `.planning/PROJECT.md` (updated 2026-03-26)
 ## Current Position
 
 Phase: 04
-Plan: Not started
+Plan: Context captured - ready for planning
 
-- Current Phase: 03 of 06
-- Current Plan: Phase complete - ready for verification
+- Current Phase: 04 of 06
+- Current Plan: Context captured - ready for planning
 - Last Completed Plan: 03-05-PLAN.md
 - Progress: [████████░░] 83%
 
 ## Immediate Next Steps
 
-1. Verify the completed lifecycle automation slice end-to-end before starting Phase 4 planning.
-2. Begin identity-risk-auditor planning against the stabilized lifecycle and asset patterns.
-3. Keep future sensitive operator actions audit-first and server-derived as additional modules come online.
+1. Verify the completed lifecycle automation slice end-to-end before starting the network visibility slice.
+2. Begin network-visibility-lite planning against the stabilized asset, routing, and shared-shell patterns.
+3. Keep Network Visibility Lite read-only and trustworthy, with clear confirmed versus inferred topology labels and freshness context.
 
 ## Decisions
 
@@ -73,6 +73,7 @@ Plan: Not started
 - [Phase 03]: Corrected the web lifecycle status union to use the API's completed state so the close-out UI follows the actual server contract.
 - [Phase 03]: Kept the launch handoff in the existing mutation success path so lifecycle cache invalidation still completes before navigation to the run detail route.
 - [Phase 03]: Placed the active-run detail link beside unresolved follow-up review context so the lifecycle queue stays audit-first and tracking-only.
+- [Roadmap]: Replaced the former standalone identity module with Network Visibility Lite because the existing EDR already covers broad identity alerting while network context remains a real operator gap.
 
 ## Performance Metrics
 
@@ -90,8 +91,8 @@ Plan: Not started
 
 ## Session Info
 
-- Last session: 2026-03-26T22:22:11Z
-- Stopped at: Completed 03-05-PLAN.md
+- Last session: 2026-03-27T09:08:09.8491575-04:00
+- Stopped at: Phase 04 context gathered
 
 ## Notes
 
@@ -115,6 +116,8 @@ Plan: Not started
 - Lifecycle automation now includes grouped run detail routing, per-step evidence capture, and close-out summaries with unresolved follow-up called out separately.
 - Phase 3 Plan 05 executed on 2026-03-26; summary recorded in `.planning/phases/03-lifecycle-automation/03-05-SUMMARY.md`.
 - Lifecycle queue launches and active-run cards now hand operators directly into the routed run detail workflow for step updates and close-out review.
+- Phase 4 now targets Network Visibility Lite with a lightweight inventory, mapper, and triage workflow instead of a standalone identity dashboard.
+- Phase 4 context captured on 2026-03-27 in `.planning/phases/04-network-visibility-lite/04-CONTEXT.md`.
 
 ---
-*Last updated: 2026-03-26 after completing 03-05*
+*Last updated: 2026-03-27 after replacing Phase 4 with Network Visibility Lite*

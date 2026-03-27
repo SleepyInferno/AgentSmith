@@ -25,11 +25,11 @@
 - [x] **LIFE-03**: Operator can mark workflow steps as automated, manual, skipped, or blocked and capture notes or evidence for each
 - [x] **LIFE-04**: Operator can review a final workflow summary showing what completed, what failed, and what still needs manual work
 
-### Identity Risk
+### Network Visibility Lite
 
-- [ ] **IDR-01**: Operator can see dormant user accounts based on configurable inactivity thresholds
-- [ ] **IDR-02**: Operator can see disabled users, stale admins, and privileged memberships that need review
-- [ ] **IDR-03**: Operator can open an identity finding and understand why it was flagged and what remediation is suggested
+- [ ] **NET-01**: Operator can view a lightweight network inventory across sites, WAN links, firewalls, switches, APs, and key DHCP or VPN services with status and last-seen freshness
+- [ ] **NET-02**: Operator can open a network mapper that shows sites, WAN and LAN segments, core network devices, and whether relationships are confirmed or inferred
+- [ ] **NET-03**: Operator can review network findings for offline infrastructure, stale telemetry, topology gaps, or unclear ownership and understand the affected site or segment plus the suggested next step
 
 ### Backup Confidence
 
@@ -47,7 +47,6 @@
 
 ### Operations Expansion
 
-- **OPS-01**: Operator can view switch, WAN, AP, and DHCP health in a lightweight network dashboard
 - **OPS-02**: Operator can manage recurring maintenance schedules and renewal reminders
 - **OPS-03**: Operator can intake and triage internal support requests
 - **OPS-04**: Operator can track license utilization across Microsoft 365 and related tools
@@ -77,9 +76,9 @@
 | LIFE-02 | Phase 3 | Complete |
 | LIFE-03 | Phase 3 | Complete |
 | LIFE-04 | Phase 3 | Complete |
-| IDR-01 | Phase 4 | Pending |
-| IDR-02 | Phase 4 | Pending |
-| IDR-03 | Phase 4 | Pending |
+| NET-01 | Phase 4 | Pending |
+| NET-02 | Phase 4 | Pending |
+| NET-03 | Phase 4 | Pending |
 | BACK-01 | Phase 5 | Pending |
 | BACK-02 | Phase 5 | Pending |
 | BACK-03 | Phase 5 | Pending |
@@ -94,4 +93,4 @@
 
 ---
 *Requirements defined: 2026-03-26*
-*Last updated: 2026-03-26 after initial definition*
+*Last updated: 2026-03-27 after replacing Phase 4 with Network Visibility Lite*

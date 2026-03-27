@@ -27,9 +27,9 @@
 
 ### Network Visibility Lite
 
-- [ ] **NET-01**: Operator can view a lightweight network inventory across sites, WAN links, firewalls, switches, APs, and key DHCP or VPN services with status and last-seen freshness
-- [ ] **NET-02**: Operator can open a network mapper that shows sites, WAN and LAN segments, core network devices, and whether relationships are confirmed or inferred
-- [ ] **NET-03**: Operator can review network findings for offline infrastructure, stale telemetry, topology gaps, or unclear ownership and understand the affected site or segment plus the suggested next step
+- [x] **NET-01**: Operator can view a lightweight network inventory across sites, WAN links, firewalls, switches, APs, and key DHCP or VPN services with status and last-seen freshness
+- [x] **NET-02**: Operator can open a network mapper that shows sites, WAN and LAN segments, core network devices, and whether relationships are confirmed or inferred
+- [x] **NET-03**: Operator can review network findings for offline infrastructure, stale telemetry, topology gaps, or unclear ownership and understand the affected site or segment plus the suggested next step
 
 ### Backup Confidence
 
@@ -76,9 +76,9 @@
 | LIFE-02 | Phase 3 | Complete |
 | LIFE-03 | Phase 3 | Complete |
 | LIFE-04 | Phase 3 | Complete |
-| NET-01 | Phase 4 | Pending |
-| NET-02 | Phase 4 | Pending |
-| NET-03 | Phase 4 | Pending |
+| NET-01 | Phase 4 | Complete |
+| NET-02 | Phase 4 | Complete |
+| NET-03 | Phase 4 | Complete |
 | BACK-01 | Phase 5 | Pending |
 | BACK-02 | Phase 5 | Pending |
 | BACK-03 | Phase 5 | Pending |
@@ -93,4 +93,4 @@
 
 ---
 *Requirements defined: 2026-03-26*
-*Last updated: 2026-03-27 after replacing Phase 4 with Network Visibility Lite*
+*Last updated: 2026-03-27 after Phase 4 completion*

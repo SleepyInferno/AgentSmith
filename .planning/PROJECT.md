@@ -14,10 +14,10 @@ One overextended IT generalist can see the highest-risk issues first and complet
 
 - [x] Asset health dashboard gives a trustworthy daily picture of device risk and maintenance posture. Validated in Phase 2: Asset Health Dashboard.
 - [x] Onboarding and offboarding workflows reduce skipped steps and produce an audit trail. Validated in Phase 3: Lifecycle Automation.
+- [x] Network visibility shows sites, WAN links, LAN segments, and core network infrastructure health without requiring a full NMS. Validated in Phase 4: Network Visibility Lite.
 
 ### Active
 
-- [ ] Network visibility shows sites, WAN links, LAN segments, and core network infrastructure health without requiring a full NMS.
 - [ ] Backup confidence view shows whether protected systems are actually recoverable.
 - [ ] Documentation assistant makes SOPs, contacts, and infrastructure knowledge searchable and maintainable.
 
@@ -42,7 +42,7 @@ One overextended IT generalist can see the highest-risk issues first and complet
 
 - Phase 2 is complete and verified. The app now includes a queue-first asset health dashboard, explainable device detail, and a filterable, sortable device inventory backed by one server-owned risk model.
 - Phase 3 is complete and verified. The app now includes a queue-first lifecycle workflow that launches onboarding and offboarding runs, guides grouped step execution with evidence capture, and closes work out with unresolved follow-up visibility.
-- Phase 4 is implemented and passes automated re-verification. The remaining work is manual UX validation of the queue-to-detail-to-map handoff and confirmed-versus-inferred map legibility before it moves into Validated.
+- Phase 4 is complete and verified. The app now includes a queue-first network overview, filterable inventory, lightweight topology map, and explanation-first detail flow for network triage.
 - Phase 1 still has unfinished protected-shell and connector work, so downstream phases should either reconcile that gap explicitly or continue with the dependency risk documented.
 
 ## Constraints
@@ -82,4 +82,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-27 after Phase 4 automated re-verification*
+*Last updated: 2026-03-27 after Phase 4 completion*

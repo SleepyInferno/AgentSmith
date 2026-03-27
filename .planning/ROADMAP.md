@@ -91,6 +91,14 @@ UI hint: yes
 
 Goal: Give the solo IT operator a lightweight, trustworthy view of sites, WAN links, LAN segments, and core network infrastructure without turning the app into a full network management suite.
 
+**Plans:** 4 plans
+
+Plans:
+- [x] 04-01-PLAN.md - Create the canonical Phase 4 backend read model before routes or UI depend on it
+- [ ] 04-02-PLAN.md - Expose the Phase 4 backend read model through stable API contracts
+- [ ] 04-03-PLAN.md - Deliver the queue-first network landing page and filterable inventory experience
+- [ ] 04-04-PLAN.md - Deliver the topology map and explanation-first detail workflow for Phase 4
+
 Requirements:
 - NET-01
 - NET-02

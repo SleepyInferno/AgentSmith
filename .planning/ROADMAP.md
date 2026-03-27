@@ -97,7 +97,7 @@ Plans:
 - [x] 04-01-PLAN.md - Create the canonical Phase 4 backend read model before routes or UI depend on it
 - [x] 04-02-PLAN.md - Expose the Phase 4 backend read model through stable API contracts
 - [x] 04-03-PLAN.md - Deliver the queue-first network landing page and filterable inventory experience
-- [ ] 04-04-PLAN.md - Deliver the topology map and explanation-first detail workflow for Phase 4
+- [x] 04-04-PLAN.md - Deliver the topology map and explanation-first detail workflow for Phase 4
 
 Requirements:
 - NET-01

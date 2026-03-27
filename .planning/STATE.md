@@ -2,8 +2,8 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to verify Phase 04
-last_updated: "2026-03-27T16:42:13Z"
+status: Ready for human verification of Phase 04
+last_updated: "2026-03-27T16:59:49Z"
 progress:
   total_phases: 6
   completed_phases: 2
@@ -30,16 +30,16 @@ See: `.planning/PROJECT.md` (updated 2026-03-27)
 ## Current Position
 
 - Current Phase: 04 of 06
-- Current Plan: Verification
+- Current Plan: Human verification
 - Last Completed Plan: 04-04-PLAN.md
 - Phase Progress: 4 of 4 plans complete
 - Overall Progress: [█████████░] 88%
 
 ## Immediate Next Steps
 
-1. Run regression checks against the Phase 2 and Phase 3 automated suites.
-2. Verify that Phase 4 achieves the network inventory, mapper, queue, and detail goal end to end.
-3. If verification passes, mark Phase 4 complete and advance the project state to Phase 5.
+1. Run the two manual UX checks captured in `.planning/phases/04-network-visibility-lite/04-VERIFICATION.md`.
+2. If the queue-to-detail-to-map handoff and confirmed-versus-inferred map legibility feel clear, mark Phase 4 complete.
+3. Advance the project state to Phase 5 planning after Phase 4 human verification is signed off.
 
 ## Recent Decisions
 
@@ -51,6 +51,7 @@ See: `.planning/PROJECT.md` (updated 2026-03-27)
 - [Phase 04] Added the inventory summary field on the server so queue and inventory explanations remain backend-owned instead of being recomputed in React.
 - [Phase 04] Used a lightweight static mapper with explicit confirmed versus inferred visuals instead of implying real-time network automation.
 - [Phase 04] Kept the network detail route explanation-first so freshness, confidence, and suggested next action stay readable.
+- [Phase 04] Fixed the detail response to pass an explicit server-owned summary into `mapInventoryRow`, keeping the detail DTO aligned with the inventory contract and clearing the Phase 04-specific API typecheck regression.
 - [Roadmap] Replaced the former standalone identity module with Network Visibility Lite because the existing EDR already covers broad identity alerting while network context remains a real operator gap.
 
 ## Recent Execution
@@ -59,6 +60,7 @@ See: `.planning/PROJECT.md` (updated 2026-03-27)
 - Phase 04 Plan 02 executed on 2026-03-27; summary recorded in `.planning/phases/04-network-visibility-lite/04-02-SUMMARY.md`.
 - Phase 04 Plan 03 executed on 2026-03-27; summary recorded in `.planning/phases/04-network-visibility-lite/04-03-SUMMARY.md`.
 - Phase 04 Plan 04 executed on 2026-03-27; summary recorded in `.planning/phases/04-network-visibility-lite/04-04-SUMMARY.md`.
+- Phase 04 automated re-verification completed on 2026-03-27; report recorded in `.planning/phases/04-network-visibility-lite/04-VERIFICATION.md`.
 
 ## Performance Metrics
 
@@ -74,9 +76,9 @@ See: `.planning/PROJECT.md` (updated 2026-03-27)
 
 ## Session Info
 
-- Last session: 2026-03-27T16:42:13Z
-- Stopped at: Completed 04-04-PLAN.md
-- Resume from: Phase 04 verification
+- Last session: 2026-03-27T16:59:49Z
+- Stopped at: Automated Phase 04 re-verification complete
+- Resume from: Phase 04 human verification
 
 ## Notes
 
@@ -86,6 +88,7 @@ See: `.planning/PROJECT.md` (updated 2026-03-27)
 - The network API now exposes findings, inventory, map, and detail routes through the shared `buildServer` injection pattern.
 - The web shell now includes queue-first network overview and inventory routes backed by server-driven filters and explicit seeded-example disclosure.
 - Phase 4 now includes a dedicated network mapper and explanation-first detail route that connect queue and inventory triage into readable context.
+- Automated Phase 4 verification passes again after fixing the detail summary path; only manual UX verification remains before full phase closeout.
 
 ---
-*Last updated: 2026-03-27 after completing Phase 04 Plan 04*
+*Last updated: 2026-03-27 after Phase 04 automated re-verification*

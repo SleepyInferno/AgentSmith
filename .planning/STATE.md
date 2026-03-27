@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Phase complete — ready for verification
-last_updated: "2026-03-26T22:46:23.693Z"
+status: Ready to execute
+last_updated: "2026-03-27T02:22:55.496Z"
 progress:
   total_phases: 6
   completed_phases: 2
-  total_plans: 11
-  completed_plans: 9
+  total_plans: 12
+  completed_plans: 10
 ---
 
 # State: Solo IT Ops Suite
@@ -18,24 +18,24 @@ progress:
 See: `.planning/PROJECT.md` (updated 2026-03-26)
 
 **Core value:** One overextended IT generalist can see the highest-risk issues first and complete critical operational workflows consistently without relying on memory.
-**Current focus:** Phase 04 - identity-risk-auditor
+**Current focus:** Phase 03 - lifecycle-automation
 
 ## Roadmap Status
 
 - Current phase: 3
 - Phases completed: 2 of 6
 - v1 requirements: 20
-- Completed requirements: 9
+- Completed requirements: 10
 
 ## Current Position
 
 Phase: 03 (lifecycle-automation) - COMPLETE
-Plan: 4 of 4
+Plan: Phase complete
 
 - Current Phase: 03 of 06
 - Current Plan: Phase complete - ready for verification
-- Last Completed Plan: 03-04-PLAN.md
-- Progress: [████████░░] 82%
+- Last Completed Plan: 03-05-PLAN.md
+- Progress: [████████░░] 83%
 
 ## Immediate Next Steps
 
@@ -71,6 +71,8 @@ Plan: 4 of 4
 - [Phase 03]: Kept lifecycle detail state server-owned by invalidating run, list, and summary queries after each step mutation and on close-out.
 - [Phase 03]: Rendered unresolved follow-up as its own close-out section so remaining manual work stays visible after closure.
 - [Phase 03]: Corrected the web lifecycle status union to use the API's completed state so the close-out UI follows the actual server contract.
+- [Phase 03]: Kept the launch handoff in the existing mutation success path so lifecycle cache invalidation still completes before navigation to the run detail route.
+- [Phase 03]: Placed the active-run detail link beside unresolved follow-up review context so the lifecycle queue stays audit-first and tracking-only.
 
 ## Performance Metrics
 
@@ -80,15 +82,16 @@ Plan: 4 of 4
 | 02 | 02 | 18 min | 3 | 5 | 2026-03-26 |
 | 02 | 03 | 36 min | 3 | 12 | 2026-03-26 |
 | 02 | 04 | 2 min | 2 | 3 | 2026-03-26 |
-| Phase 03 P01 | 5 min | 2 tasks | 8 files |
-| Phase 03 P02 | 6 min | 2 tasks | 4 files |
-| Phase 03 P03 | 5 min | 2 tasks | 5 files |
-| Phase 03 P04 | 6 min | 2 tasks | 6 files |
+| Phase 03 | P01 | 5 min | 2 | 8 | 2026-03-26 |
+| Phase 03 | P02 | 6 min | 2 | 4 | 2026-03-26 |
+| Phase 03 | P03 | 5 min | 2 | 5 | 2026-03-26 |
+| Phase 03 | P04 | 6 min | 2 | 6 | 2026-03-26 |
+| Phase 03 | P05 | 2min | 2 | 2 | 2026-03-26 |
 
 ## Session Info
 
-- Last session: 2026-03-26T22:46:23Z
-- Stopped at: Completed 03-04-PLAN.md
+- Last session: 2026-03-26T22:22:11Z
+- Stopped at: Completed 03-05-PLAN.md
 
 ## Notes
 
@@ -110,6 +113,8 @@ Plan: 4 of 4
 - Lifecycle automation decisions currently lock grouped workflow phases, manual execution tracking for Phase 3, required skipped or blocked reasons, structured step evidence, final summaries with unresolved follow-up work, stable API contracts for route and web layers, and a queue-first lifecycle landing page for launch plus active-run triage.
 - Phase 3 Plan 04 executed on 2026-03-26; summary recorded in `.planning/phases/03-lifecycle-automation/03-04-SUMMARY.md`.
 - Lifecycle automation now includes grouped run detail routing, per-step evidence capture, and close-out summaries with unresolved follow-up called out separately.
+- Phase 3 Plan 05 executed on 2026-03-26; summary recorded in `.planning/phases/03-lifecycle-automation/03-05-SUMMARY.md`.
+- Lifecycle queue launches and active-run cards now hand operators directly into the routed run detail workflow for step updates and close-out review.
 
 ---
-*Last updated: 2026-03-26 after completing 03-04*
+*Last updated: 2026-03-26 after completing 03-05*

@@ -38,7 +38,7 @@ UI hint: yes
 
 Goal: Provide a morning-start dashboard that tells the solo IT admin which endpoints need attention first and why.
 
-**Plans:** 4 plans
+**Plans:** 5 plans
 
 Plans:
 - [x] 02-01-PLAN.md - Define canonical asset-health fields, freshness semantics, and risk scoring
@@ -71,6 +71,7 @@ Plans:
 - [x] 03-02-PLAN.md - Expose lifecycle launch, active-run, step-update, and summary API routes
 - [x] 03-03-PLAN.md - Build the lifecycle landing page with template launch and active-run visibility
 - [x] 03-04-PLAN.md - Deliver grouped run detail, evidence capture, and close-out summary UX
+- [x] 03-05-PLAN.md - Close the queue-to-detail lifecycle handoff from launch and active-run cards
 
 Requirements:
 - LIFE-01
@@ -144,4 +145,4 @@ UI hint: yes
 - Deferred modules such as network visibility and ticket triage should only enter planning after the five-tool v1 is stable.
 
 ---
-*Last updated: 2026-03-26 after completing Phase 03 Plan 04*
+*Last updated: 2026-03-26 after completing Phase 03 Plan 05*

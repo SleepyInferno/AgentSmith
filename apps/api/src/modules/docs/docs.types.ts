@@ -38,28 +38,22 @@ export type DocumentLinkedSystem = {
 };
 
 export type DocumentationSearchReason = {
-  code:
-    | "title_match"
-    | "content_match"
-    | "metadata_match"
-    | "linked_system_match"
-    | "review_overdue"
-    | "recent_change"
-    | "metadata_gap";
+  code: "title_match" | "content_match" | "metadata_match" | "system_match" | "review_overdue" | "recent_change";
   label: string;
   summary: string;
 };
 
+export type DocumentationQueueReason = {
+  code: "review_overdue" | "metadata_incomplete" | "recent_change";
+  label: "Review overdue" | "Metadata incomplete" | "Updated since last review";
+  summary: string;
+};
+
 export type DocumentationOverviewCard = {
-  key:
-    | "total_documents"
-    | "overdue_reviews"
-    | "due_soon_reviews"
-    | "unreviewed_changes"
-    | "metadata_gaps";
+  key: "total_documents" | "review_overdue" | "metadata_incomplete" | "recent_change";
   label: string;
   value: number;
-  tone: "neutral" | DocumentReviewState;
+  tone: "neutral" | "warning" | "critical";
   summary: string;
 };
 
@@ -74,7 +68,7 @@ export type DocumentationQueueItem = {
   sourceUpdatedAt: string | null;
   contentUpdatedAt: string | null;
   summary: string;
-  focusReason: DocumentationSearchReason;
+  focusReason: DocumentationQueueReason;
   suggestedNextStep: string;
   queueRank: number;
   metadataTags: DocumentMetadataTag[];
@@ -106,14 +100,14 @@ export type DocumentationSearchFacets = {
 };
 
 export type DocumentationSearchFilters = {
-  search?: string;
+  q?: string;
   kind?: DocumentKind;
-  reviewState?: DocumentReviewState;
-  siteKey?: string;
-  ownerKey?: string;
-  categoryKey?: string;
+  category?: string;
+  site?: string;
+  owner?: string;
   systemId?: string;
-  missingMetadataDimension?: DocumentMetadataDimension;
+  reviewState?: DocumentReviewState;
+  staleOnly?: boolean;
 };
 
 export type DocumentationSearchResult = {
@@ -138,6 +132,7 @@ export type DocumentationSearchResponse = {
   dataMode: DocumentationDataMode;
   generatedAt: string | null;
   summary: string;
+  writeBoundary: DocumentationWriteBoundary;
   filters: DocumentationSearchFilters;
   facets: DocumentationSearchFacets;
   results: DocumentationSearchResult[];

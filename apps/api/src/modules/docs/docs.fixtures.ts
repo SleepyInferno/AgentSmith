@@ -5,6 +5,7 @@ import type {
   DocumentReviewState,
   DocumentationDataMode,
   DocumentationSearchFilters,
+  DocumentationQueueReason,
   DocumentationSearchReason,
 } from "./docs.types.js";
 
@@ -36,7 +37,7 @@ export type DocumentationFixtureDocument = {
   sourceUpdatedAt: string | null;
   contentUpdatedAt: string | null;
   queueSummary: string | null;
-  focusReason: DocumentationSearchReason | null;
+  focusReason: DocumentationQueueReason | null;
   suggestedNextStep: string;
   createdAt: string;
   updatedAt: string;
@@ -83,19 +84,19 @@ export type DocumentationFixtureSearchCase = {
 const seededSource = "seeded_example";
 const seededDataMode: DocumentationDataMode = "seeded_example";
 
-const metadataGapReason: DocumentationSearchReason = {
-  code: "metadata_gap",
-  label: "Metadata gap",
+const metadataGapReason: DocumentationQueueReason = {
+  code: "metadata_incomplete",
+  label: "Metadata incomplete",
   summary: "Document metadata is incomplete for operational search",
 };
 
-const recentChangeReason: DocumentationSearchReason = {
+const recentChangeReason: DocumentationQueueReason = {
   code: "recent_change",
-  label: "Changed after review",
+  label: "Updated since last review",
   summary: "Content changed after the last review",
 };
 
-const overdueReviewReason: DocumentationSearchReason = {
+const overdueReviewReason: DocumentationQueueReason = {
   code: "review_overdue",
   label: "Review overdue",
   summary: "Review due date has passed",
@@ -890,7 +891,7 @@ export const documentRevisionFixtures: DocumentationFixtureRevision[] = [
 export const documentationFixtureSearchCases: DocumentationFixtureSearchCase[] = [
   {
     query: "sharepoint restore",
-    filters: { search: "sharepoint restore" },
+    filters: { q: "sharepoint restore" },
     expectedTopDocumentId: "doc-m365-break-glass",
     expectedOrderedDocumentIds: ["doc-m365-break-glass", "doc-domain-controller-restore"],
     expectedReasonCode: "content_match",
@@ -898,7 +899,7 @@ export const documentationFixtureSearchCases: DocumentationFixtureSearchCase[] =
   },
   {
     query: "fiber noc circuit",
-    filters: { search: "fiber noc circuit" },
+    filters: { q: "fiber noc circuit" },
     expectedTopDocumentId: "doc-contoso-isp-contacts",
     expectedOrderedDocumentIds: ["doc-contoso-isp-contacts", "doc-branch-firewall-recovery"],
     expectedReasonCode: "content_match",
@@ -906,7 +907,7 @@ export const documentationFixtureSearchCases: DocumentationFixtureSearchCase[] =
   },
   {
     query: "hyper-v san",
-    filters: { search: "hyper-v san" },
+    filters: { q: "hyper-v san" },
     expectedTopDocumentId: "doc-hyperv-cluster-notes",
     expectedOrderedDocumentIds: ["doc-hyperv-cluster-notes", "doc-domain-controller-restore"],
     expectedReasonCode: "content_match",
@@ -914,7 +915,7 @@ export const documentationFixtureSearchCases: DocumentationFixtureSearchCase[] =
   },
   {
     query: "veeam renewal",
-    filters: { search: "veeam renewal" },
+    filters: { q: "veeam renewal" },
     expectedTopDocumentId: "doc-veeam-renewal-notes",
     expectedOrderedDocumentIds: ["doc-veeam-renewal-notes", "doc-domain-controller-restore"],
     expectedReasonCode: "content_match",

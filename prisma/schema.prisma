@@ -83,6 +83,44 @@ enum NetworkFindingKind {
   unclear_ownership
 }
 
+enum BackupCoverageMode {
+  required
+  excluded
+}
+
+enum BackupCoverageState {
+  protected
+  missing
+  partial
+  excluded
+  unknown
+}
+
+enum BackupRestoreState {
+  current
+  stale
+  missing
+  unknown
+}
+
+enum BackupConfidenceState {
+  healthy
+  watch
+  high_risk
+  unknown
+}
+
+enum BackupEvidenceSource {
+  provider_sync
+  operator_attested
+}
+
+enum BackupRestoreOutcome {
+  success
+  partial
+  failure
+}
+
 model User {
   id               String      @id @default(cuid())
   sourceSystem     String
@@ -140,15 +178,18 @@ model DeviceRiskAssessment {
 }
 
 model System {
-  id               String   @id @default(cuid())
-  sourceSystem     String
-  sourceId         String
-  name             String
-  category         String?
-  ownerTeam        String?
-  criticality      String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id                   String               @id @default(cuid())
+  sourceSystem         String
+  sourceId             String
+  name                 String
+  category             String?
+  ownerTeam            String?
+  criticality          String?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  backupCoveragePolicy BackupCoveragePolicy?
+  backupEvidence       BackupEvidence[]
+  backupRestoreTests   BackupRestoreTest[]
 
   @@unique([sourceSystem, sourceId])
 }
@@ -343,4 +384,67 @@ model NetworkFinding {
 
   @@index([queueRank, severity])
   @@index([siteName, freshnessState])
+}
+
+model BackupCoveragePolicy {
+  id                    String             @id @default(cuid())
+  systemId              String             @unique
+  system                System             @relation(fields: [systemId], references: [id], onDelete: Cascade)
+  coverageMode          BackupCoverageMode
+  backupFreshnessHours  Int?
+  restoreTestMaxAgeDays Int?
+  gracePeriodHours      Int?
+  providerScope         Json?
+  exclusionReason       String?
+  notes                 String?
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+
+  @@index([coverageMode])
+}
+
+model BackupEvidence {
+  id                     String                @id @default(cuid())
+  systemId               String
+  system                 System                @relation(fields: [systemId], references: [id], onDelete: Cascade)
+  providerKey            String
+  workloadKind           String
+  sourceSystem           String
+  sourceId               String
+  coverageState          BackupCoverageState   @default(unknown)
+  lastSuccessfulBackupAt DateTime?
+  lastFailedBackupAt     DateTime?
+  backupFreshnessState   BackupRestoreState    @default(unknown)
+  connectorFreshnessState BackupRestoreState   @default(unknown)
+  lastObservedAt         DateTime?
+  metadata               Json?
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
+  restoreTests           BackupRestoreTest[]
+
+  @@unique([providerKey, sourceSystem, sourceId])
+  @@index([systemId, coverageState])
+  @@index([providerKey, workloadKind])
+  @@index([lastObservedAt(sort: Desc)])
+}
+
+model BackupRestoreTest {
+  id               String               @id @default(cuid())
+  systemId         String
+  system           System               @relation(fields: [systemId], references: [id], onDelete: Cascade)
+  backupEvidenceId String?
+  backupEvidence   BackupEvidence?      @relation(fields: [backupEvidenceId], references: [id], onDelete: SetNull)
+  evidenceSource   BackupEvidenceSource
+  outcome          BackupRestoreOutcome
+  testedAt         DateTime
+  recoveryPointAt  DateTime?
+  ticketRef        String?
+  notes            String?
+  metadata         Json?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+
+  @@index([systemId, testedAt(sort: Desc)])
+  @@index([backupEvidenceId])
+  @@index([evidenceSource, testedAt(sort: Desc)])
 }

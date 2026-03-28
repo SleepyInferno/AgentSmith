@@ -22,6 +22,14 @@ export type DocumentationLinkedSystem = {
   criticality: string | null;
 };
 
+export type DocumentationCatalogSystem = {
+  systemId: string;
+  systemName: string;
+  category: string | null;
+  ownerTeam: string | null;
+  criticality: string | null;
+};
+
 export type DocumentationHistoryEntry = {
   revisionId: string;
   revisionType: string;
@@ -124,7 +132,7 @@ export type DocumentationSearchResponse = {
   total: number;
 };
 
-export type DocumentationDetailResponse = {
+type DocumentationDetailApiResponse = {
   dataMode: DocumentationDataMode;
   writeBoundary: DocumentationWriteBoundary;
   documentId: string;
@@ -144,9 +152,19 @@ export type DocumentationDetailResponse = {
     sites: DocumentationMetadataTag[];
     owners: DocumentationMetadataTag[];
     categories: DocumentationMetadataTag[];
-    systems: DocumentationLinkedSystem[];
+    systems: DocumentationCatalogSystem[];
   };
   suggestedNextStep: string | null;
+};
+
+export type DocumentationDetailResponse = DocumentationDetailApiResponse & {
+  owner: string | null;
+  site: string | null;
+  category: string | null;
+  reviewAgeLabel: string;
+  nextReviewStatus: string;
+  historyHighlights: string[];
+  linkedSystemSummary: string;
 };
 
 type DocumentationOverviewApiResponse = {
@@ -267,5 +285,92 @@ export async function searchDocumentation(params: DocumentationSearchParams = {}
 }
 
 export function getDocumentationDetail(documentId: string) {
-  return apiRequest<DocumentationDetailResponse>(`/api/docs/${documentId}`);
+  return apiRequest<DocumentationDetailApiResponse>(`/api/docs/${documentId}`).then((response) => ({
+    ...response,
+    owner: getMetadataValue(response.metadataTags, "owner"),
+    site: getMetadataValue(response.metadataTags, "site"),
+    category: getMetadataValue(response.metadataTags, "category"),
+    reviewAgeLabel: buildReviewAgeLabel(response.lastReviewedAt, response.reviewState),
+    nextReviewStatus: buildNextReviewStatus(response.reviewDueAt, response.reviewState),
+    historyHighlights: buildHistoryHighlights(response.history),
+    linkedSystemSummary: buildLinkedSystemSummary(response.linkedSystems),
+  }));
+}
+
+function buildReviewAgeLabel(lastReviewedAt: string | null, reviewState: string) {
+  if (!lastReviewedAt) {
+    return reviewState === "unreviewed" ? "Not yet reviewed" : "Review age unavailable";
+  }
+
+  const dayDelta = Math.max(0, Math.floor((Date.now() - new Date(lastReviewedAt).valueOf()) / (1000 * 60 * 60 * 24)));
+
+  if (dayDelta === 0) {
+    return "Reviewed today";
+  }
+
+  if (dayDelta === 1) {
+    return "Reviewed 1 day ago";
+  }
+
+  if (dayDelta < 30) {
+    return `Reviewed ${dayDelta} days ago`;
+  }
+
+  const monthDelta = Math.floor(dayDelta / 30);
+  return `Reviewed ${monthDelta} month${monthDelta === 1 ? "" : "s"} ago`;
+}
+
+function buildNextReviewStatus(reviewDueAt: string | null, reviewState: string) {
+  if (!reviewDueAt) {
+    return reviewState === "unreviewed" ? "First review window not scheduled" : "No review due date scheduled";
+  }
+
+  const dueDate = new Date(reviewDueAt);
+  const dayDelta = Math.ceil((dueDate.valueOf() - Date.now()) / (1000 * 60 * 60 * 24));
+
+  if (dayDelta < 0) {
+    const overdueDays = Math.abs(dayDelta);
+    return `Overdue by ${overdueDays} day${overdueDays === 1 ? "" : "s"}`;
+  }
+
+  if (dayDelta === 0) {
+    return "Due today";
+  }
+
+  if (dayDelta <= 14) {
+    return `Due in ${dayDelta} day${dayDelta === 1 ? "" : "s"}`;
+  }
+
+  return `Due ${dueDate.toLocaleDateString()}`;
+}
+
+function buildHistoryHighlights(history: DocumentationHistoryEntry[]) {
+  if (history.length === 0) {
+    return ["No review history recorded yet"];
+  }
+
+  return history.slice(0, 3).map((entry) => `${formatHistoryType(entry.revisionType)}: ${entry.summary}`);
+}
+
+function buildLinkedSystemSummary(linkedSystems: DocumentationLinkedSystem[]) {
+  if (linkedSystems.length === 0) {
+    return "No linked systems are mapped yet";
+  }
+
+  const criticalCount = linkedSystems.filter((system) =>
+    ["critical", "high", "tier_0", "tier0"].includes(system.criticality?.toLowerCase() ?? ""),
+  ).length;
+
+  if (criticalCount > 0) {
+    return `${linkedSystems.length} linked systems, ${criticalCount} marked critical`;
+  }
+
+  return `${linkedSystems.length} linked system${linkedSystems.length === 1 ? "" : "s"} in scope`;
+}
+
+function formatHistoryType(value: string) {
+  return value
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }

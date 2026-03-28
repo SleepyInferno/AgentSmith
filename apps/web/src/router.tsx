@@ -13,6 +13,7 @@ import { NetworkOverviewPage } from "./routes/network/NetworkOverviewPage";
 import { NetworkInventoryPage } from "./routes/network/NetworkInventoryPage";
 import { DocumentationOverviewPage } from "./routes/docs/DocumentationOverviewPage";
 import { DocumentationSearchPage } from "./routes/docs/DocumentationSearchPage";
+import { DocumentationDetailPage } from "./routes/docs/DocumentationDetailPage";
 
 type NavItem = {
   label: string;
@@ -300,6 +301,7 @@ export const router = createBrowserRouter([
       { path: "backup/systems/:systemId", element: <BackupDetailPage /> },
       { path: "docs", element: <DocumentationOverviewPage trustBoundaryCopy={documentationTrustBoundaryCopy} /> },
       { path: "docs/search", element: <DocumentationSearchPage trustBoundaryCopy={documentationTrustBoundaryCopy} /> },
+      { path: "docs/:documentId", element: <DocumentationDetailPage trustBoundaryCopy={documentationTrustBoundaryCopy} /> },
       { path: "lifecycle", element: <LifecycleQueuePage /> },
       { path: "lifecycle/runs/:runId", element: <LifecycleRunDetailPage /> },
     ],

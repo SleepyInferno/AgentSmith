@@ -14,7 +14,8 @@
   "dependencies": {
     "@agentsmith/shared": "workspace:*",
     "@prisma/client": "^6.6.0",
-    "fastify": "^5.3.3"
+    "fastify": "^5.3.3",
+    "openid-client": "^6.8.2"
   },
   "devDependencies": {
     "@types/node": "^22.15.29",

@@ -8,8 +8,11 @@ import { BackupRepository } from "./modules/backup/backup.repository.js";
 import { DocsRepository } from "./modules/docs/docs.repository.js";
 import { LifecycleRepository } from "./modules/lifecycle/lifecycle.repository.js";
 import { NetworkRepository } from "./modules/network/network.repository.js";
+import { AuditService } from "./modules/audit/audit.service.js";
+import { createAuthService, type AgentSmithAuthService } from "./plugins/auth.js";
 import type { AssetRoutesDependencies } from "./routes/assets.js";
 import { registerAssetRoutes } from "./routes/assets.js";
+import { registerAuthRoutes } from "./routes/auth.js";
 import type { BackupRoutesDependencies } from "./routes/backup.js";
 import { registerBackupRoutes } from "./routes/backup.js";
 import type { DocsRoutesDependencies } from "./routes/docs.js";
@@ -17,12 +20,15 @@ import { registerDocsRoutes } from "./routes/docs.js";
 import { registerHealthRoute } from "./routes/health.js";
 import type { LifecycleRoutesDependencies } from "./routes/lifecycle.js";
 import { registerLifecycleRoutes } from "./routes/lifecycle.js";
+import { registerMeRoutes } from "./routes/me.js";
 import type { NetworkRoutesDependencies } from "./routes/network.js";
 import { registerNetworkRoutes } from "./routes/network.js";
 
 export type BuildServerOptions = {
   env?: ServerEnv;
   prisma?: PrismaClient;
+  authService?: AgentSmithAuthService;
+  auditService?: AuditService;
   assetRoutes?: Partial<AssetRoutesDependencies>;
   backupRoutes?: Partial<BackupRoutesDependencies>;
   docsRoutes?: Partial<DocsRoutesDependencies>;
@@ -36,6 +42,8 @@ export function buildServer(options: BuildServerOptions = {}) {
     logger: true,
   });
   const prisma = options.prisma ?? new PrismaClient();
+  const auditService = options.auditService ?? new AuditService(prisma);
+  const authService = options.authService ?? createAuthService({ env, prisma });
   const assetHealthRepository = options.assetRoutes?.assetHealthRepository ?? new AssetHealthRepository(prisma);
   const backupRepository = options.backupRoutes?.backupRepository ?? new BackupRepository(prisma);
   const docsRepository = options.docsRoutes?.docsRepository ?? new DocsRepository(prisma);
@@ -83,6 +91,14 @@ export function buildServer(options: BuildServerOptions = {}) {
       };
 
   app.register(registerHealthRoute);
+  app.register(registerAuthRoutes, {
+    authService,
+    auditService,
+    webOrigin: env.WEB_ORIGIN,
+  });
+  app.register(registerMeRoutes, {
+    authService,
+  });
   app.register(registerAssetRoutes, assetRouteOptions);
   app.register(registerBackupRoutes, backupRouteOptions);
   app.register(registerDocsRoutes, docsRouteOptions);

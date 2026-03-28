@@ -598,7 +598,7 @@ function buildSuggestedNextStep(record: {
   contentUpdatedAt: string | null;
 }): string {
   const searchableRecord = {
-    documentId: "placeholder",
+    documentId: "synthetic-document",
     title: "",
     kind: "sop" as const,
     summary: null,

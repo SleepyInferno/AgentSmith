@@ -43,6 +43,7 @@ export type BackupFindingItem = {
   systemId: string;
   systemName: string;
   category: string | null;
+  siteName: string | null;
   ownerTeam: string | null;
   criticality: string | null;
   coverageMode: BackupCoverageMode;
@@ -66,6 +67,7 @@ export type BackupInventoryRow = {
   sourceSystem: string;
   sourceId: string;
   category: string | null;
+  siteName: string | null;
   ownerTeam: string | null;
   criticality: string | null;
   coverageMode: BackupCoverageMode;
@@ -79,17 +81,21 @@ export type BackupInventoryRow = {
   lastRestoreTestedAt: string | null;
   restoreEvidenceSource: BackupEvidenceSource | null;
   summary: string;
+  suggestedNextStep: string | null;
   dataMode: BackupDataMode;
 };
 
 export type BackupInventoryFilters = {
   search?: string;
+  siteName?: string;
+  category?: string;
   coverageMode?: BackupCoverageMode;
   coverageState?: BackupCoverageState;
   confidenceState?: BackupConfidenceState;
   providerKey?: string;
   workloadKind?: string;
   criticality?: string;
+  staleOnly?: boolean;
 };
 
 export type BackupOverview = {

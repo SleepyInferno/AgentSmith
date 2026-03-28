@@ -277,7 +277,7 @@ function AppShell() {
   );
 }
 
-const backupTrustBoundaryCopy = "Records evidence only - no backup jobs or restore actions are triggered here.";
+const backupTrustBoundaryCopy = "Read-only evidence view - no backup jobs, restores, or exceptions can be executed here.";
 
 export const router = createBrowserRouter([
   {

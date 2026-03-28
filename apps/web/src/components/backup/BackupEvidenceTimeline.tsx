@@ -66,6 +66,10 @@ function formatDateTime(value: string | null) {
 }
 
 function formatType(value: BackupTimelineEntry["type"]) {
+  if (value === "operator_attested") {
+    return "Operator-attested proof";
+  }
+
   return value
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))

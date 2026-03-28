@@ -44,6 +44,44 @@ function formatProvider(providerKey: string | null) {
   return providerKey ?? "Provider unknown";
 }
 
+function buildFindingBadges(item: BackupFinding) {
+  const badges: string[] = [];
+
+  if (item.matchingConfidence === "duplicate") {
+    badges.push("Duplicate match needs review");
+  }
+
+  if (item.sourceHealth && item.sourceHealth.state !== "current" && item.confidenceState === "unknown") {
+    badges.push("Telemetry unknown");
+  }
+
+  if (item.evidenceSource === "operator_attested") {
+    badges.push("Operator-attested proof");
+  }
+
+  if (item.coverageState === "excluded") {
+    badges.push("Excluded by policy");
+  }
+
+  return badges;
+}
+
+function toneForBadge(label: string) {
+  if (label === "Duplicate match needs review") {
+    return { color: "#9a3412", background: "#ffedd5" };
+  }
+
+  if (label === "Telemetry unknown") {
+    return { color: "#1d4ed8", background: "#dbeafe" };
+  }
+
+  if (label === "Operator-attested proof") {
+    return { color: "#0369a1", background: "#e0f2fe" };
+  }
+
+  return { color: "#334155", background: "#e2e8f0" };
+}
+
 export function BackupFindingsQueue({ items, emptyTitle }: BackupFindingsQueueProps) {
   if (items.length === 0) {
     return (
@@ -62,6 +100,7 @@ export function BackupFindingsQueue({ items, emptyTitle }: BackupFindingsQueuePr
       {items.map((item) => {
         const confidenceTone = toneForConfidence(item.confidenceState);
         const coverageTone = toneForCoverage(item.coverageState);
+        const badges = buildFindingBadges(item);
 
         return (
           <Link
@@ -98,6 +137,16 @@ export function BackupFindingsQueue({ items, emptyTitle }: BackupFindingsQueuePr
 
                 <h3 style={{ margin: "12px 0 8px", fontSize: "1.25rem" }}>{item.systemName}</h3>
                 <p style={{ margin: 0, color: "#334155", lineHeight: 1.6 }}>{item.summary}</p>
+
+                {badges.length > 0 ? (
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 14 }}>
+                    {badges.map((badge) => (
+                      <span key={badge} style={{ ...chipStyle, ...toneForBadge(badge), textTransform: "none", letterSpacing: "normal" }}>
+                        {badge}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
 
                 <div
                   style={{

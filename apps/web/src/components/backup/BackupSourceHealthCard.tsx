@@ -70,6 +70,8 @@ function formatDateTime(value: string | null) {
 
 function toneForFreshness(value: string) {
   switch (value) {
+    case "error":
+      return { color: "#991b1b", background: "#fee2e2" };
     case "stale":
       return { color: "#9a3412", background: "#ffedd5" };
     case "missing":

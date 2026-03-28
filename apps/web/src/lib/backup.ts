@@ -2,11 +2,13 @@ export type BackupDataMode = "live" | "seeded_example" | string;
 export type BackupCoverageState = "protected" | "missing" | "partial" | "excluded" | "unknown" | string;
 export type BackupConfidenceState = "healthy" | "watch" | "high_risk" | "unknown" | string;
 export type BackupRestoreState = "current" | "stale" | "missing" | "unknown" | string;
+export type BackupSourceHealthState = BackupRestoreState | "error" | string;
+export type BackupMatchingConfidence = "confirmed" | "duplicate" | "unknown" | string;
 
 export type BackupSourceHealth = {
   providerKey: string;
   providerLabel: string;
-  state: BackupRestoreState;
+  state: BackupSourceHealthState;
   connectorFreshnessState: BackupRestoreState;
   lastObservedAt: string | null;
   systemsObserved: number;
@@ -28,6 +30,7 @@ export type BackupOverviewResponse = {
   generatedAt: string | null;
   summary: string;
   cards: BackupOverviewCard[];
+  findings: BackupFinding[];
   sourceHealth: BackupSourceHealth[];
   isReadOnly: boolean;
 };
@@ -41,8 +44,10 @@ export type BackupReviewRow = {
   providerKey: string | null;
   coverageState: BackupCoverageState;
   confidenceState: BackupConfidenceState;
+  matchingConfidence: BackupMatchingConfidence;
   lastSuccessfulBackupAt: string | null;
   lastRestoreTestAt: string | null;
+  evidenceSource: string | null;
   summary: string;
   suggestedNextStep: string | null;
   sourceHealth: BackupSourceHealth | null;
@@ -147,8 +152,10 @@ type BackupSystemDetailResponse = {
   providerKey: string | null;
   coverageState: BackupCoverageState;
   confidenceState: BackupConfidenceState;
+  matchingConfidence: BackupMatchingConfidence;
   lastSuccessfulBackupAt: string | null;
   lastRestoreTestAt: string | null;
+  evidenceSource: string | null;
   summary: string;
   suggestedNextStep: string | null;
   sourceHealth: BackupSourceHealth[];

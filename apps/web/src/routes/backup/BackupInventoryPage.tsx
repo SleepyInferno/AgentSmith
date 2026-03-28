@@ -7,6 +7,9 @@ type BackupInventoryPageProps = {
   trustBoundaryCopy: string;
 };
 
+const defaultTrustBoundaryCopy =
+  "Read-only evidence view - no backup jobs, restores, or exceptions can be executed here.";
+
 const confidenceStateOptions = ["healthy", "watch", "high_risk", "unknown"];
 const coverageStateOptions = ["protected", "missing", "partial", "excluded", "unknown"];
 
@@ -128,7 +131,9 @@ export function BackupInventoryPage({ trustBoundaryCopy }: BackupInventoryPagePr
               Filters stay server-driven and bookmarkable, so the queue, inventory, and future detail
               routes all use one backend-owned confidence view instead of React-side filtering.
             </p>
-            <p style={{ margin: "12px 0 0", color: "#0f172a", fontWeight: 700 }}>{trustBoundaryCopy}</p>
+            <p style={{ margin: "12px 0 0", color: "#0f172a", fontWeight: 700 }}>
+              {trustBoundaryCopy || defaultTrustBoundaryCopy}
+            </p>
           </div>
 
           <div
@@ -225,7 +230,7 @@ export function BackupInventoryPage({ trustBoundaryCopy }: BackupInventoryPagePr
             border: "1px solid rgba(148, 163, 184, 0.16)",
           }}
         >
-          Excluded systems are shown separately from missing coverage
+          Excluded by policy systems stay visible in inventory and out of the missing-coverage queue
         </div>
       </article>
 

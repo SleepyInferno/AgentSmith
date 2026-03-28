@@ -5,7 +5,8 @@ import { BackupEvidenceTimeline } from "../../components/backup/BackupEvidenceTi
 import { BackupSourceHealthCard } from "../../components/backup/BackupSourceHealthCard";
 import { getBackupSystemDetail, type BackupProviderEvidence, type BackupSystemDetail } from "../../lib/backup";
 
-const trustBoundaryCopy = "Records evidence only - no backup jobs or restore actions are triggered here.";
+const trustBoundaryCopy = "Read-only evidence view - no backup jobs, restores, or exceptions can be executed here.";
+const duplicateMatchMessage = "Duplicate match needs review";
 const missingCoverageMessage = "Expected backup coverage is missing for this system";
 const overdueRestoreMessage = "Backup evidence is current but restore proof is overdue";
 const unknownTelemetryMessage = "Provider telemetry is unavailable, so confidence is unknown";
@@ -29,6 +30,8 @@ export function BackupDetailPage() {
 
   const detail = detailQuery.data;
   const providerEvidence = detail.providerEvidence;
+  const operatorAttestedProofPresent = detail.restoreProofs.some((proof) => proof.evidenceSource === "operator_attested");
+  const stateBadges = buildDetailStateBadges(detail, operatorAttestedProofPresent);
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
@@ -43,7 +46,6 @@ export function BackupDetailPage() {
             <p style={eyebrowStyle}>Backup detail</p>
             <h2 style={{ margin: "10px 0 8px", fontSize: "2rem" }}>{detail.systemName}</h2>
             <p style={{ margin: 0, color: "#334155", lineHeight: 1.7, maxWidth: 780 }}>{detail.summary}</p>
-            <p style={{ margin: "14px 0 0", color: "#0f172a", fontWeight: 700 }}>{trustBoundaryCopy}</p>
           </div>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             <Link to="/backup" style={ghostLinkStyle}>
@@ -62,8 +64,31 @@ export function BackupDetailPage() {
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 18 }}>
           <StatusChip label="confidenceState" value={detail.confidenceState} tone={toneForConfidence(detail.confidenceState)} />
           <StatusChip label="coverageState" value={detail.coverageState} tone={toneForCoverage(detail.coverageState)} />
+          <StatusChip
+            label="matchingConfidence"
+            value={detail.matchingConfidence}
+            tone={toneForMatchingConfidence(detail.matchingConfidence)}
+          />
           <StatusChip label="backupFreshnessState" value={detail.backupFreshnessState} tone={toneForFreshness(detail.backupFreshnessState)} />
           <StatusChip label="restoreFreshnessState" value={detail.restoreFreshnessState} tone={toneForFreshness(detail.restoreFreshnessState)} />
+          <StatusChip label="evidenceSource" value={detail.evidenceSource ?? "unknown"} tone={toneForEvidenceSource(detail.evidenceSource)} />
+        </div>
+
+        {stateBadges.length > 0 ? (
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 16 }}>
+            {stateBadges.map((badge) => (
+              <span key={badge} style={{ ...stateBadgeStyle, ...toneForStateBadge(badge) }}>
+                {badge}
+              </span>
+            ))}
+          </div>
+        ) : null}
+
+        <div style={trustNoteStyle}>
+          <strong style={{ color: "#0f172a" }}>{trustBoundaryCopy}</strong>
+          <span style={{ color: "#475569", lineHeight: 1.6 }}>
+            Matching confidence and evidence provenance stay visible before the operator decides what to review next.
+          </span>
         </div>
 
         <div style={{ ...calloutStyle, ...toneForCallout(detail) }}>{getStateMessage(detail)}</div>
@@ -165,6 +190,10 @@ export function BackupDetailPage() {
 }
 
 function getStateMessage(detail: BackupSystemDetail) {
+  if (detail.matchingConfidence === "duplicate") {
+    return duplicateMatchMessage;
+  }
+
   if (detail.coverageState === "excluded") {
     return excludedCoverageMessage;
   }
@@ -182,6 +211,44 @@ function getStateMessage(detail: BackupSystemDetail) {
   }
 
   return detail.summary;
+}
+
+function buildDetailStateBadges(detail: BackupSystemDetail, operatorAttestedProofPresent: boolean) {
+  const badges = new Set<string>();
+
+  if (detail.coverageState === "excluded") {
+    badges.add("Excluded by policy");
+  }
+
+  if (detail.matchingConfidence === "duplicate") {
+    badges.add("Duplicate match needs review");
+  }
+
+  if (detail.confidenceState === "unknown" || detail.sourceHealth.some((source) => source.state !== "current")) {
+    badges.add("Telemetry unknown");
+  }
+
+  if (operatorAttestedProofPresent || detail.evidenceSource === "operator_attested") {
+    badges.add("Operator-attested proof");
+  }
+
+  return [...badges];
+}
+
+function toneForStateBadge(badge: string) {
+  if (badge === "Excluded by policy") {
+    return { color: "#334155", background: "#e2e8f0" };
+  }
+
+  if (badge === "Duplicate match needs review") {
+    return { color: "#9a3412", background: "#ffedd5" };
+  }
+
+  if (badge === "Telemetry unknown") {
+    return { color: "#1d4ed8", background: "#dbeafe" };
+  }
+
+  return { color: "#0369a1", background: "#e0f2fe" };
 }
 
 function getEvidenceSources(detail: BackupSystemDetail, providerKey: string) {
@@ -232,6 +299,18 @@ function toneForConfidence(value: string) {
   }
 }
 
+function toneForMatchingConfidence(value: string) {
+  switch (value) {
+    case "duplicate":
+      return { color: "#9a3412", background: "#ffedd5" };
+    case "unknown":
+      return { color: "#1d4ed8", background: "#dbeafe" };
+    case "confirmed":
+    default:
+      return { color: "#166534", background: "#dcfce7" };
+  }
+}
+
 function toneForCoverage(value: string) {
   switch (value) {
     case "missing":
@@ -246,6 +325,18 @@ function toneForCoverage(value: string) {
     default:
       return { color: "#0f766e", background: "#ccfbf1" };
   }
+}
+
+function toneForEvidenceSource(value: string | null) {
+  if (value === "operator_attested") {
+    return { color: "#0369a1", background: "#e0f2fe" };
+  }
+
+  if (value === "provider_sync") {
+    return { color: "#0f766e", background: "#ccfbf1" };
+  }
+
+  return { color: "#334155", background: "#e2e8f0" };
 }
 
 function toneForFreshness(value: string) {
@@ -394,6 +485,24 @@ const calloutStyle = {
   border: "1px solid",
   fontWeight: 700,
   lineHeight: 1.6,
+};
+
+const trustNoteStyle = {
+  marginTop: 16,
+  padding: "16px 18px",
+  borderRadius: 18,
+  background: "#f8fafc",
+  border: "1px solid rgba(148, 163, 184, 0.16)",
+  display: "grid",
+  gap: 8,
+};
+
+const stateBadgeStyle = {
+  display: "inline-flex",
+  padding: "6px 10px",
+  borderRadius: 999,
+  fontSize: 12,
+  fontWeight: 700,
 };
 
 const primaryLinkStyle = {

@@ -7,6 +7,9 @@ type BackupOverviewPageProps = {
   trustBoundaryCopy: string;
 };
 
+const defaultTrustBoundaryCopy =
+  "Read-only evidence view - no backup jobs, restores, or exceptions can be executed here.";
+
 function toneForCard(tone: string) {
   switch (tone) {
     case "high_risk":
@@ -70,7 +73,9 @@ export function BackupOverviewPage({ trustBoundaryCopy }: BackupOverviewPageProp
             Start with systems missing coverage, stale restore proof, or unclear provider telemetry,
             then widen out into the protected-system inventory only when you need a full baseline scan.
           </p>
-          <p style={{ margin: "14px 0 0", color: "#0f172a", fontWeight: 700 }}>{trustBoundaryCopy}</p>
+          <p style={{ margin: "14px 0 0", color: "#0f172a", fontWeight: 700 }}>
+            {trustBoundaryCopy || defaultTrustBoundaryCopy}
+          </p>
         </article>
 
         <article

@@ -8,6 +8,7 @@ export function BackupConfidenceBreakdown({ detail }: BackupConfidenceBreakdownP
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <DefinitionItem label="Coverage evidence" value={formatState(detail.coverageState)} />
+      <DefinitionItem label="Matching confidence" value={formatState(detail.matchingConfidence)} />
       <DefinitionItem
         label="Freshness threshold"
         value={`${detail.policyWindow.backupFreshnessTarget} backup freshness${detail.policyWindow.graceWindow !== "Unknown" ? ` | ${detail.policyWindow.graceWindow} grace window` : ""}`}
@@ -20,6 +21,7 @@ export function BackupConfidenceBreakdown({ detail }: BackupConfidenceBreakdownP
         label="Restore-test recency"
         value={`${formatDateTime(detail.lastRestoreTestAt)} (${formatState(detail.restoreFreshnessState)})`}
       />
+      <DefinitionItem label="Primary evidence source" value={formatEvidenceSource(detail.evidenceSource)} />
       <DefinitionItem
         label={`Why ${detail.confidenceState} was assigned`}
         value={describeConfidence(detail)}
@@ -34,6 +36,10 @@ export function BackupConfidenceBreakdown({ detail }: BackupConfidenceBreakdownP
 }
 
 function describeConfidence(detail: BackupSystemDetail) {
+  if (detail.matchingConfidence === "duplicate") {
+    return "Duplicate backup-to-system matches are present, so the page keeps confidence unknown until the operator confirms which protected identity belongs to this system.";
+  }
+
   if (detail.coverageState === "excluded") {
     return "The current policy intentionally excludes this system, so the page records scope and evidence without expecting an active backup posture.";
   }
@@ -71,6 +77,14 @@ function formatDateTime(value: string | null) {
   }
 
   return new Date(value).toLocaleString();
+}
+
+function formatEvidenceSource(value: string | null) {
+  if (!value) {
+    return "Unknown";
+  }
+
+  return formatState(value);
 }
 
 function formatState(value: string) {

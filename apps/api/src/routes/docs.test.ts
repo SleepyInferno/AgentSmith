@@ -209,6 +209,20 @@ function makeRepository(dataMode: DocumentationOverview["dataMode"] = "seeded_ex
   const overview = makeOverview(dataMode);
   const detail = makeDetail(dataMode);
   let lastFilters: DocumentationSearchFilters | undefined;
+  let lastMetadataReview:
+    | {
+        documentId: string;
+        input: {
+          categoryLabels: string[];
+          siteLabels: string[];
+          ownerLabels: string[];
+          systemIds: string[];
+          reviewDueAt: string | null;
+          reviewSummary: string;
+          actorLabel: string;
+        };
+      }
+    | undefined;
 
   return {
     repository: {
@@ -222,9 +236,38 @@ function makeRepository(dataMode: DocumentationOverview["dataMode"] = "seeded_ex
       async getDocumentDetail(documentId: string) {
         return documentId === detail.documentId ? detail : null;
       },
+      async submitMetadataReview(
+        documentId: string,
+        input: {
+          categoryLabels: string[];
+          siteLabels: string[];
+          ownerLabels: string[];
+          systemIds: string[];
+          reviewDueAt: string | null;
+          reviewSummary: string;
+          actorLabel: string;
+        },
+      ) {
+        lastMetadataReview = {
+          documentId,
+          input,
+        };
+
+        return {
+          documentId,
+          changedFields: ["categoryLabels", "siteLabels", "ownerLabels", "systemIds", "reviewDueAt"],
+          historyEntryId: "revision-99",
+          auditAction: "docs.metadata.reviewed",
+          reviewDueAt: input.reviewDueAt,
+          lastReviewedAt: "2026-03-28T16:00:00.000Z",
+        };
+      },
     },
     getLastFilters() {
       return lastFilters;
+    },
+    getLastMetadataReview() {
+      return lastMetadataReview;
     },
   };
 }
@@ -356,4 +399,91 @@ test("GET /api/docs/:documentId returns 404 with Documentation record not found 
   assert.deepEqual(response.json(), {
     message: "Documentation record not found",
   });
+});
+
+test("POST /api/docs/:documentId/metadata-review validates the explicit write payload and returns docs.metadata.reviewed", async (t) => {
+  const docs = makeRepository("live");
+  const { app } = buildServer({
+    env: testEnv,
+    docsRoutes: {
+      docsRepository: docs.repository as typeof docs.repository & {
+        submitMetadataReview: NonNullable<typeof docs.repository.submitMetadataReview>;
+      },
+    },
+  });
+
+  t.after(async () => {
+    await app.close();
+  });
+
+  const response = await app.inject({
+    method: "POST",
+    url: "/api/docs/doc-contoso-isp-contacts/metadata-review",
+    payload: {
+      categoryLabels: ["Carrier Contacts"],
+      siteLabels: ["Branch Office"],
+      ownerLabels: ["Network Operations"],
+      systemIds: ["sys-branch-circuit", "sys-branch-firewall"],
+      reviewDueAt: "2026-09-01T00:00:00.000Z",
+      reviewSummary: "Validated carrier contacts and branch escalation coverage.",
+      actorLabel: "Solo IT Operator",
+    },
+  });
+
+  assert.equal(response.statusCode, 200);
+  assert.deepEqual(docs.getLastMetadataReview(), {
+    documentId: "doc-contoso-isp-contacts",
+    input: {
+      categoryLabels: ["Carrier Contacts"],
+      siteLabels: ["Branch Office"],
+      ownerLabels: ["Network Operations"],
+      systemIds: ["sys-branch-circuit", "sys-branch-firewall"],
+      reviewDueAt: "2026-09-01T00:00:00.000Z",
+      reviewSummary: "Validated carrier contacts and branch escalation coverage.",
+      actorLabel: "Solo IT Operator",
+    },
+  });
+  assert.deepEqual(response.json(), {
+    documentId: "doc-contoso-isp-contacts",
+    changedFields: ["categoryLabels", "siteLabels", "ownerLabels", "systemIds", "reviewDueAt"],
+    historyEntryId: "revision-99",
+    auditAction: "docs.metadata.reviewed",
+    reviewDueAt: "2026-09-01T00:00:00.000Z",
+    lastReviewedAt: "2026-03-28T16:00:00.000Z",
+  });
+});
+
+test("POST /api/docs/:documentId/metadata-review returns 400 when reviewSummary or actorLabel is missing and does not write history", async (t) => {
+  const docs = makeRepository("live");
+  const { app } = buildServer({
+    env: testEnv,
+    docsRoutes: {
+      docsRepository: docs.repository as typeof docs.repository & {
+        submitMetadataReview: NonNullable<typeof docs.repository.submitMetadataReview>;
+      },
+    },
+  });
+
+  t.after(async () => {
+    await app.close();
+  });
+
+  const response = await app.inject({
+    method: "POST",
+    url: "/api/docs/doc-contoso-isp-contacts/metadata-review",
+    payload: {
+      categoryLabels: ["Carrier Contacts"],
+      siteLabels: ["Branch Office"],
+      ownerLabels: ["Network Operations"],
+      systemIds: ["sys-branch-circuit", "sys-branch-firewall"],
+      reviewDueAt: "2026-09-01T00:00:00.000Z",
+      actorLabel: "",
+    },
+  });
+
+  assert.equal(response.statusCode, 400);
+  assert.deepEqual(response.json(), {
+    message: "reviewSummary and actorLabel are required",
+  });
+  assert.equal(docs.getLastMetadataReview(), undefined);
 });

@@ -1,3 +1,5 @@
+import { apiGet, apiRequest } from "./api";
+
 export type LifecycleTemplateKey = "employee-onboarding" | "employee-offboarding";
 export type LifecycleRunStatus = "active" | "completed" | string;
 export type LifecycleStepStatus = "pending" | "manual" | "automated" | "skipped" | "blocked" | string;
@@ -119,38 +121,20 @@ type RunListResponse = {
   items: LifecycleRunListItem[];
 };
 
-async function apiRequest<T>(input: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(input, {
-    credentials: "include",
-    headers: {
-      Accept: "application/json",
-      ...(init?.body ? { "Content-Type": "application/json" } : {}),
-      ...init?.headers,
-    },
-    ...init,
-  });
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
-
-  return (await response.json()) as T;
-}
-
 export function getLifecycleTemplates() {
-  return apiRequest<TemplateResponse>("/api/lifecycle/templates").then((response) => response.items);
+  return apiGet<TemplateResponse>("/api/lifecycle/templates").then((response) => response.items);
 }
 
 export function getLifecycleRuns() {
-  return apiRequest<RunListResponse>("/api/lifecycle/runs").then((response) => response.items);
+  return apiGet<RunListResponse>("/api/lifecycle/runs").then((response) => response.items);
 }
 
 export function getLifecycleRun(runId: string) {
-  return apiRequest<LifecycleRunDetail>(`/api/lifecycle/runs/${runId}`);
+  return apiGet<LifecycleRunDetail>(`/api/lifecycle/runs/${runId}`);
 }
 
 export function getLifecycleRunSummary(runId: string) {
-  return apiRequest<LifecycleRunSummary>(`/api/lifecycle/runs/${runId}/summary`);
+  return apiGet<LifecycleRunSummary>(`/api/lifecycle/runs/${runId}/summary`);
 }
 
 export function startLifecycleRun(input: StartLifecycleRunInput) {

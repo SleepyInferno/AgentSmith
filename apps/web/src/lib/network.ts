@@ -1,3 +1,5 @@
+import { apiGet } from "./api";
+
 export type NetworkDataMode = "live" | "seeded_example" | string;
 export type NetworkFreshnessState = "healthy" | "warning" | "stale" | "error" | string;
 export type NetworkResourceKind =
@@ -128,23 +130,8 @@ export type NetworkInventoryResponse = {
   items: NetworkInventoryRow[];
 };
 
-async function apiRequest<T>(input: string): Promise<T> {
-  const response = await fetch(input, {
-    credentials: "include",
-    headers: {
-      Accept: "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
-
-  return (await response.json()) as T;
-}
-
 export function getNetworkFindings() {
-  return apiRequest<NetworkFindingsResponse>("/api/network/findings");
+  return apiGet<NetworkFindingsResponse>("/api/network/findings");
 }
 
 export function getNetworkInventory(params: NetworkInventoryParams = {}) {
@@ -161,13 +148,13 @@ export function getNetworkInventory(params: NetworkInventoryParams = {}) {
   const query = searchParams.toString();
   const url = query ? `/api/network/resources?${query}` : "/api/network/resources";
 
-  return apiRequest<NetworkInventoryResponse>(url);
+  return apiGet<NetworkInventoryResponse>(url);
 }
 
 export function getNetworkMap() {
-  return apiRequest<NetworkMap>("/api/network/map");
+  return apiGet<NetworkMap>("/api/network/map");
 }
 
 export function getNetworkResourceDetail(resourceId: string) {
-  return apiRequest<NetworkResourceDetail>(`/api/network/resources/${resourceId}`);
+  return apiGet<NetworkResourceDetail>(`/api/network/resources/${resourceId}`);
 }

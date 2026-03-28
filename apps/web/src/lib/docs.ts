@@ -1,3 +1,5 @@
+import { apiGet, apiRequest } from "./api";
+
 export type DocumentationDataMode = "live" | "seeded_example" | string;
 export type DocumentationWriteBoundary = "metadata_review_only" | string;
 
@@ -218,24 +220,6 @@ type DocumentationSearchApiResponse = Omit<DocumentationSearchResponse, "results
 
 const metadataDimensions = ["site", "owner", "category"] as const;
 
-async function apiRequest<T>(input: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(input, {
-    ...init,
-    credentials: "include",
-    headers: {
-      Accept: "application/json",
-      ...(init?.body ? { "Content-Type": "application/json" } : {}),
-      ...(init?.headers ?? {}),
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
-
-  return (await response.json()) as T;
-}
-
 function buildSearchUrl(params: DocumentationSearchParams = {}) {
   const searchParams = new URLSearchParams();
 
@@ -269,7 +253,7 @@ export const docsQueryKeys = {
 };
 
 export async function getDocumentationOverview() {
-  const response = await apiRequest<DocumentationOverviewApiResponse>("/api/docs/overview");
+  const response = await apiGet<DocumentationOverviewApiResponse>("/api/docs/overview");
 
   return {
     ...response,
@@ -294,7 +278,7 @@ export async function getDocumentationOverview() {
 }
 
 export async function searchDocumentation(params: DocumentationSearchParams = {}) {
-  const response = await apiRequest<DocumentationSearchApiResponse>(buildSearchUrl(params));
+  const response = await apiGet<DocumentationSearchApiResponse>(buildSearchUrl(params));
 
   return {
     ...response,
@@ -308,7 +292,7 @@ export async function searchDocumentation(params: DocumentationSearchParams = {}
 }
 
 export function getDocumentationDetail(documentId: string) {
-  return apiRequest<DocumentationDetailApiResponse>(`/api/docs/${documentId}`).then((response) => ({
+  return apiGet<DocumentationDetailApiResponse>(`/api/docs/${documentId}`).then((response) => ({
     ...response,
     owner: getMetadataValue(response.metadataTags, "owner"),
     site: getMetadataValue(response.metadataTags, "site"),

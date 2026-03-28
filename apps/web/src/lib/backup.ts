@@ -1,3 +1,5 @@
+import { apiGet } from "./api";
+
 export type BackupDataMode = "live" | "seeded_example" | string;
 export type BackupCoverageState = "protected" | "missing" | "partial" | "excluded" | "unknown" | string;
 export type BackupConfidenceState = "healthy" | "watch" | "high_risk" | "unknown" | string;
@@ -172,27 +174,12 @@ export type BackupSystemDetail = BackupSystemDetailResponse & {
   restoreFreshnessState: BackupRestoreState;
 };
 
-async function apiRequest<T>(input: string): Promise<T> {
-  const response = await fetch(input, {
-    credentials: "include",
-    headers: {
-      Accept: "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
-
-  return (await response.json()) as T;
-}
-
 export function getBackupOverview() {
-  return apiRequest<BackupOverviewResponse>("/api/backup/overview");
+  return apiGet<BackupOverviewResponse>("/api/backup/overview");
 }
 
 export function getBackupFindings() {
-  return apiRequest<BackupFindingsResponse>("/api/backup/findings");
+  return apiGet<BackupFindingsResponse>("/api/backup/findings");
 }
 
 export function getBackupInventory(params: BackupInventoryParams = {}) {
@@ -209,11 +196,11 @@ export function getBackupInventory(params: BackupInventoryParams = {}) {
   const query = searchParams.toString();
   const url = query ? `/api/backup/systems?${query}` : "/api/backup/systems";
 
-  return apiRequest<BackupInventoryResponse>(url);
+  return apiGet<BackupInventoryResponse>(url);
 }
 
 export async function getBackupSystemDetail(systemId: string) {
-  const detail = await apiRequest<BackupSystemDetailResponse>(`/api/backup/systems/${systemId}`);
+  const detail = await apiGet<BackupSystemDetailResponse>(`/api/backup/systems/${systemId}`);
   const policyWindow = parsePolicyWindow(detail.scopeSummary);
 
   return {

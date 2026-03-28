@@ -14,6 +14,8 @@ import { NetworkInventoryPage } from "./routes/network/NetworkInventoryPage";
 import { DocumentationOverviewPage } from "./routes/docs/DocumentationOverviewPage";
 import { DocumentationSearchPage } from "./routes/docs/DocumentationSearchPage";
 import { DocumentationDetailPage } from "./routes/docs/DocumentationDetailPage";
+import { LoginPage } from "./routes/LoginPage";
+import { ProtectedLayout } from "./routes/ProtectedLayout";
 
 type NavItem = {
   label: string;
@@ -33,9 +35,8 @@ const primaryItems: NavItem[] = [
 
 const utilityItems: NavItem[] = [
   { to: "/docs", label: "Documentation", icon: "docs" },
-  { label: "Connectors", icon: "connectors" },
-  { label: "Audit Log", icon: "audit" },
-  { label: "Audit logs", icon: "settings" },
+  { to: "/connectors", label: "Connectors", icon: "connectors" },
+  { to: "/audit", label: "Audit Log", icon: "audit" },
 ];
 
 function SidebarIcon(props: { icon: NavItem["icon"] }) {
@@ -284,26 +285,62 @@ const backupTrustBoundaryCopy = "Read-only evidence view - no backup jobs, resto
 const documentationTrustBoundaryCopy =
   "Document content stays read-only in this phase. Metadata changes go through explicit review and audit logging.";
 
+function PendingSurfacePage(props: { title: string; summary: string }) {
+  return (
+    <section className="dashboard-status-empty">
+      <h1 style={{ marginTop: 0, marginBottom: "12px" }}>{props.title}</h1>
+      <p style={{ margin: 0, lineHeight: 1.6 }}>{props.summary}</p>
+    </section>
+  );
+}
+
 export const router = createBrowserRouter([
   {
-    path: "/",
-    element: <AppShell />,
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    element: <ProtectedLayout />,
     children: [
-      { index: true, element: <AssetDashboardPage /> },
-      { path: "devices", element: <DeviceInventoryPage /> },
-      { path: "devices/:deviceId", element: <DeviceDetailPage /> },
-      { path: "network", element: <NetworkOverviewPage /> },
-      { path: "network/map", element: <NetworkMapPage /> },
-      { path: "network/inventory", element: <NetworkInventoryPage /> },
-      { path: "network/resources/:resourceId", element: <NetworkDetailPage /> },
-      { path: "backup", element: <BackupOverviewPage trustBoundaryCopy={backupTrustBoundaryCopy} /> },
-      { path: "backup/inventory", element: <BackupInventoryPage trustBoundaryCopy={backupTrustBoundaryCopy} /> },
-      { path: "backup/systems/:systemId", element: <BackupDetailPage /> },
-      { path: "docs", element: <DocumentationOverviewPage trustBoundaryCopy={documentationTrustBoundaryCopy} /> },
-      { path: "docs/search", element: <DocumentationSearchPage trustBoundaryCopy={documentationTrustBoundaryCopy} /> },
-      { path: "docs/:documentId", element: <DocumentationDetailPage trustBoundaryCopy={documentationTrustBoundaryCopy} /> },
-      { path: "lifecycle", element: <LifecycleQueuePage /> },
-      { path: "lifecycle/runs/:runId", element: <LifecycleRunDetailPage /> },
+      {
+        path: "/",
+        element: <AppShell />,
+        children: [
+          { index: true, element: <AssetDashboardPage /> },
+          { path: "devices", element: <DeviceInventoryPage /> },
+          { path: "devices/:deviceId", element: <DeviceDetailPage /> },
+          { path: "network", element: <NetworkOverviewPage /> },
+          { path: "network/map", element: <NetworkMapPage /> },
+          { path: "network/inventory", element: <NetworkInventoryPage /> },
+          { path: "network/resources/:resourceId", element: <NetworkDetailPage /> },
+          { path: "backup", element: <BackupOverviewPage trustBoundaryCopy={backupTrustBoundaryCopy} /> },
+          { path: "backup/inventory", element: <BackupInventoryPage trustBoundaryCopy={backupTrustBoundaryCopy} /> },
+          { path: "backup/systems/:systemId", element: <BackupDetailPage /> },
+          { path: "docs", element: <DocumentationOverviewPage trustBoundaryCopy={documentationTrustBoundaryCopy} /> },
+          { path: "docs/search", element: <DocumentationSearchPage trustBoundaryCopy={documentationTrustBoundaryCopy} /> },
+          { path: "docs/:documentId", element: <DocumentationDetailPage trustBoundaryCopy={documentationTrustBoundaryCopy} /> },
+          { path: "lifecycle", element: <LifecycleQueuePage /> },
+          { path: "lifecycle/runs/:runId", element: <LifecycleRunDetailPage /> },
+          {
+            path: "connectors",
+            element: (
+              <PendingSurfacePage
+                title="Connector status arrives next"
+                summary="The secure shell is live now. Connector health visibility lands in the next execution wave on top of this authenticated session boundary."
+              />
+            ),
+          },
+          {
+            path: "audit",
+            element: (
+              <PendingSurfacePage
+                title="Audit trail surface arrives next"
+                summary="Authentication events are already being written by the API. The shared audit timeline UI is the next wave so operators can review those events in the shell."
+              />
+            ),
+          },
+        ],
+      },
     ],
   },
 ]);

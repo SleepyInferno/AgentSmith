@@ -1,3 +1,5 @@
+import { apiGet } from "./api";
+
 export type RiskLevel = "low" | "watch" | "high" | "critical" | string;
 export type SourceFreshnessState = "healthy" | "warning" | "stale" | "error" | "incomplete" | string;
 
@@ -73,23 +75,8 @@ type InventoryResponse = {
   items: AssetInventoryRow[];
 };
 
-async function apiRequest<T>(input: string): Promise<T> {
-  const response = await fetch(input, {
-    credentials: "include",
-    headers: {
-      Accept: "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
-
-  return (await response.json()) as T;
-}
-
 export function getNeedsAttentionQueue() {
-  return apiRequest<QueueResponse>("/api/assets/queue").then((response) => response.items);
+  return apiGet<QueueResponse>("/api/assets/queue").then((response) => response.items);
 }
 
 export function getDeviceInventory(params: DeviceInventoryParams = {}) {
@@ -111,9 +98,9 @@ export function getDeviceInventory(params: DeviceInventoryParams = {}) {
   const query = searchParams.toString();
   const url = query ? `/api/assets/devices?${query}` : "/api/assets/devices";
 
-  return apiRequest<InventoryResponse>(url).then((response) => response.items);
+  return apiGet<InventoryResponse>(url).then((response) => response.items);
 }
 
 export function getDeviceDetail(deviceId: string) {
-  return apiRequest<AssetDetail>(`/api/assets/devices/${deviceId}`);
+  return apiGet<AssetDetail>(`/api/assets/devices/${deviceId}`);
 }

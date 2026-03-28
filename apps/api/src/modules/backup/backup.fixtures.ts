@@ -4,6 +4,7 @@ import type {
   BackupCoverageState,
   BackupDataMode,
   BackupEvidenceSource,
+  BackupMatchingConfidence,
   BackupRestoreOutcome,
   BackupRestoreState,
 } from "./backup.types.js";
@@ -46,6 +47,7 @@ export type BackupFixtureEvidence = {
   systemId: string;
   providerKey: BackupV1ProviderKey;
   workloadKind: BackupV1WorkloadKey;
+  matchingConfidence: BackupMatchingConfidence;
   sourceSystem: string;
   sourceId: string;
   coverageState: BackupCoverageState;
@@ -140,6 +142,16 @@ export const backupFixtureSystems: BackupFixtureSystem[] = [
     criticality: "tier_3",
     dataMode: seededDataMode,
   },
+  {
+    id: "sys-exec-laptop",
+    sourceSystem: seededSource,
+    sourceId: "sys-exec-laptop",
+    name: "Executive Laptop",
+    category: "endpoint",
+    ownerTeam: "Executive Support",
+    criticality: "tier_1",
+    dataMode: seededDataMode,
+  },
 ];
 
 export const backupFixturePolicies: BackupFixturePolicy[] = [
@@ -226,7 +238,21 @@ export const backupFixturePolicies: BackupFixturePolicy[] = [
     exclusionReason: "Disposable lab workload",
     notes: "The lab jumpbox is rebuilt from code and intentionally excluded from backup obligations.",
     confidenceState: "watch",
-    summary: "Lab Jumpbox is intentionally excluded from the v1 backup confidence queue.",
+    summary: "Excluded by policy: Disposable lab workload.",
+    dataMode: seededDataMode,
+  },
+  {
+    id: "policy-exec-laptop",
+    systemId: "sys-exec-laptop",
+    coverageMode: "required",
+    backupFreshnessHours: 24,
+    restoreTestMaxAgeDays: 14,
+    gracePeriodHours: 4,
+    providerScope: [{ providerKey: veeam.providerKey, workloadKinds: ["endpoint_image"] }],
+    exclusionReason: null,
+    notes: "Executive endpoint evidence must reconcile to a single protected backup identity before confidence can be trusted.",
+    confidenceState: "unknown",
+    summary: "Duplicate match needs review",
     dataMode: seededDataMode,
   },
 ];
@@ -237,6 +263,7 @@ export const backupFixtureEvidence: BackupFixtureEvidence[] = [
     systemId: "sys-finance-sql",
     providerKey: azure_backup.providerKey,
     workloadKind: "virtual_machine",
+    matchingConfidence: "confirmed",
     sourceSystem: seededSource,
     sourceId: "azure-backup-finance-sql",
     coverageState: "protected",
@@ -257,6 +284,7 @@ export const backupFixtureEvidence: BackupFixtureEvidence[] = [
     systemId: "sys-sharepoint-tenant",
     providerKey: m365_backup.providerKey,
     workloadKind: "m365_exchange",
+    matchingConfidence: "confirmed",
     sourceSystem: seededSource,
     sourceId: "m365-backup-exchange",
     coverageState: "protected",
@@ -277,6 +305,7 @@ export const backupFixtureEvidence: BackupFixtureEvidence[] = [
     systemId: "sys-sharepoint-tenant",
     providerKey: m365_backup.providerKey,
     workloadKind: "m365_sharepoint",
+    matchingConfidence: "confirmed",
     sourceSystem: seededSource,
     sourceId: "m365-backup-sharepoint",
     coverageState: "partial",
@@ -297,6 +326,7 @@ export const backupFixtureEvidence: BackupFixtureEvidence[] = [
     systemId: "sys-helpdesk-files",
     providerKey: veeam.providerKey,
     workloadKind: "server",
+    matchingConfidence: "confirmed",
     sourceSystem: seededSource,
     sourceId: "veeam-helpdesk-files",
     coverageState: "protected",
@@ -317,6 +347,7 @@ export const backupFixtureEvidence: BackupFixtureEvidence[] = [
     systemId: "sys-branch-nas",
     providerKey: veeam.providerKey,
     workloadKind: "server",
+    matchingConfidence: "confirmed",
     sourceSystem: seededSource,
     sourceId: "veeam-branch-nas",
     coverageState: "unknown",
@@ -329,7 +360,31 @@ export const backupFixtureEvidence: BackupFixtureEvidence[] = [
     confidenceState: "unknown",
     summary: "Backup telemetry is unavailable from the configured provider",
     suggestedNextStep: "Check the Veeam connector and confirm whether the NAS job still reports.",
-    metadata: { lastConnectorStatus: "timeout", ticketRef: "OPS-421" },
+    metadata: { lastConnectorStatus: "provider_outage", ticketRef: "OPS-421", displayState: "Telemetry unknown" },
+    dataMode: seededDataMode,
+  },
+  {
+    id: "evidence-exec-laptop-duplicate",
+    systemId: "sys-exec-laptop",
+    providerKey: veeam.providerKey,
+    workloadKind: "endpoint_image",
+    matchingConfidence: "duplicate",
+    sourceSystem: seededSource,
+    sourceId: "veeam-exec-laptop-duplicate",
+    coverageState: "protected",
+    lastSuccessfulBackupAt: "2026-03-27T01:45:00.000Z",
+    lastFailedBackupAt: null,
+    backupFreshnessState: "current",
+    connectorFreshnessState: "current",
+    lastObservedAt: "2026-03-27T02:00:00.000Z",
+    restoreFreshnessState: "current",
+    confidenceState: "unknown",
+    summary: "Duplicate match needs review",
+    suggestedNextStep: "Review duplicate backup-to-system match before trusting the coverage claim.",
+    metadata: {
+      duplicateCandidates: ["Executive Laptop", "Executive Laptop - Loaner"],
+      matchStrategy: "hostname",
+    },
     dataMode: seededDataMode,
   },
 ];
@@ -396,8 +451,21 @@ export const backupFixtureRestoreTests: BackupFixtureRestoreTest[] = [
     testedAt: "2026-03-18T13:15:00.000Z",
     recoveryPointAt: "2026-03-17T23:00:00.000Z",
     ticketRef: "BACK-0976",
-    notes: "Operator-attested branch restore succeeded for shared folders while provider telemetry was unavailable.",
+    notes: "Operator-attested proof recorded while provider telemetry was unavailable.",
     metadata: { attestedBy: "solo-admin", restoredShare: "Operations" },
+    dataMode: seededDataMode,
+  },
+  {
+    id: "restore-exec-laptop",
+    systemId: "sys-exec-laptop",
+    backupEvidenceId: "evidence-exec-laptop-duplicate",
+    evidenceSource: "provider_sync",
+    outcome: "success",
+    testedAt: "2026-03-25T12:00:00.000Z",
+    recoveryPointAt: "2026-03-25T01:45:00.000Z",
+    ticketRef: "BACK-1012",
+    notes: "Restore proof exists, but the system match is still duplicated and needs review.",
+    metadata: { restoredDevice: "Executive Laptop" },
     dataMode: seededDataMode,
   },
 ];

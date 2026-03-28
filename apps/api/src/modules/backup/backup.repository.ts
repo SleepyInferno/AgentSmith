@@ -15,10 +15,12 @@ import type {
   BackupCoverageState,
   BackupInventoryFilters,
   BackupInventoryRow,
+  BackupMatchingConfidence,
   BackupOverview,
   BackupProviderEvidence,
   BackupRestoreProof,
   BackupRestoreState,
+  BackupSourceHealthState,
   BackupSourceHealth,
   BackupSystemDetail,
 } from "./backup.types.js";
@@ -306,11 +308,14 @@ function normalizeEvidence(
   record: Awaited<ReturnType<BackupPrismaClient["backupEvidence"]["findMany"]>>[number],
   dataMode: BackupDataset["dataMode"],
 ): BackupFixtureEvidence {
+  const matchingConfidence = getMatchingConfidenceFromMetadata(record.metadata);
+
   return {
     id: record.id,
     systemId: record.systemId,
     providerKey: record.providerKey as BackupFixtureEvidence["providerKey"],
     workloadKind: record.workloadKind as BackupFixtureEvidence["workloadKind"],
+    matchingConfidence,
     sourceSystem: record.sourceSystem,
     sourceId: record.sourceId,
     coverageState: record.coverageState,
@@ -432,12 +437,15 @@ function buildAssessmentRow(
     lastSuccessfulBackupAt,
   );
   const restoreFreshnessState = getRestoreFreshnessState(policy, evidence, restoreTests);
+  const matchingConfidence = getMatchingConfidence(evidence);
+  const evidenceSource = latestRestoreTest?.evidenceSource ?? (evidence.length > 0 ? "provider_sync" : null);
   const confidenceState = getConfidenceState({
     policy,
     coverageState,
     backupFreshnessState,
     restoreFreshnessState,
     latestRestoreOutcome,
+    matchingConfidence,
     telemetryUnavailable,
     withinBackupGraceWindow,
   });
@@ -454,12 +462,14 @@ function buildAssessmentRow(
     coverageMode: policy.coverageMode,
     coverageState,
     confidenceState,
+    matchingConfidence,
     providerKey: pickProviderKey(policy, evidence),
     workloadKind: pickWorkloadKind(policy, evidence),
     backupFreshnessState,
     restoreFreshnessState,
     lastSuccessfulBackupAt,
     lastRestoreTestedAt,
+    evidenceSource,
     restoreEvidenceSource,
     summary: "",
     suggestedNextStep: null,
@@ -597,17 +607,34 @@ function getRestoreFreshnessState(
   return "current";
 }
 
+function getMatchingConfidence(evidence: BackupFixtureEvidence[]): BackupMatchingConfidence {
+  if (evidence.length === 0) {
+    return "unknown";
+  }
+
+  if (evidence.some((item) => item.matchingConfidence === "duplicate")) {
+    return "duplicate";
+  }
+
+  return "confirmed";
+}
+
 function getConfidenceState(input: {
   policy: BackupFixturePolicy;
   coverageState: BackupAssessmentRow["coverageState"];
   backupFreshnessState: BackupAssessmentRow["backupFreshnessState"];
   restoreFreshnessState: BackupAssessmentRow["restoreFreshnessState"];
   latestRestoreOutcome: BackupAssessmentRow["latestRestoreOutcome"];
+  matchingConfidence: BackupMatchingConfidence;
   telemetryUnavailable: boolean;
   withinBackupGraceWindow: boolean;
 }): BackupAssessmentRow["confidenceState"] {
   if (input.policy.coverageMode === "excluded") {
     return input.policy.confidenceState;
+  }
+
+  if (input.matchingConfidence === "duplicate") {
+    return "unknown";
   }
 
   if (input.telemetryUnavailable) {
@@ -643,7 +670,11 @@ function buildRowSummary(
   evidence: BackupFixtureEvidence[],
 ): string {
   if (row.coverageMode === "excluded" || row.coverageState === "excluded") {
-    return "System is intentionally excluded from backup policy";
+    return policy.exclusionReason ? `Excluded by policy: ${policy.exclusionReason}` : "Excluded by policy";
+  }
+
+  if (row.matchingConfidence === "duplicate") {
+    return "Duplicate match needs review";
   }
 
   if (row.telemetryUnavailable || row.confidenceState === "unknown") {
@@ -704,26 +735,51 @@ function buildSourceHealth(dataset: BackupDataset): BackupSourceHealth[] {
             ? item.connectorFreshnessState
             : worst;
         }, null) ?? "missing";
+      const state = getSourceHealthState(providerEvidence, connectorFreshnessState);
 
       return {
         providerKey,
         providerLabel: providerLabelByKey.get(providerKey) ?? providerKey,
+        state,
         connectorFreshnessState,
         lastObservedAt: getLatestDate(providerEvidence.map((item) => item.lastObservedAt)),
         systemsObserved: new Set(providerEvidence.map((item) => item.systemId)).size,
         workloadsObserved: new Set(providerEvidence.map((item) => item.workloadKind)).size,
-        summary: buildSourceHealthSummary(connectorFreshnessState),
+        summary: buildSourceHealthSummary(state),
         dataMode: dataset.dataMode,
       };
     });
 }
 
-function buildSourceHealthSummary(state: BackupRestoreState): string {
+function getSourceHealthState(
+  providerEvidence: BackupFixtureEvidence[],
+  connectorFreshnessState: BackupRestoreState,
+): BackupSourceHealthState {
+  if (
+    providerEvidence.some((item) => {
+      const status = item.metadata?.["lastConnectorStatus"];
+      return typeof status === "string" && /error|outage|timeout/i.test(status);
+    })
+  ) {
+    return "error";
+  }
+
+  return connectorFreshnessState;
+}
+
+function getMatchingConfidenceFromMetadata(metadata: Record<string, unknown> | null): BackupMatchingConfidence {
+  const value = metadata?.["matchingConfidence"];
+  return value === "duplicate" || value === "unknown" || value === "confirmed" ? value : "confirmed";
+}
+
+function buildSourceHealthSummary(state: BackupSourceHealthState): string {
   switch (state) {
     case "current":
       return "Backup telemetry is current for this provider";
     case "stale":
       return "Backup telemetry is stale or incomplete";
+    case "error":
+      return "Backup provider outage or connector failure requires investigation";
     case "missing":
       return "No backup telemetry has been observed for this provider yet";
     case "unknown":
@@ -828,12 +884,14 @@ function toInventoryRow(row: BackupAssessmentRow): BackupInventoryRow {
     coverageMode: row.coverageMode,
     coverageState: row.coverageState,
     confidenceState: row.confidenceState,
+    matchingConfidence: row.matchingConfidence,
     providerKey: row.providerKey,
     workloadKind: row.workloadKind,
     backupFreshnessState: row.backupFreshnessState,
     restoreFreshnessState: row.restoreFreshnessState,
     lastSuccessfulBackupAt: row.lastSuccessfulBackupAt,
     lastRestoreTestedAt: row.lastRestoreTestedAt,
+    evidenceSource: row.evidenceSource,
     restoreEvidenceSource: row.restoreEvidenceSource,
     summary: row.summary,
     suggestedNextStep: buildBackupSuggestedNextStep(row),

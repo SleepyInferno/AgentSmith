@@ -160,11 +160,14 @@ function parseCoverageState(value?: string) {
 }
 
 function mapOverviewResponse(overview: BackupOverview) {
+  const sourceHealthByProviderKey = new Map(overview.sourceHealth.map((item) => [item.providerKey, item]));
+
   return {
     dataMode: overview.dataMode,
     generatedAt: overview.generatedAt,
     summary: overview.summary,
     cards: overview.cards,
+    findings: overview.findings.map((item) => mapFindingItemResponse(item, sourceHealthByProviderKey.get(item.providerKey ?? ""))),
     sourceHealth: overview.sourceHealth.map(mapSourceHealthResponse),
     isReadOnly: true,
   };
@@ -181,8 +184,10 @@ function mapFindingItemResponse(item: BackupFindingItem, sourceHealth?: BackupSo
     providerKey: item.providerKey,
     coverageState: item.coverageState,
     confidenceState: item.confidenceState,
+    matchingConfidence: item.matchingConfidence,
     lastSuccessfulBackupAt: item.lastSuccessfulBackupAt,
     lastRestoreTestAt: item.lastRestoreTestedAt,
+    evidenceSource: item.evidenceSource,
     summary: item.summary,
     suggestedNextStep: item.suggestedNextStep,
     sourceHealth: sourceHealth ? mapSourceHealthResponse(sourceHealth) : null,
@@ -202,8 +207,10 @@ function mapInventoryRowResponse(item: BackupInventoryRow, sourceHealth?: Backup
     providerKey: item.providerKey,
     coverageState: item.coverageState,
     confidenceState: item.confidenceState,
+    matchingConfidence: item.matchingConfidence,
     lastSuccessfulBackupAt: item.lastSuccessfulBackupAt,
     lastRestoreTestAt: item.lastRestoreTestedAt,
+    evidenceSource: item.evidenceSource,
     summary: item.summary,
     suggestedNextStep: item.suggestedNextStep,
     sourceHealth: sourceHealth ? mapSourceHealthResponse(sourceHealth) : null,
@@ -224,8 +231,10 @@ function mapBackupDetailResponse(detail: BackupSystemDetail) {
     providerKey: detail.system.providerKey,
     coverageState: detail.system.coverageState,
     confidenceState: detail.system.confidenceState,
+    matchingConfidence: detail.system.matchingConfidence,
     lastSuccessfulBackupAt: detail.system.lastSuccessfulBackupAt,
     lastRestoreTestAt: detail.system.lastRestoreTestedAt,
+    evidenceSource: detail.system.evidenceSource,
     summary: detail.system.summary,
     suggestedNextStep: detail.suggestedNextStep,
     sourceHealth: detail.sourceHealth.map(mapSourceHealthResponse),
@@ -240,7 +249,7 @@ function mapSourceHealthResponse(sourceHealth: BackupSourceHealth) {
   return {
     providerKey: sourceHealth.providerKey,
     providerLabel: sourceHealth.providerLabel,
-    state: sourceHealth.connectorFreshnessState,
+    state: sourceHealth.state,
     connectorFreshnessState: sourceHealth.connectorFreshnessState,
     lastObservedAt: sourceHealth.lastObservedAt,
     systemsObserved: sourceHealth.systemsObserved,

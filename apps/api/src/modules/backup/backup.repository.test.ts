@@ -320,7 +320,11 @@ test("getOverview exposes missing coverage, stale restore, and unknown telemetry
   assert.equal(overview.findings.some((finding) => finding.summary === "Coverage missing for an expected protected system"), true);
   assert.equal(overview.findings.some((finding) => finding.suggestedNextStep === "Schedule a restore test"), true);
   assert.equal(
-    overview.sourceHealth.some((source) => source.summary === "Backup telemetry is unavailable from the configured provider"),
+    overview.sourceHealth.some((source) => source.state === "error"),
+    true,
+  );
+  assert.equal(
+    overview.sourceHealth.some((source) => source.summary === "Backup provider outage or connector failure requires investigation"),
     true,
   );
 });
@@ -373,4 +377,75 @@ test("repository falls back to seeded_example mode when backup tables are empty"
   assert.equal(inventory[0]?.dataMode, "seeded_example");
   assert.equal(detail?.dataMode, "seeded_example");
   assert.equal(detail?.system.summary, "Coverage missing for an expected protected system");
+});
+
+test("seeded fixtures expose Duplicate match needs review with duplicate matchingConfidence", async () => {
+  const repository = new BackupRepository(
+    createPrismaMock({
+      policies: [],
+      evidence: [],
+      restoreTests: [],
+    }),
+  );
+
+  const findings = await repository.listFindings(10);
+  const duplicateMatch = findings.find((item) => item.systemId === "sys-exec-laptop");
+
+  assert.ok(duplicateMatch);
+  assert.equal(duplicateMatch.matchingConfidence, "duplicate");
+  assert.equal(duplicateMatch.confidenceState, "unknown");
+  assert.equal(duplicateMatch.summary, "Duplicate match needs review");
+});
+
+test("excluded systems remain visible in inventory but do not appear as missing coverage in the review queue", async () => {
+  const repository = new BackupRepository(
+    createPrismaMock({
+      policies: [],
+      evidence: [],
+      restoreTests: [],
+    }),
+  );
+
+  const inventory = await repository.listInventory();
+  const findings = await repository.listFindings(10);
+  const excludedSystem = inventory.find((row) => row.systemId === "sys-lab-jumpbox");
+
+  assert.ok(excludedSystem);
+  assert.equal(excludedSystem.coverageState, "excluded");
+  assert.equal(excludedSystem.summary, "Excluded by policy: Disposable lab workload");
+  assert.equal(findings.some((item) => item.systemId === "sys-lab-jumpbox"), false);
+});
+
+test("seeded source health marks provider outage as error and keeps Telemetry unknown evidence reviewable", async () => {
+  const repository = new BackupRepository(
+    createPrismaMock({
+      policies: [],
+      evidence: [],
+      restoreTests: [],
+    }),
+  );
+
+  const overview = await repository.getOverview();
+  const veeamSource = overview.sourceHealth.find((source) => source.providerKey === "veeam");
+
+  assert.ok(veeamSource);
+  assert.equal(veeamSource.state, "error");
+  assert.equal(veeamSource.summary, "Backup provider outage or connector failure requires investigation");
+});
+
+test("detail keeps Operator-attested proof visible without creating a write action state", async () => {
+  const repository = new BackupRepository(
+    createPrismaMock({
+      policies: [],
+      evidence: [],
+      restoreTests: [],
+    }),
+  );
+
+  const detail = await repository.getSystemDetail("sys-branch-nas");
+
+  assert.ok(detail);
+  assert.equal(detail.system.evidenceSource, "operator_attested");
+  assert.equal(detail.restoreProofs.some((proof) => proof.evidenceSource === "operator_attested"), true);
+  assert.equal(detail.restoreProofs.some((proof) => proof.notes?.includes("Operator-attested proof")), true);
 });

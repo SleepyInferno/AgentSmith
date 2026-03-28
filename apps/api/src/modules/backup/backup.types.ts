@@ -10,11 +10,17 @@ export type BackupCoverageState = (typeof backupCoverageStates)[number];
 export const backupRestoreStates = ["current", "stale", "missing", "unknown"] as const;
 export type BackupRestoreState = (typeof backupRestoreStates)[number];
 
+export const backupSourceHealthStates = ["current", "stale", "missing", "unknown", "error"] as const;
+export type BackupSourceHealthState = (typeof backupSourceHealthStates)[number];
+
 export const backupConfidenceStates = ["healthy", "watch", "high_risk", "unknown"] as const;
 export type BackupConfidenceState = (typeof backupConfidenceStates)[number];
 
 export const backupEvidenceSources = ["provider_sync", "operator_attested"] as const;
 export type BackupEvidenceSource = (typeof backupEvidenceSources)[number];
+
+export const backupMatchingConfidences = ["confirmed", "duplicate", "unknown"] as const;
+export type BackupMatchingConfidence = (typeof backupMatchingConfidences)[number];
 
 export const backupRestoreOutcomes = ["success", "partial", "failure"] as const;
 export type BackupRestoreOutcome = (typeof backupRestoreOutcomes)[number];
@@ -30,6 +36,7 @@ export type BackupOverviewCard = {
 export type BackupSourceHealth = {
   providerKey: string;
   providerLabel: string;
+  state: BackupSourceHealthState;
   connectorFreshnessState: BackupRestoreState;
   lastObservedAt: string | null;
   systemsObserved: number;
@@ -49,10 +56,12 @@ export type BackupFindingItem = {
   coverageMode: BackupCoverageMode;
   coverageState: BackupCoverageState;
   confidenceState: BackupConfidenceState;
+  matchingConfidence: BackupMatchingConfidence;
   providerKey: string | null;
   workloadKind: string | null;
   backupFreshnessState: BackupRestoreState;
   restoreFreshnessState: BackupRestoreState;
+  evidenceSource: BackupEvidenceSource | null;
   summary: string;
   suggestedNextStep: string;
   queueRank: number;
@@ -73,12 +82,14 @@ export type BackupInventoryRow = {
   coverageMode: BackupCoverageMode;
   coverageState: BackupCoverageState;
   confidenceState: BackupConfidenceState;
+  matchingConfidence: BackupMatchingConfidence;
   providerKey: string | null;
   workloadKind: string | null;
   backupFreshnessState: BackupRestoreState;
   restoreFreshnessState: BackupRestoreState;
   lastSuccessfulBackupAt: string | null;
   lastRestoreTestedAt: string | null;
+  evidenceSource: BackupEvidenceSource | null;
   restoreEvidenceSource: BackupEvidenceSource | null;
   summary: string;
   suggestedNextStep: string | null;

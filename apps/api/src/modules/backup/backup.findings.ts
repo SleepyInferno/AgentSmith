@@ -1,10 +1,11 @@
 import type {
   BackupConfidenceState,
   BackupCoverageMode,
+  BackupEvidenceSource,
   BackupCoverageState,
   BackupDataMode,
-  BackupEvidenceSource,
   BackupFindingItem,
+  BackupMatchingConfidence,
   BackupOverviewCard,
   BackupRestoreOutcome,
   BackupRestoreState,
@@ -22,12 +23,14 @@ export type BackupAssessmentRow = {
   coverageMode: BackupCoverageMode;
   coverageState: BackupCoverageState;
   confidenceState: BackupConfidenceState;
+  matchingConfidence: BackupMatchingConfidence;
   providerKey: string | null;
   workloadKind: string | null;
   backupFreshnessState: BackupRestoreState;
   restoreFreshnessState: BackupRestoreState;
   lastSuccessfulBackupAt: string | null;
   lastRestoreTestedAt: string | null;
+  evidenceSource: BackupEvidenceSource | null;
   restoreEvidenceSource: BackupEvidenceSource | null;
   summary: string;
   suggestedNextStep: string | null;
@@ -54,6 +57,10 @@ const criticalityOrder: Record<string, number> = {
 export function buildBackupSuggestedNextStep(row: BackupAssessmentRow): string {
   if (row.coverageMode === "excluded" || row.coverageState === "excluded") {
     return "System is intentionally excluded from backup policy";
+  }
+
+  if (row.matchingConfidence === "duplicate") {
+    return "Review duplicate backup-to-system match";
   }
 
   if (row.telemetryUnavailable || row.confidenceState === "unknown" || row.coverageState === "unknown") {
@@ -116,10 +123,12 @@ export function buildBackupFindingQueue(rows: BackupAssessmentRow[]): BackupFind
       coverageMode: row.coverageMode,
       coverageState: row.coverageState,
       confidenceState: row.confidenceState,
+      matchingConfidence: row.matchingConfidence,
       providerKey: row.providerKey,
       workloadKind: row.workloadKind,
       backupFreshnessState: row.backupFreshnessState,
       restoreFreshnessState: row.restoreFreshnessState,
+      evidenceSource: row.evidenceSource,
       summary: row.summary,
       suggestedNextStep: buildBackupSuggestedNextStep(row),
       queueRank: index + 1,
@@ -184,29 +193,33 @@ function getQueuePriority(row: BackupAssessmentRow): number {
     return 0;
   }
 
-  if (row.latestRestoreOutcome === "failure") {
+  if (row.matchingConfidence === "duplicate") {
     return 1;
   }
 
-  if (row.restoreFreshnessState === "stale" || row.restoreFreshnessState === "missing") {
+  if (row.latestRestoreOutcome === "failure") {
     return 2;
   }
 
-  if (row.backupFreshnessState === "stale") {
+  if (row.restoreFreshnessState === "stale" || row.restoreFreshnessState === "missing") {
     return 3;
   }
 
-  if (row.telemetryUnavailable || row.coverageState === "unknown" || row.confidenceState === "unknown") {
+  if (row.backupFreshnessState === "stale") {
     return 4;
   }
 
-  if (row.coverageState === "partial") {
+  if (row.telemetryUnavailable || row.coverageState === "unknown" || row.confidenceState === "unknown") {
     return 5;
   }
 
-  if (row.withinBackupGraceWindow || row.confidenceState === "watch") {
+  if (row.coverageState === "partial") {
     return 6;
   }
 
-  return 7;
+  if (row.withinBackupGraceWindow || row.confidenceState === "watch") {
+    return 7;
+  }
+
+  return 8;
 }

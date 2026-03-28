@@ -33,15 +33,15 @@
 
 ### Backup Confidence
 
-- [ ] **BACK-01**: Operator can view a protected-system inventory with backup source, last successful backup, and last restore-test date
-- [ ] **BACK-02**: Operator can see systems that are missing backup coverage or have stale backup evidence
-- [ ] **BACK-03**: Operator can review backup confidence status using both backup freshness and restore-test recency
+- [x] **BACK-01**: Operator can view a protected-system inventory with backup source, last successful backup, and last restore-test date
+- [x] **BACK-02**: Operator can see systems that are missing backup coverage or have stale backup evidence
+- [x] **BACK-03**: Operator can review backup confidence status using both backup freshness and restore-test recency
 
 ### Documentation Assistant
 
-- [ ] **DOCS-01**: Operator can search operational documentation across SOPs, vendors, contacts, infrastructure notes, and recovery procedures
-- [ ] **DOCS-02**: Operator can tag documents by system, site, owner, and category so search results stay relevant
-- [ ] **DOCS-03**: Operator can view document history and review dates so stale documentation is visible
+- [x] **DOCS-01**: Operator can search operational documentation across SOPs, vendors, contacts, infrastructure notes, and recovery procedures
+- [x] **DOCS-02**: Operator can tag documents by system, site, owner, and category so search results stay relevant
+- [x] **DOCS-03**: Operator can view document history and review dates so stale documentation is visible
 
 ## v2 Requirements
 
@@ -79,12 +79,12 @@
 | NET-01 | Phase 4 | Complete |
 | NET-02 | Phase 4 | Complete |
 | NET-03 | Phase 4 | Complete |
-| BACK-01 | Phase 5 | Pending |
-| BACK-02 | Phase 5 | Pending |
-| BACK-03 | Phase 5 | Pending |
-| DOCS-01 | Phase 6 | Pending |
-| DOCS-02 | Phase 6 | Pending |
-| DOCS-03 | Phase 6 | Pending |
+| BACK-01 | Phase 5 | Complete |
+| BACK-02 | Phase 5 | Complete |
+| BACK-03 | Phase 5 | Complete |
+| DOCS-01 | Phase 6 | Complete |
+| DOCS-02 | Phase 6 | Complete |
+| DOCS-03 | Phase 6 | Complete |
 
 **Coverage:**
 - v1 requirements: 20 total

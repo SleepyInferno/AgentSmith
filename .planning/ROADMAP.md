@@ -116,6 +116,15 @@ UI hint: yes
 
 Goal: Show whether key systems are protected, recently backed up, and actually tested for recovery.
 
+**Plans:** 5 plans
+
+Plans:
+- [x] 05-01-PLAN.md - Define the Phase 5 source boundary, coverage baseline, and canonical backup model
+- [x] 05-02-PLAN.md - Expose the canonical backup overview, queue, inventory, and detail APIs
+- [x] 05-03-PLAN.md - Deliver the queue-first backup overview and protected-system inventory
+- [x] 05-04-PLAN.md - Deliver the explanation-first backup detail workflow
+- [x] 05-05-PLAN.md - Close trust-boundary, verification, and edge-case gaps for backup confidence
+
 Requirements:
 - BACK-01
 - BACK-02
@@ -132,6 +141,15 @@ UI hint: yes
 ### Phase 6: Documentation Assistant
 
 Goal: Centralize the operational knowledge that solo admins usually carry in their head, inbox, or scattered notes.
+
+**Plans:** 5 plans
+
+Plans:
+- [x] 06-01-PLAN.md - Define the canonical document model, metadata links, history records, and seeded search corpus
+- [x] 06-02-PLAN.md - Expose server-owned docs overview, search, and detail APIs with ranked relevance and seeded fallback
+- [x] 06-03-PLAN.md - Deliver the queue-first documentation overview and bookmarkable search inventory
+- [x] 06-04-PLAN.md - Deliver the explanation-first document detail and review-history workflow
+- [x] 06-05-PLAN.md - Add explicit metadata review, audit logging, and search relevance hardening
 
 Requirements:
 - DOCS-01
@@ -155,4 +173,4 @@ UI hint: yes
 - Deferred modules such as ticket triage and maintenance scheduling should only enter planning after the five-tool v1 is stable.
 
 ---
-*Last updated: 2026-03-27 after replacing Phase 4 with Network Visibility Lite*
+*Last updated: 2026-03-28 after planning Phase 6 Documentation Assistant*

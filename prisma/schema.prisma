@@ -121,6 +121,33 @@ enum BackupRestoreOutcome {
   failure
 }
 
+enum DocumentKind {
+  sop
+  vendor_note
+  contact
+  infrastructure_note
+  recovery_procedure
+}
+
+enum DocumentReviewState {
+  current
+  due_soon
+  overdue
+  unreviewed
+}
+
+enum DocumentMetadataDimension {
+  site
+  owner
+  category
+}
+
+enum DocumentRevisionType {
+  source_sync
+  metadata_review
+  review_completed
+}
+
 model User {
   id               String      @id @default(cuid())
   sourceSystem     String
@@ -190,6 +217,7 @@ model System {
   backupCoveragePolicy BackupCoveragePolicy?
   backupEvidence       BackupEvidence[]
   backupRestoreTests   BackupRestoreTest[]
+  documentationLinks DocumentSystemLink[]
 
   @@unique([sourceSystem, sourceId])
 }
@@ -208,17 +236,71 @@ model Group {
 }
 
 model Document {
-  id               String   @id @default(cuid())
-  sourceSystem     String
-  sourceId         String
-  title            String
-  category         String?
-  owner            String?
-  reviewDueAt      DateTime?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id                  String                     @id @default(cuid())
+  sourceSystem        String
+  sourceId            String
+  title               String
+  kind                DocumentKind               @default(sop)
+  category            String?
+  owner               String?
+  summary             String?                    @db.Text
+  contentText         String                     @default("") @db.Text
+  searchText String @default("") @db.Text
+  reviewState         DocumentReviewState        @default(unreviewed)
+  reviewDueAt         DateTime?
+  lastReviewedAt      DateTime?
+  sourceUpdatedAt     DateTime?
+  contentUpdatedAt    DateTime?
+  createdAt           DateTime                   @default(now())
+  updatedAt           DateTime                   @updatedAt
+  metadataAssignments DocumentMetadataAssignment[]
+  systemLinks         DocumentSystemLink[]
+  revisions           DocumentRevision[]
 
   @@unique([sourceSystem, sourceId])
+}
+
+model DocumentMetadataAssignment {
+  id         String                    @id @default(cuid())
+  documentId String
+  document   Document                  @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  dimension  DocumentMetadataDimension
+  valueKey   String
+  valueLabel String
+  createdAt  DateTime                  @default(now())
+  updatedAt  DateTime                  @updatedAt
+
+  @@unique([documentId, dimension, valueKey])
+  @@index([dimension, valueKey])
+}
+
+model DocumentSystemLink {
+  id                String   @id @default(cuid())
+  documentId        String
+  document          Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  systemId          String
+  system            System   @relation(fields: [systemId], references: [id], onDelete: Cascade)
+  relationshipLabel String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([documentId, systemId, relationshipLabel])
+  @@index([systemId])
+}
+
+model DocumentRevision {
+  id            String              @id @default(cuid())
+  documentId    String
+  document      Document            @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  revisionType  DocumentRevisionType
+  summary       String
+  changedFields String[]
+  actorLabel    String?
+  reviewState   DocumentReviewState
+  reviewDueAt   DateTime?
+  createdAt     DateTime            @default(now())
+
+  @@index([documentId, createdAt(sort: Desc)])
 }
 
 model ConnectorSource {

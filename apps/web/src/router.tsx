@@ -14,6 +14,8 @@ import { NetworkInventoryPage } from "./routes/network/NetworkInventoryPage";
 import { DocumentationOverviewPage } from "./routes/docs/DocumentationOverviewPage";
 import { DocumentationSearchPage } from "./routes/docs/DocumentationSearchPage";
 import { DocumentationDetailPage } from "./routes/docs/DocumentationDetailPage";
+import { AuditTrailPage } from "./routes/audit/AuditTrailPage";
+import { ConnectorStatusPage } from "./routes/connectors/ConnectorStatusPage";
 import { LoginPage } from "./routes/LoginPage";
 import { ProtectedLayout } from "./routes/ProtectedLayout";
 
@@ -285,15 +287,6 @@ const backupTrustBoundaryCopy = "Read-only evidence view - no backup jobs, resto
 const documentationTrustBoundaryCopy =
   "Document content stays read-only in this phase. Metadata changes go through explicit review and audit logging.";
 
-function PendingSurfacePage(props: { title: string; summary: string }) {
-  return (
-    <section className="dashboard-status-empty">
-      <h1 style={{ marginTop: 0, marginBottom: "12px" }}>{props.title}</h1>
-      <p style={{ margin: 0, lineHeight: 1.6 }}>{props.summary}</p>
-    </section>
-  );
-}
-
 export const router = createBrowserRouter([
   {
     path: "/login",
@@ -321,24 +314,8 @@ export const router = createBrowserRouter([
           { path: "docs/:documentId", element: <DocumentationDetailPage trustBoundaryCopy={documentationTrustBoundaryCopy} /> },
           { path: "lifecycle", element: <LifecycleQueuePage /> },
           { path: "lifecycle/runs/:runId", element: <LifecycleRunDetailPage /> },
-          {
-            path: "connectors",
-            element: (
-              <PendingSurfacePage
-                title="Connector status arrives next"
-                summary="The secure shell is live now. Connector health visibility lands in the next execution wave on top of this authenticated session boundary."
-              />
-            ),
-          },
-          {
-            path: "audit",
-            element: (
-              <PendingSurfacePage
-                title="Audit trail surface arrives next"
-                summary="Authentication events are already being written by the API. The shared audit timeline UI is the next wave so operators can review those events in the shell."
-              />
-            ),
-          },
+          { path: "connectors", element: <ConnectorStatusPage /> },
+          { path: "audit", element: <AuditTrailPage /> },
         ],
       },
     ],

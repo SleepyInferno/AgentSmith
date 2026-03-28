@@ -44,6 +44,34 @@ type LiveSystemRecord = {
   criticality: string | null;
 };
 
+type DocumentationMetadataReviewInput = {
+  categoryLabels: string[];
+  siteLabels: string[];
+  ownerLabels: string[];
+  systemIds: string[];
+  reviewDueAt: string | null;
+  reviewSummary: string;
+  actorLabel: string;
+};
+
+type DocumentationMetadataReviewResult = {
+  documentId: string;
+  changedFields: string[];
+  historyEntryId: string;
+  auditAction: "docs.metadata.reviewed";
+  reviewDueAt: string | null;
+  lastReviewedAt: string | null;
+};
+
+type DocumentationMetadataReviewSnapshot = {
+  categoryLabels: string[];
+  siteLabels: string[];
+  ownerLabels: string[];
+  systemIds: string[];
+  reviewDueAt: string | null;
+  reviewState: DocumentReviewState;
+};
+
 type LiveDocumentRecord = {
   id: string;
   sourceSystem: string;
@@ -84,14 +112,34 @@ type LiveDocumentRecord = {
   }>;
 };
 
-type DocsPrismaClient = {
+type DocsTransactionClient = {
   document: {
     findMany: (args?: unknown) => Promise<LiveDocumentRecord[]>;
+    findUnique: (args: unknown) => Promise<LiveDocumentRecord | null>;
+    update: (args: unknown) => Promise<LiveDocumentRecord | null>;
+  };
+  documentMetadataAssignment: {
+    deleteMany: (args: unknown) => Promise<unknown>;
+    createMany: (args: unknown) => Promise<unknown>;
+  };
+  documentSystemLink: {
+    deleteMany: (args: unknown) => Promise<unknown>;
+    createMany: (args: unknown) => Promise<unknown>;
+  };
+  documentRevision: {
+    create: (args: unknown) => Promise<{ id: string }>;
   };
   system: {
     findMany: (args?: unknown) => Promise<LiveSystemRecord[]>;
   };
+  auditEvent: {
+    create: (args: unknown) => Promise<unknown>;
+  };
   $queryRaw: <T = unknown>(query: unknown) => Promise<T>;
+};
+
+type DocsPrismaClient = DocsTransactionClient & {
+  $transaction: <T>(callback: (tx: DocsTransactionClient) => Promise<T>) => Promise<T>;
 };
 
 type DocumentationRecord = SearchableDocumentationRecord & {
@@ -113,6 +161,7 @@ type LiveSearchRow = {
 };
 
 const documentationWriteBoundary = "metadata_review_only" as const;
+const metadataReviewAuditAction = "docs.metadata.reviewed" as const;
 
 const queuePriority: Record<DocumentationQueueItem["focusReason"]["code"], number> = {
   review_overdue: 0,
@@ -140,12 +189,16 @@ export class DocsRepository {
   async searchDocuments(filters: DocumentationSearchFilters = {}): Promise<DocumentationSearchResponse> {
     const dataset = await this.loadDataset();
     const searchQuery = buildDocumentationSearchQuery(filters);
-    const liveRanks =
-      dataset.dataMode === "live" && searchQuery.normalizedQuery ? await this.runLiveSearch(searchQuery.normalizedQuery) : new Map();
+    const shouldUseLiveSearch = dataset.dataMode === "live" && Boolean(searchQuery.normalizedQuery);
+    const liveRanks = shouldUseLiveSearch ? await this.runLiveSearch(searchQuery.normalizedQuery ?? "") : new Map();
+    const fallbackRanks =
+      shouldUseLiveSearch && shouldUseFallbackSearch(searchQuery.normalizedQuery ?? "", liveRanks.size)
+        ? await this.runLiveFallbackSearch(searchQuery.normalizedQuery ?? "")
+        : new Map();
 
     const results = dataset.documents
       .map((document) => {
-        const liveRank = liveRanks.get(document.documentId);
+        const liveRank = liveRanks.get(document.documentId) ?? fallbackRanks.get(document.documentId);
         const rankedResult = rankSeededDocumentationResult(document, searchQuery, liveRank);
 
         if (!rankedResult) {
@@ -196,6 +249,162 @@ export class DocsRepository {
       metadataCatalog: dataset.metadataCatalog,
       suggestedNextStep: document.suggestedNextStep,
     };
+  }
+
+  async submitMetadataReview(
+    documentId: string,
+    input: DocumentationMetadataReviewInput,
+  ): Promise<DocumentationMetadataReviewResult | null> {
+    const prisma = this.prisma as unknown as DocsPrismaClient;
+
+    return prisma.$transaction(async (tx) => {
+      const existingDocument = await tx.document.findUnique({
+        where: {
+          id: documentId,
+        },
+        include: {
+          metadataAssignments: true,
+          systemLinks: {
+            include: {
+              system: true,
+            },
+          },
+          revisions: {
+            orderBy: {
+              createdAt: "desc",
+            },
+          },
+        },
+      });
+
+      if (!existingDocument) {
+        return null;
+      }
+
+      const categoryLabels = normalizeLabelList(input.categoryLabels);
+      const siteLabels = normalizeLabelList(input.siteLabels);
+      const ownerLabels = normalizeLabelList(input.ownerLabels);
+      const requestedSystemIds = normalizeIdList(input.systemIds);
+      const linkedSystems = requestedSystemIds.length
+        ? await tx.system.findMany({
+            where: {
+              id: {
+                in: requestedSystemIds,
+              },
+            },
+          })
+        : [];
+      const reviewDueAt = parseOptionalDate(input.reviewDueAt);
+      const lastReviewedAt = new Date();
+      const reviewState = deriveReviewState(reviewDueAt, lastReviewedAt);
+      const beforeSnapshot = buildMetadataReviewSnapshot(existingDocument);
+      const afterSnapshot: DocumentationMetadataReviewSnapshot = {
+        categoryLabels,
+        siteLabels,
+        ownerLabels,
+        systemIds: linkedSystems.map((system) => system.id).sort((left, right) => left.localeCompare(right)),
+        reviewDueAt: reviewDueAt?.toISOString() ?? null,
+        reviewState,
+      };
+      const changedFields = collectMetadataReviewChangedFields(beforeSnapshot, afterSnapshot, input);
+      const existingRelationshipLabels = new Map(
+        existingDocument.systemLinks.map((link) => [link.systemId, link.relationshipLabel]),
+      );
+      const metadataAssignments = [
+        ...buildMetadataAssignments(documentId, "category", categoryLabels, lastReviewedAt),
+        ...buildMetadataAssignments(documentId, "site", siteLabels, lastReviewedAt),
+        ...buildMetadataAssignments(documentId, "owner", ownerLabels, lastReviewedAt),
+      ];
+
+      await tx.documentMetadataAssignment.deleteMany({
+        where: {
+          documentId,
+        },
+      });
+
+      if (metadataAssignments.length > 0) {
+        await tx.documentMetadataAssignment.createMany({
+          data: metadataAssignments,
+        });
+      }
+
+      await tx.documentSystemLink.deleteMany({
+        where: {
+          documentId,
+        },
+      });
+
+      if (linkedSystems.length > 0) {
+        await tx.documentSystemLink.createMany({
+          data: linkedSystems.map((system) => ({
+            documentId,
+            systemId: system.id,
+            relationshipLabel: existingRelationshipLabels.get(system.id) ?? "linked system",
+            createdAt: lastReviewedAt,
+            updatedAt: lastReviewedAt,
+          })),
+        });
+      }
+
+      await tx.document.update({
+        where: {
+          id: documentId,
+        },
+        data: {
+          category: categoryLabels[0] ?? null,
+          owner: ownerLabels[0] ?? null,
+          searchText: buildDocumentSearchText(existingDocument, {
+            categoryLabels,
+            siteLabels,
+            ownerLabels,
+            systems: linkedSystems,
+          }),
+          reviewState,
+          reviewDueAt,
+          lastReviewedAt,
+          updatedAt: lastReviewedAt,
+        },
+      });
+
+      const historyEntry = await tx.documentRevision.create({
+        data: {
+          documentId,
+          revisionType: "metadata_review",
+          summary: input.reviewSummary,
+          changedFields,
+          actorLabel: input.actorLabel,
+          reviewState,
+          reviewDueAt,
+          createdAt: lastReviewedAt,
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: {
+          actorId: null,
+          action: metadataReviewAuditAction,
+          targetType: "Document",
+          targetId: documentId,
+          result: "success",
+          metadata: {
+            reviewSummary: input.reviewSummary,
+            actorLabel: input.actorLabel,
+            changedFields,
+            before: beforeSnapshot,
+            after: afterSnapshot,
+          },
+        },
+      });
+
+      return {
+        documentId,
+        changedFields,
+        historyEntryId: historyEntry.id,
+        auditAction: metadataReviewAuditAction,
+        reviewDueAt: afterSnapshot.reviewDueAt,
+        lastReviewedAt: lastReviewedAt.toISOString(),
+      };
+    });
   }
 
   private async loadDataset(): Promise<DocumentationDataset> {
@@ -271,6 +480,50 @@ export class DocsRepository {
       SELECT "documentId", "relevanceScore", "matchedExcerpt"
       FROM ranked_documents
       WHERE "relevanceScore" > 0
+    `);
+
+    return new Map(
+      rankedRows.map((row) => [
+        row.documentId,
+        {
+          sqlScore: Number(row.relevanceScore),
+          sqlExcerpt: row.matchedExcerpt,
+        },
+      ]),
+    );
+  }
+
+  private async runLiveFallbackSearch(query: string): Promise<Map<string, { sqlScore: number; sqlExcerpt: string | null }>> {
+    const prisma = this.prisma as unknown as DocsPrismaClient;
+    const rankedRows = await prisma.$queryRaw<LiveSearchRow[]>(Prisma.sql`
+      SELECT DISTINCT
+        d."id" AS "documentId",
+        (
+          GREATEST(
+            similarity(lower(coalesce(d."title", '')), lower(${query})),
+            similarity(lower(coalesce(d."searchText", '')), lower(${query}))
+          ) * 100
+        ) +
+        CASE
+          WHEN lower(coalesce(d."title", '')) LIKE '%' || lower(${query}) || '%' THEN 40
+          WHEN lower(coalesce(d."searchText", '')) LIKE '%' || lower(${query}) || '%' THEN 24
+          ELSE 0
+        END AS "relevanceScore",
+        coalesce(nullif(d."summary", ''), d."title") AS "matchedExcerpt"
+      FROM "Document" d
+      LEFT JOIN "DocumentMetadataAssignment" dma ON dma."documentId" = d."id"
+      LEFT JOIN "DocumentSystemLink" dsl ON dsl."documentId" = d."id"
+      LEFT JOIN "System" s ON s."id" = dsl."systemId"
+      WHERE
+        lower(coalesce(d."title", '')) LIKE '%' || lower(${query}) || '%'
+        OR lower(coalesce(d."searchText", '')) LIKE '%' || lower(${query}) || '%'
+        OR similarity(lower(coalesce(d."title", '')), lower(${query})) >= 0.1
+        OR similarity(lower(coalesce(d."searchText", '')), lower(${query})) >= 0.1
+        OR lower(coalesce(dma."valueLabel", '')) LIKE '%' || lower(${query}) || '%'
+        OR lower(coalesce(dma."valueKey", '')) LIKE '%' || lower(${query}) || '%'
+        OR lower(coalesce(s."name", '')) LIKE '%' || lower(${query}) || '%'
+        OR lower(coalesce(dsl."relationshipLabel", '')) LIKE '%' || lower(${query}) || '%'
+      ORDER BY "relevanceScore" DESC, d."title" ASC
     `);
 
     return new Map(
@@ -421,6 +674,63 @@ function buildLiveDataset(documents: LiveDocumentRecord[], systems: LiveSystemRe
     documents: normalizedDocuments,
     metadataCatalog: buildMetadataCatalog(normalizedDocuments, systems),
   };
+}
+
+function buildMetadataAssignments(
+  documentId: string,
+  dimension: DocumentMetadataDimension,
+  labels: string[],
+  timestamp: Date,
+) {
+  return labels.map((label) => ({
+    documentId,
+    dimension,
+    valueKey: `${dimension}-${slugifyLabel(label)}`,
+    valueLabel: label,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+  }));
+}
+
+function buildMetadataReviewSnapshot(document: LiveDocumentRecord): DocumentationMetadataReviewSnapshot {
+  return {
+    categoryLabels: collectMetadataLabels(document.metadataAssignments, "category"),
+    siteLabels: collectMetadataLabels(document.metadataAssignments, "site"),
+    ownerLabels: collectMetadataLabels(document.metadataAssignments, "owner"),
+    systemIds: document.systemLinks.map((link) => link.systemId).sort((left, right) => left.localeCompare(right)),
+    reviewDueAt: toIsoString(document.reviewDueAt),
+    reviewState: document.reviewState,
+  };
+}
+
+function collectMetadataReviewChangedFields(
+  before: DocumentationMetadataReviewSnapshot,
+  after: DocumentationMetadataReviewSnapshot,
+  input: DocumentationMetadataReviewInput,
+) {
+  const changedFields = new Set<string>();
+
+  if (input.categoryLabels.length > 0 || !sameStringArray(before.categoryLabels, after.categoryLabels)) {
+    changedFields.add("categoryLabels");
+  }
+
+  if (input.siteLabels.length > 0 || !sameStringArray(before.siteLabels, after.siteLabels)) {
+    changedFields.add("siteLabels");
+  }
+
+  if (input.ownerLabels.length > 0 || !sameStringArray(before.ownerLabels, after.ownerLabels)) {
+    changedFields.add("ownerLabels");
+  }
+
+  if (input.systemIds.length > 0 || !sameStringArray(before.systemIds, after.systemIds)) {
+    changedFields.add("systemIds");
+  }
+
+  if (input.reviewDueAt !== null || before.reviewDueAt !== after.reviewDueAt) {
+    changedFields.add("reviewDueAt");
+  }
+
+  return [...changedFields];
 }
 
 function buildDocumentationQueue(documents: DocumentationRecord[]): DocumentationQueueItem[] {
@@ -629,6 +939,26 @@ function buildSuggestedNextStep(record: {
   return "No immediate action required.";
 }
 
+function buildDocumentSearchText(
+  document: LiveDocumentRecord,
+  input: {
+    categoryLabels: string[];
+    siteLabels: string[];
+    ownerLabels: string[];
+    systems: LiveSystemRecord[];
+  },
+) {
+  return uniqueStrings([
+    document.searchText,
+    document.title,
+    document.summary ?? "",
+    ...input.categoryLabels,
+    ...input.siteLabels,
+    ...input.ownerLabels,
+    ...input.systems.flatMap((system) => [system.id, system.name, system.ownerTeam ?? "", system.category ?? ""]),
+  ]).join(" ");
+}
+
 function computeGeneratedAt(documents: DocumentationRecord[]): string | null {
   const values = documents.flatMap((document) => [
     document.lastReviewedAt,
@@ -693,6 +1023,34 @@ function isMissingDocumentationTableError(error: unknown): boolean {
   return code === "P2021" || /document(metadataassignment|systemlink|revision)?/i.test(message);
 }
 
+function collectMetadataLabels(
+  assignments: Array<{ dimension: DocumentMetadataDimension; valueLabel: string }>,
+  dimension: DocumentMetadataDimension,
+) {
+  return assignments
+    .filter((assignment) => assignment.dimension === dimension)
+    .map((assignment) => assignment.valueLabel)
+    .sort((left, right) => left.localeCompare(right));
+}
+
+function deriveReviewState(reviewDueAt: Date | null, now: Date): DocumentReviewState {
+  if (!reviewDueAt) {
+    return "current";
+  }
+
+  const dayDelta = Math.ceil((reviewDueAt.valueOf() - now.valueOf()) / (1000 * 60 * 60 * 24));
+
+  if (dayDelta < 0) {
+    return "overdue";
+  }
+
+  if (dayDelta <= 14) {
+    return "due_soon";
+  }
+
+  return "current";
+}
+
 function groupBy<T>(items: T[], keySelector: (item: T) => string): Map<string, T[]> {
   const groups = new Map<string, T[]>();
 
@@ -709,4 +1067,55 @@ function groupBy<T>(items: T[], keySelector: (item: T) => string): Map<string, T
   }
 
   return groups;
+}
+
+function normalizeLabelList(values: string[]) {
+  return uniqueStrings(values.map((value) => value.trim()).filter(Boolean));
+}
+
+function normalizeIdList(values: string[]) {
+  return uniqueStrings(values.map((value) => value.trim()).filter(Boolean));
+}
+
+function parseOptionalDate(value: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.valueOf()) ? null : parsed;
+}
+
+function shouldUseFallbackSearch(query: string, liveResultCount: number) {
+  return query.trim().length < 4 || liveResultCount === 0;
+}
+
+function sameStringArray(left: string[], right: string[]) {
+  return left.length === right.length && left.every((value, index) => value === right[index]);
+}
+
+function slugifyLabel(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function uniqueStrings(values: string[]) {
+  const seen = new Set<string>();
+  const unique: string[] = [];
+
+  for (const value of values) {
+    const normalized = value.trim();
+
+    if (!normalized || seen.has(normalized)) {
+      continue;
+    }
+
+    seen.add(normalized);
+    unique.push(normalized);
+  }
+
+  return unique;
 }

@@ -12,6 +12,7 @@ One overextended IT generalist can see the highest-risk issues first and complet
 
 ### Validated
 
+- [x] Protected shell, connector health visibility, and audit-log groundwork are closed out explicitly. Validated in Phase 1: Foundations and Secure Data Flow.
 - [x] Asset health dashboard gives a trustworthy daily picture of device risk and maintenance posture. Validated in Phase 2: Asset Health Dashboard.
 - [x] Onboarding and offboarding workflows reduce skipped steps and produce an audit trail. Validated in Phase 3: Lifecycle Automation.
 - [x] Network visibility shows sites, WAN links, LAN segments, and core network infrastructure health without requiring a full NMS. Validated in Phase 4: Network Visibility Lite.
@@ -19,8 +20,6 @@ One overextended IT generalist can see the highest-risk issues first and complet
 - [x] Documentation assistant makes SOPs, contacts, infrastructure notes, and recovery procedures searchable, reviewable, and explicitly maintainable through audited metadata review. Validated in Phase 6: Documentation Assistant.
 
 ### Active
-
-- [ ] Phase 1 foundations still need the protected shell, secure tenant data flow, connector health, and audit-log groundwork closed out explicitly.
 
 ### Out of Scope
 
@@ -41,12 +40,13 @@ One overextended IT generalist can see the highest-risk issues first and complet
 
 ## Current State
 
+- Phase 1 is complete and verified. The app now includes Microsoft Entra sign-in, API-backed session gating, protected connector visibility, and a shared audit timeline surface.
 - Phase 2 is complete and verified. The app now includes a queue-first asset health dashboard, explainable device detail, and a filterable, sortable device inventory backed by one server-owned risk model.
 - Phase 3 is complete and verified. The app now includes a queue-first lifecycle workflow that launches onboarding and offboarding runs, guides grouped step execution with evidence capture, and closes work out with unresolved follow-up visibility.
 - Phase 4 is complete and verified. The app now includes a queue-first network overview, filterable inventory, lightweight topology map, and explanation-first detail flow for network triage.
 - Phase 5 is complete and verified. The app now includes a backup confidence workflow that keeps protection coverage, restore proof, and trust-state explanations read-only and explicit.
 - Phase 6 is complete and verified. The app now includes searchable operational documentation, explanation-first detail, visible review history, and one audited metadata-review flow.
-- All five v1 tool modules are now implemented, but Phase 1 still has unfinished protected-shell and connector work that needs explicit reconciliation before the release can be treated as fully closed.
+- All six planned phases are now implemented and verified, including the Phase 1 backfill that closes the protected shell, connector health, and audit groundwork explicitly.
 
 ## Constraints
 
@@ -85,4 +85,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-28 after Phase 6 completion*
+*Last updated: 2026-03-28 after Phase 1 completion*

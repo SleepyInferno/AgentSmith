@@ -7,9 +7,9 @@
 
 ### Platform
 
-- [ ] **PLAT-01**: Operator can sign in with Entra ID and access the app without managing separate local credentials
-- [ ] **PLAT-02**: Operator actions and workflow runs are recorded in an audit log with timestamp, actor, and result
-- [ ] **PLAT-03**: Operator can see connector health, last sync time, and data freshness for each integrated source
+- [x] **PLAT-01**: Operator can sign in with Entra ID and access the app without managing separate local credentials
+- [x] **PLAT-02**: Operator actions and workflow runs are recorded in an audit log with timestamp, actor, and result
+- [x] **PLAT-03**: Operator can see connector health, last sync time, and data freshness for each integrated source
 
 ### Asset Health
 
@@ -65,9 +65,9 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PLAT-01 | Phase 1 | Pending |
-| PLAT-02 | Phase 1 | Pending |
-| PLAT-03 | Phase 1 | Pending |
+| PLAT-01 | Phase 1 | Complete |
+| PLAT-02 | Phase 1 | Complete |
+| PLAT-03 | Phase 1 | Complete |
 | ASST-01 | Phase 2 | Complete |
 | ASST-02 | Phase 2 | Complete |
 | ASST-03 | Phase 2 | Complete |
@@ -93,4 +93,4 @@
 
 ---
 *Requirements defined: 2026-03-26*
-*Last updated: 2026-03-27 after Phase 4 completion*
+*Last updated: 2026-03-28 after Phase 1 completion*

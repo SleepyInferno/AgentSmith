@@ -132,6 +132,26 @@ export type DocumentationSearchResponse = {
   total: number;
 };
 
+export type DocumentationMetadataReviewRequest = {
+  documentId: string;
+  categoryLabels: string[];
+  siteLabels: string[];
+  ownerLabels: string[];
+  systemIds: string[];
+  reviewDueAt: string | null;
+  reviewSummary: string;
+  actorLabel: string;
+};
+
+export type DocumentationMetadataReviewResponse = {
+  documentId: string;
+  changedFields: string[];
+  historyEntryId: string;
+  auditAction: string;
+  reviewDueAt: string | null;
+  lastReviewedAt: string | null;
+};
+
 type DocumentationDetailApiResponse = {
   dataMode: DocumentationDataMode;
   writeBoundary: DocumentationWriteBoundary;
@@ -198,11 +218,14 @@ type DocumentationSearchApiResponse = Omit<DocumentationSearchResponse, "results
 
 const metadataDimensions = ["site", "owner", "category"] as const;
 
-async function apiRequest<T>(input: string): Promise<T> {
+async function apiRequest<T>(input: string, init?: RequestInit): Promise<T> {
   const response = await fetch(input, {
+    ...init,
     credentials: "include",
     headers: {
       Accept: "application/json",
+      ...(init?.body ? { "Content-Type": "application/json" } : {}),
+      ...(init?.headers ?? {}),
     },
   });
 
@@ -295,6 +318,15 @@ export function getDocumentationDetail(documentId: string) {
     historyHighlights: buildHistoryHighlights(response.history),
     linkedSystemSummary: buildLinkedSystemSummary(response.linkedSystems),
   }));
+}
+
+export async function reviewDocumentMetadata(input: DocumentationMetadataReviewRequest) {
+  const { documentId, ...payload } = input;
+
+  return apiRequest<DocumentationMetadataReviewResponse>(`/api/docs/${documentId}/metadata-review`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
 
 function buildReviewAgeLabel(lastReviewedAt: string | null, reviewState: string) {

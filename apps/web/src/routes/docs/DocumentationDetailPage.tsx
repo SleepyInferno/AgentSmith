@@ -1,12 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { DocumentHistoryTimeline } from "../../components/docs/DocumentHistoryTimeline";
 import { DocumentLinkedSystemsCard } from "../../components/docs/DocumentLinkedSystemsCard";
+import { DocumentMetadataReviewPanel } from "../../components/docs/DocumentMetadataReviewPanel";
 import { DocumentMetadataSummaryCard } from "../../components/docs/DocumentMetadataSummaryCard";
 import {
   docsQueryKeys,
   getDocumentationDetail,
+  reviewDocumentMetadata,
   type DocumentationDetailResponse,
+  type DocumentationMetadataReviewResponse,
   type DocumentationReason,
 } from "../../lib/docs";
 
@@ -23,11 +27,26 @@ type DocumentationDetailLocationState = {
 export function DocumentationDetailPage({ trustBoundaryCopy }: DocumentationDetailPageProps) {
   const { documentId = "" } = useParams();
   const location = useLocation();
+  const queryClient = useQueryClient();
   const locationState = (location.state ?? null) as DocumentationDetailLocationState | null;
+  const [isReviewPanelOpen, setIsReviewPanelOpen] = useState(false);
+  const [submissionResult, setSubmissionResult] = useState<DocumentationMetadataReviewResponse | null>(null);
   const detailQuery = useQuery({
     queryKey: docsQueryKeys.detail(documentId),
     queryFn: () => getDocumentationDetail(documentId),
     enabled: documentId.length > 0,
+  });
+  const reviewMutation = useMutation({
+    mutationFn: reviewDocumentMetadata,
+    onSuccess: async (result) => {
+      setSubmissionResult(result);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: docsQueryKeys.overview }),
+        queryClient.invalidateQueries({ queryKey: docsQueryKeys.searchRoot }),
+        queryClient.invalidateQueries({ queryKey: docsQueryKeys.detail(documentId) }),
+      ]);
+      setIsReviewPanelOpen(false);
+    },
   });
 
   if (detailQuery.isPending) {
@@ -65,6 +84,16 @@ export function DocumentationDetailPage({ trustBoundaryCopy }: DocumentationDeta
             <Link to="/docs/search" style={primaryLinkStyle}>
               Open search inventory
             </Link>
+            <button
+              type="button"
+              style={reviewButtonStyle}
+              onClick={() => {
+                setSubmissionResult(null);
+                setIsReviewPanelOpen((current) => !current);
+              }}
+            >
+              Review metadata
+            </button>
           </div>
         </div>
 
@@ -79,6 +108,36 @@ export function DocumentationDetailPage({ trustBoundaryCopy }: DocumentationDeta
           <span style={{ color: "#475569", lineHeight: 1.6 }}>{trustBoundaryCopy}</span>
         </div>
       </article>
+
+      {submissionResult && !isReviewPanelOpen ? (
+        <section style={auditReceiptStyle}>
+          <strong style={{ color: "#166534" }}>Metadata review saved.</strong>
+          <span style={{ color: "#166534", lineHeight: 1.6 }}>
+            {submissionResult.auditAction} recorded {submissionResult.changedFields.join(", ")} with history entry{" "}
+            {submissionResult.historyEntryId}.
+          </span>
+        </section>
+      ) : null}
+
+      {isReviewPanelOpen ? (
+        <DocumentMetadataReviewPanel
+          document={detail}
+          isSubmitting={reviewMutation.isPending}
+          onCancel={() => setIsReviewPanelOpen(false)}
+          onSubmit={reviewMutation.mutateAsync}
+          submissionResult={submissionResult}
+          trustBoundaryCopy={trustBoundaryCopy}
+        />
+      ) : null}
+
+      {reviewMutation.isError ? (
+        <section style={reviewErrorStyle}>
+          <strong style={{ color: "#991b1b" }}>Metadata review failed.</strong>
+          <span style={{ color: "#991b1b", lineHeight: 1.6 }}>
+            The explicit review was not saved. Check the required fields and try again.
+          </span>
+        </section>
+      ) : null}
 
       <section style={panelStyle}>
         <div style={{ display: "grid", gap: 14 }}>
@@ -448,4 +507,34 @@ const ghostLinkStyle = {
   color: "#0f172a",
   textDecoration: "none",
   fontWeight: 600,
+};
+
+const reviewButtonStyle = {
+  display: "inline-flex",
+  alignItems: "center",
+  padding: "12px 18px",
+  borderRadius: 999,
+  border: "none",
+  background: "#9a3412",
+  color: "#fff7ed",
+  fontWeight: 700,
+  cursor: "pointer",
+};
+
+const auditReceiptStyle = {
+  padding: "16px 18px",
+  borderRadius: 20,
+  background: "#f0fdf4",
+  border: "1px solid rgba(34, 197, 94, 0.22)",
+  display: "grid",
+  gap: 6,
+};
+
+const reviewErrorStyle = {
+  padding: "16px 18px",
+  borderRadius: 20,
+  background: "#fef2f2",
+  border: "1px solid rgba(248, 113, 113, 0.24)",
+  display: "grid",
+  gap: 6,
 };

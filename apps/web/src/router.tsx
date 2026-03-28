@@ -22,7 +22,7 @@ const primaryItems: NavItem[] = [
   { to: "/lifecycle", label: "Lifecycle Queue", icon: "list", badge: "W" },
   { to: "/devices", label: "Device Inventory", icon: "devices" },
   { to: "/network", label: "Identity Risk", icon: "identity" },
-  { label: "Backup Confidence", icon: "backup" },
+  { to: "/backup", label: "Backup Confidence", icon: "backup" },
 ];
 
 const utilityItems: NavItem[] = [
@@ -274,6 +274,127 @@ function AppShell() {
   );
 }
 
+function BackupRouteIntro(props: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  primaryLink: { to: string; label: string };
+  secondaryLink?: { to: string; label: string };
+}) {
+  return (
+    <section style={{ display: "grid", gap: 20 }}>
+      <article
+        style={{
+          padding: 24,
+          borderRadius: 24,
+          background: "linear-gradient(135deg, rgba(240, 249, 255, 0.96), rgba(255, 255, 255, 0.98))",
+          border: "1px solid rgba(148, 163, 184, 0.22)",
+          boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
+        }}
+      >
+        <p
+          style={{
+            margin: 0,
+            color: "#0369a1",
+            fontSize: 13,
+            textTransform: "uppercase",
+            letterSpacing: "0.14em",
+            fontWeight: 700,
+          }}
+        >
+          {props.eyebrow}
+        </p>
+        <h2 style={{ margin: "12px 0 10px", fontSize: "2rem" }}>{props.title}</h2>
+        <p style={{ margin: 0, color: "#334155", lineHeight: 1.7, maxWidth: 760 }}>{props.description}</p>
+        <p style={{ margin: "14px 0 0", color: "#0f172a", fontWeight: 700 }}>
+          Records evidence only - no backup jobs or restore actions are triggered here.
+        </p>
+      </article>
+
+      <section
+        style={{
+          padding: 24,
+          borderRadius: 24,
+          background: "#ffffff",
+          border: "1px solid rgba(148, 163, 184, 0.22)",
+          boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
+          display: "flex",
+          justifyContent: "space-between",
+          gap: 16,
+          alignItems: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        <div>
+          <h3 style={{ margin: "0 0 8px", fontSize: "1.15rem" }}>Route entry point</h3>
+          <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 720 }}>
+            The backup module shell is now wired into navigation. Task 2 replaces this route intro with the
+            queue-first overview and inventory pages.
+          </p>
+        </div>
+
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+          <NavLink
+            to={props.primaryLink.to}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "12px 18px",
+              borderRadius: 999,
+              background: "#0f172a",
+              color: "#f8fafc",
+              textDecoration: "none",
+              fontWeight: 600,
+            }}
+          >
+            {props.primaryLink.label}
+          </NavLink>
+          {props.secondaryLink ? (
+            <NavLink
+              to={props.secondaryLink.to}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                padding: "12px 18px",
+                borderRadius: 999,
+                background: "#e0f2fe",
+                color: "#082f49",
+                textDecoration: "none",
+                fontWeight: 700,
+              }}
+            >
+              {props.secondaryLink.label}
+            </NavLink>
+          ) : null}
+        </div>
+      </section>
+    </section>
+  );
+}
+
+function BackupOverviewRouteIntro() {
+  return (
+    <BackupRouteIntro
+      eyebrow="Backup confidence"
+      title="Backup review workspace"
+      description="Start with the backup review queue, confirm where coverage is missing or restore proof is stale, then open inventory for a broader protected-system scan."
+      primaryLink={{ to: "/backup/inventory", label: "Open backup inventory" }}
+    />
+  );
+}
+
+function BackupInventoryRouteIntro() {
+  return (
+    <BackupRouteIntro
+      eyebrow="Backup inventory"
+      title="Protected-system inventory"
+      description="Server-driven filters and backup confidence context will land here so the operator can widen or narrow the protected-system scan without losing trust details."
+      primaryLink={{ to: "/backup", label: "Back to backup overview" }}
+      secondaryLink={{ to: "/backup/inventory", label: "Refresh inventory route" }}
+    />
+  );
+}
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -286,6 +407,8 @@ export const router = createBrowserRouter([
       { path: "network/map", element: <NetworkMapPage /> },
       { path: "network/inventory", element: <NetworkInventoryPage /> },
       { path: "network/resources/:resourceId", element: <NetworkDetailPage /> },
+      { path: "backup", element: <BackupOverviewRouteIntro /> },
+      { path: "backup/inventory", element: <BackupInventoryRouteIntro /> },
       { path: "lifecycle", element: <LifecycleQueuePage /> },
       { path: "lifecycle/runs/:runId", element: <LifecycleRunDetailPage /> },
     ],

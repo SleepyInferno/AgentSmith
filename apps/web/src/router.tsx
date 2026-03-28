@@ -4,6 +4,7 @@ import { DeviceInventoryPage } from "./routes/assets/DeviceInventoryPage";
 import { DeviceDetailPage } from "./routes/assets/DeviceDetailPage";
 import { LifecycleQueuePage } from "./routes/lifecycle/LifecycleQueuePage";
 import { LifecycleRunDetailPage } from "./routes/lifecycle/LifecycleRunDetailPage";
+import { BackupDetailPage } from "./routes/backup/BackupDetailPage";
 import { BackupInventoryPage } from "./routes/backup/BackupInventoryPage";
 import { BackupOverviewPage } from "./routes/backup/BackupOverviewPage";
 import { NetworkDetailPage } from "./routes/network/NetworkDetailPage";
@@ -277,22 +278,6 @@ function AppShell() {
 }
 
 const backupTrustBoundaryCopy = "Records evidence only - no backup jobs or restore actions are triggered here.";
-
-function BackupDetailPage() {
-  return (
-    <section
-      style={{
-        padding: 24,
-        borderRadius: 24,
-        background: "#ffffff",
-        border: "1px solid rgba(148, 163, 184, 0.22)",
-        boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
-      }}
-    >
-      Loading backup detail...
-    </section>
-  );
-}
 
 export const router = createBrowserRouter([
   {

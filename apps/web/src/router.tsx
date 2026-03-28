@@ -11,6 +11,8 @@ import { NetworkDetailPage } from "./routes/network/NetworkDetailPage";
 import { NetworkMapPage } from "./routes/network/NetworkMapPage";
 import { NetworkOverviewPage } from "./routes/network/NetworkOverviewPage";
 import { NetworkInventoryPage } from "./routes/network/NetworkInventoryPage";
+import { DocumentationOverviewPage } from "./routes/docs/DocumentationOverviewPage";
+import { DocumentationSearchPage } from "./routes/docs/DocumentationSearchPage";
 
 type NavItem = {
   label: string;
@@ -29,7 +31,7 @@ const primaryItems: NavItem[] = [
 ];
 
 const utilityItems: NavItem[] = [
-  { label: "Documentation", icon: "docs" },
+  { to: "/docs", label: "Documentation", icon: "docs" },
   { label: "Connectors", icon: "connectors" },
   { label: "Audit Log", icon: "audit" },
   { label: "Audit logs", icon: "settings" },
@@ -278,6 +280,8 @@ function AppShell() {
 }
 
 const backupTrustBoundaryCopy = "Read-only evidence view - no backup jobs, restores, or exceptions can be executed here.";
+const documentationTrustBoundaryCopy =
+  "Document content stays read-only in this phase. Metadata changes go through explicit review and audit logging.";
 
 export const router = createBrowserRouter([
   {
@@ -294,6 +298,8 @@ export const router = createBrowserRouter([
       { path: "backup", element: <BackupOverviewPage trustBoundaryCopy={backupTrustBoundaryCopy} /> },
       { path: "backup/inventory", element: <BackupInventoryPage trustBoundaryCopy={backupTrustBoundaryCopy} /> },
       { path: "backup/systems/:systemId", element: <BackupDetailPage /> },
+      { path: "docs", element: <DocumentationOverviewPage trustBoundaryCopy={documentationTrustBoundaryCopy} /> },
+      { path: "docs/search", element: <DocumentationSearchPage trustBoundaryCopy={documentationTrustBoundaryCopy} /> },
       { path: "lifecycle", element: <LifecycleQueuePage /> },
       { path: "lifecycle/runs/:runId", element: <LifecycleRunDetailPage /> },
     ],

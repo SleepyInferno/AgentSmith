@@ -278,6 +278,22 @@ function AppShell() {
 
 const backupTrustBoundaryCopy = "Records evidence only - no backup jobs or restore actions are triggered here.";
 
+function BackupDetailPage() {
+  return (
+    <section
+      style={{
+        padding: 24,
+        borderRadius: 24,
+        background: "#ffffff",
+        border: "1px solid rgba(148, 163, 184, 0.22)",
+        boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
+      }}
+    >
+      Loading backup detail...
+    </section>
+  );
+}
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -292,6 +308,7 @@ export const router = createBrowserRouter([
       { path: "network/resources/:resourceId", element: <NetworkDetailPage /> },
       { path: "backup", element: <BackupOverviewPage trustBoundaryCopy={backupTrustBoundaryCopy} /> },
       { path: "backup/inventory", element: <BackupInventoryPage trustBoundaryCopy={backupTrustBoundaryCopy} /> },
+      { path: "backup/systems/:systemId", element: <BackupDetailPage /> },
       { path: "lifecycle", element: <LifecycleQueuePage /> },
       { path: "lifecycle/runs/:runId", element: <LifecycleRunDetailPage /> },
     ],

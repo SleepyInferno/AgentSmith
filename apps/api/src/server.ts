@@ -5,12 +5,15 @@ import { parseServerEnv } from "@agentsmith/shared/env";
 import { PrismaClient } from "@prisma/client";
 import { AssetHealthRepository } from "./modules/assets/asset-health.repository.js";
 import { BackupRepository } from "./modules/backup/backup.repository.js";
+import { DocsRepository } from "./modules/docs/docs.repository.js";
 import { LifecycleRepository } from "./modules/lifecycle/lifecycle.repository.js";
 import { NetworkRepository } from "./modules/network/network.repository.js";
 import type { AssetRoutesDependencies } from "./routes/assets.js";
 import { registerAssetRoutes } from "./routes/assets.js";
 import type { BackupRoutesDependencies } from "./routes/backup.js";
 import { registerBackupRoutes } from "./routes/backup.js";
+import type { DocsRoutesDependencies } from "./routes/docs.js";
+import { registerDocsRoutes } from "./routes/docs.js";
 import { registerHealthRoute } from "./routes/health.js";
 import type { LifecycleRoutesDependencies } from "./routes/lifecycle.js";
 import { registerLifecycleRoutes } from "./routes/lifecycle.js";
@@ -22,6 +25,7 @@ export type BuildServerOptions = {
   prisma?: PrismaClient;
   assetRoutes?: Partial<AssetRoutesDependencies>;
   backupRoutes?: Partial<BackupRoutesDependencies>;
+  docsRoutes?: Partial<DocsRoutesDependencies>;
   lifecycleRoutes?: Partial<LifecycleRoutesDependencies>;
   networkRoutes?: Partial<NetworkRoutesDependencies>;
 };
@@ -34,6 +38,7 @@ export function buildServer(options: BuildServerOptions = {}) {
   const prisma = options.prisma ?? new PrismaClient();
   const assetHealthRepository = options.assetRoutes?.assetHealthRepository ?? new AssetHealthRepository(prisma);
   const backupRepository = options.backupRoutes?.backupRepository ?? new BackupRepository(prisma);
+  const docsRepository = options.docsRoutes?.docsRepository ?? new DocsRepository(prisma);
   const lifecycleRepository = options.lifecycleRoutes?.lifecycleRepository ?? new LifecycleRepository(prisma);
   const networkRepository = options.networkRoutes?.networkRepository ?? new NetworkRepository(prisma);
   const assetRouteOptions = options.assetRoutes?.preHandler
@@ -51,6 +56,14 @@ export function buildServer(options: BuildServerOptions = {}) {
       }
     : {
         backupRepository,
+      };
+  const docsRouteOptions = options.docsRoutes?.preHandler
+    ? {
+        docsRepository,
+        preHandler: options.docsRoutes.preHandler,
+      }
+    : {
+        docsRepository,
       };
   const lifecycleRouteOptions = options.lifecycleRoutes?.preHandler
     ? {
@@ -72,6 +85,7 @@ export function buildServer(options: BuildServerOptions = {}) {
   app.register(registerHealthRoute);
   app.register(registerAssetRoutes, assetRouteOptions);
   app.register(registerBackupRoutes, backupRouteOptions);
+  app.register(registerDocsRoutes, docsRouteOptions);
   app.register(registerLifecycleRoutes, lifecycleRouteOptions);
   app.register(registerNetworkRoutes, networkRouteOptions);
 

@@ -14,7 +14,7 @@ type AuthRoutesOptions = FastifyPluginOptions & AuthRoutesDependencies;
 export async function registerAuthRoutes(app: FastifyInstance, options: AuthRoutesOptions) {
   app.get("/auth/login", async (_request, reply) => {
     await options.authService.beginLogin(reply);
-    return reply;
+    return reply.send();
   });
 
   app.get("/auth/callback", async (request, reply) => {

@@ -28,7 +28,7 @@ export type BuildServerOptions = {
   env?: ServerEnv;
   prisma?: PrismaClient;
   authService?: AgentSmithAuthService;
-  auditService?: AuditService;
+  auditService?: Pick<AuditService, "write">;
   assetRoutes?: Partial<AssetRoutesDependencies>;
   backupRoutes?: Partial<BackupRoutesDependencies>;
   docsRoutes?: Partial<DocsRoutesDependencies>;

@@ -1,4 +1,4 @@
-import { createBrowserRouter, NavLink, Outlet, useLocation } from "react-router-dom";
+import { createBrowserRouter, NavLink, Outlet, type RouteObject } from "react-router-dom";
 import { AssetDashboardPage } from "./routes/dashboard/AssetDashboardPage";
 import { DeviceInventoryPage } from "./routes/assets/DeviceInventoryPage";
 import { DeviceDetailPage } from "./routes/assets/DeviceDetailPage";
@@ -143,108 +143,9 @@ function ShellNavigationItem({ item }: { item: NavItem }) {
   );
 }
 
-function BrowserToolbar() {
-  return (
-    <header className="agent-browser">
-      <div className="agent-browser__lights" aria-hidden="true">
-        <span className="agent-browser__light agent-browser__light--red" />
-        <span className="agent-browser__light agent-browser__light--amber" />
-        <span className="agent-browser__light agent-browser__light--green" />
-      </div>
-      <div className="agent-browser__controls" aria-hidden="true">
-        <span className="agent-browser__glyph">↶</span>
-        <span className="agent-browser__glyph">‹</span>
-        <span className="agent-browser__glyph">›</span>
-      </div>
-      <div className="agent-browser__address">AgentSmith</div>
-      <div className="agent-browser__controls" aria-hidden="true">
-        <span className="agent-browser__glyph">⤴</span>
-        <span className="agent-browser__glyph">＋</span>
-        <span className="agent-browser__glyph">⧉</span>
-      </div>
-    </header>
-  );
-}
-
-function ReviewPanel() {
-  const location = useLocation();
-  const contextLabel =
-    location.pathname === "/"
-      ? "Operator review follows the staged-risk flow shown in the mockup."
-      : "The review rail stays visible while deeper routes are in focus.";
-
-  return (
-    <aside className="agent-review-panel">
-      <div className="agent-review-panel__header">
-        <h2>Review Panel</h2>
-        <button type="button" className="agent-review-panel__close" aria-label="Close review panel">
-          ×
-        </button>
-      </div>
-
-      <div className="agent-review-panel__stack">
-        <div>
-          <p className="agent-review-panel__eyebrow">Confirm</p>
-          <h3>Disable Stale Account "Svc-acct"</h3>
-        </div>
-
-        <div>
-          <p className="agent-review-panel__label">Affected Scope</p>
-          <p className="agent-review-panel__value">1 Account</p>
-        </div>
-
-        <div>
-          <p className="agent-review-panel__label">Risk/Impact</p>
-          <p className="agent-review-panel__body">
-            Stale-impact: summary is disable account but the operator can still review context and
-            restore a mandatory audit override before taking the action.
-          </p>
-        </div>
-
-        <div className="agent-review-panel__review-note">
-          <p className="agent-review-panel__label">Operator Review</p>
-          <p className="agent-review-panel__body">
-            {contextLabel} Connectors stay visible because this screen plan is specific to high-
-            trust changes.
-          </p>
-        </div>
-      </div>
-
-      <div className="agent-review-panel__seal" aria-hidden="true">
-        <div className="agent-review-panel__seal-ring">
-          <span>CONSENT TO</span>
-          <span>SYNCHRONIZATION</span>
-          <span>NO SIDE EFFECTS</span>
-        </div>
-      </div>
-
-      <label className="agent-review-panel__checkbox">
-        <input type="checkbox" />
-        <span>Operator Review: I understand this is a manual override</span>
-      </label>
-
-      <button type="button" className="agent-review-panel__action">
-        Disable Account (Explicit Log Created)
-      </button>
-    </aside>
-  );
-}
-
 function AppShell() {
-  const location = useLocation();
-
-  if (location.pathname === "/") {
-    return (
-      <main className="mockup-app-shell">
-        <Outlet />
-      </main>
-    );
-  }
-
   return (
     <div className="agent-shell">
-      <BrowserToolbar />
-
       <div className="agent-console">
         <aside className="agent-sidebar">
           <div className="agent-sidebar__brand">
@@ -276,8 +177,6 @@ function AppShell() {
         <section className="agent-main-stage">
           <Outlet />
         </section>
-
-        <ReviewPanel />
       </div>
     </div>
   );
@@ -287,7 +186,7 @@ const backupTrustBoundaryCopy = "Read-only evidence view - no backup jobs, resto
 const documentationTrustBoundaryCopy =
   "Document content stays read-only in this phase. Metadata changes go through explicit review and audit logging.";
 
-export const router = createBrowserRouter([
+export const appRoutes: RouteObject[] = [
   {
     path: "/login",
     element: <LoginPage />,
@@ -320,4 +219,10 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+];
+
+export function createAppRouter() {
+  return createBrowserRouter(appRoutes);
+}
+
+export const router = createAppRouter();

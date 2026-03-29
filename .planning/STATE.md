@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: milestone
 status: In progress
-last_updated: "2026-03-29T23:10:21.327Z"
+last_updated: "2026-03-29T23:16:03.782Z"
 progress:
   total_phases: 7
   completed_phases: 6
   total_plans: 31
-  completed_plans: 28
+  completed_plans: 29
 ---
 
 # State: Solo IT Ops Suite
@@ -30,22 +30,22 @@ See: `.planning/PROJECT.md` (updated 2026-03-28)
 ## Current Position
 
 Phase: 07 (operator-shell-refresh)
-Plan: 03 (next)
+Plan: 05 (next)
 
 - Current Phase: 07 of 09
-- Current Plan: 03 of 05 (07-02 complete)
-- Last Completed Plan: 07-02-PLAN.md
-- Phase Progress: Phase 07 Plan 02 complete — clean top bar with agent-topbar classes, sidebar subtitle updated to Agent-OS
-- Overall Progress: [█████████░] 90%
+- Current Plan: 05 of 05 (07-04 complete)
+- Last Completed Plan: 07-04-PLAN.md
+- Phase Progress: Phase 07 Plan 04 complete — functional risk card dashboard with hero image and five tool cards replacing mockup
+- Overall Progress: [█████████░] 94%
 
 ## Immediate Next Steps
 
-1. Execute Phase 07 Plan 03: Active-state styling and route context improvements.
-2. Execute Phase 07 Plan 04.
-3. Keep `npx pnpm test` green after each plan.
+1. Execute Phase 07 Plan 05: final phase plan.
+2. Keep `npx pnpm test` green after each plan.
 
 ## Recent Decisions
 
+- [Phase 07-04] Replaced mockup dashboard image and hotspot overlay with functional risk card dashboard; five static risk cards with ok/warn/critical variants; live data integration deferred (D-07, D-08, D-09).
 - [Phase 07-02] Navigation consolidated to sidebar only — top bar holds brand, identity, and sign-out only (D-01/D-02/D-03/D-04).
 - [Phase 07-02] agent-topbar CSS class system introduced; --topbar-height: 60px set as authoritative CSS variable in :root.
 - [Phase 07-01] Home route now renders inside AppShell with sidebar visible — eliminates the mockup-app-shell divergence (D-06).
@@ -61,6 +61,7 @@ Plan: 03 (next)
 
 ## Recent Execution
 
+- Phase 07 Plan 04 executed on 2026-03-29; summary recorded in `.planning/phases/07-operator-shell-refresh/07-04-SUMMARY.md`.
 - Phase 07 Plan 02 executed on 2026-03-29; summary recorded in `.planning/phases/07-operator-shell-refresh/07-02-SUMMARY.md`.
 - Phase 07 Plan 01 executed on 2026-03-29; summary recorded in `.planning/phases/07-operator-shell-refresh/07-01-SUMMARY.md`.
 - Phase 01 Plan 02 was executed on 2026-03-28; summary recorded in `.planning/phases/01-foundations-and-secure-data-flow/01-02-SUMMARY.md`.
@@ -94,11 +95,12 @@ Plan: 03 (next)
 | Phase 01 P03 | 2 min | 3 tasks | 12 files | 2026-03-28 |
 | 07 | 01 | 12 min | 3 | 4 | 2026-03-29 |
 | 07 | 02 | 2 min | 3 | 5 | 2026-03-29 |
+| 07 | 04 | 10 min | 3 | 5 | 2026-03-29 |
 
 ## Session Info
 
-- Last session: 2026-03-29T23:11:00Z
-- Stopped at: Completed 07-02-PLAN.md
+- Last session: 2026-03-29T23:15:25Z
+- Stopped at: Completed 07-04-PLAN.md
 
 ## Notes
 

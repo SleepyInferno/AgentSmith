@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
+import { PageTitle } from "../../components/PageTitle";
 import { DeviceInventoryTable } from "../../components/assets/DeviceInventoryTable";
 import { getDeviceInventory, type DeviceInventoryParams } from "../../lib/assets";
 
@@ -118,6 +119,7 @@ export function DeviceInventoryPage() {
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Device Inventory" />
       <article
         style={{
           padding: 24,

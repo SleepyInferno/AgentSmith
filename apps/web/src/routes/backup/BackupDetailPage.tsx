@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
+import { PageTitle } from "../../components/PageTitle";
 import { BackupConfidenceBreakdown } from "../../components/backup/BackupConfidenceBreakdown";
 import { BackupEvidenceTimeline } from "../../components/backup/BackupEvidenceTimeline";
 import { BackupSourceHealthCard } from "../../components/backup/BackupSourceHealthCard";
@@ -35,6 +36,7 @@ export function BackupDetailPage() {
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Backup Detail" />
       <article
         style={{
           ...panelStyle,

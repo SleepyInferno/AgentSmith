@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
+import { PageTitle } from "../../components/PageTitle";
 import { NetworkInventoryTable } from "../../components/network/NetworkInventoryTable";
 import { getNetworkInventory, type NetworkInventoryParams } from "../../lib/network";
 
@@ -118,6 +119,7 @@ export function NetworkInventoryPage() {
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Network Inventory" />
       <article style={panelStyle}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div>

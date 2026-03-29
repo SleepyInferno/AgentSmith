@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
+import { PageTitle } from "../../components/PageTitle";
 import {
   closeLifecycleRun,
   getLifecycleRun,
@@ -59,6 +60,7 @@ export function LifecycleRunDetailPage() {
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Lifecycle Run" />
       <article
         style={{
           ...panelStyle,

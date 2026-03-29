@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { PageTitle } from "../../components/PageTitle";
 import { BackupFindingsQueue } from "../../components/backup/BackupFindingsQueue";
 import { getBackupFindings, getBackupOverview } from "../../lib/backup";
 
@@ -54,6 +55,7 @@ export function BackupOverviewPage({ trustBoundaryCopy }: BackupOverviewPageProp
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Backup Confidence" />
       <section
         style={{
           display: "grid",

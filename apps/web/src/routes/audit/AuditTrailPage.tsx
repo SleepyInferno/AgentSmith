@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { PageTitle } from "../../components/PageTitle";
 import { apiGet } from "../../lib/api";
 
 type AuditEvent = {
@@ -55,6 +56,7 @@ export function AuditTrailPage() {
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Audit Log" />
       <article
         style={{
           padding: 24,
@@ -76,7 +78,7 @@ export function AuditTrailPage() {
         >
           Traceability
         </p>
-        <h1 style={{ margin: "10px 0 8px" }}>Audit trail</h1>
+        <h2 style={{ margin: "10px 0 8px" }}>Audit trail</h2>
         <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 760 }}>
           Review operator and workflow activity in reverse chronological order with target, result,
           and structured metadata before approving follow-on work.

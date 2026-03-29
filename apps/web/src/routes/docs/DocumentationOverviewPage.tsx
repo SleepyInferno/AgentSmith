@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { PageTitle } from "../../components/PageTitle";
 import { DocumentationReviewQueue } from "../../components/docs/DocumentationReviewQueue";
 import { docsQueryKeys, getDocumentationOverview, searchDocumentation } from "../../lib/docs";
 
@@ -49,6 +50,7 @@ export function DocumentationOverviewPage({ trustBoundaryCopy }: DocumentationOv
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Documentation" />
       <section
         style={{
           display: "grid",

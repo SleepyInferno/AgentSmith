@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
+import { PageTitle } from "../../components/PageTitle";
 import { RiskSignalList } from "../../components/assets/RiskSignalList";
 import { getDeviceDetail } from "../../lib/assets";
 
@@ -34,6 +35,7 @@ export function DeviceDetailPage() {
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Device Detail" />
       <article
         style={{
           padding: 24,

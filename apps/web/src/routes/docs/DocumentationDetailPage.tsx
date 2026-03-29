@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import { PageTitle } from "../../components/PageTitle";
 import { DocumentHistoryTimeline } from "../../components/docs/DocumentHistoryTimeline";
 import { DocumentLinkedSystemsCard } from "../../components/docs/DocumentLinkedSystemsCard";
 import { DocumentMetadataReviewPanel } from "../../components/docs/DocumentMetadataReviewPanel";
@@ -63,6 +64,7 @@ export function DocumentationDetailPage({ trustBoundaryCopy }: DocumentationDeta
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Document" />
       <article
         style={{
           ...panelStyle,

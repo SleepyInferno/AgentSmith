@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { PageTitle } from "../../components/PageTitle";
 import { NetworkMapCanvas } from "../../components/network/NetworkMapCanvas";
 import { NetworkRelationshipLegend } from "../../components/network/NetworkRelationshipLegend";
 import { getNetworkMap } from "../../lib/network";
@@ -43,6 +44,7 @@ export function NetworkMapPage() {
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Network Map" />
       <article style={{ ...panelStyle, background: "linear-gradient(135deg, rgba(240, 249, 255, 0.96), rgba(255, 255, 255, 0.98))" }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", alignItems: "flex-start" }}>
           <div>

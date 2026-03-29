@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
+import { PageTitle } from "../../components/PageTitle";
 import { DocumentationSearchResultsTable } from "../../components/docs/DocumentationSearchResultsTable";
 import { docsQueryKeys, searchDocumentation, type DocumentationSearchParams } from "../../lib/docs";
 
@@ -144,6 +145,7 @@ export function DocumentationSearchPage({ trustBoundaryCopy }: DocumentationSear
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Documentation Search" />
       <article style={panelStyle}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div>

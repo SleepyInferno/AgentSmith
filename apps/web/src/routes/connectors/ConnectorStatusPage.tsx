@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { PageTitle } from "../../components/PageTitle";
 import { apiGet } from "../../lib/api";
 
 type ConnectorCard = {
@@ -44,6 +45,7 @@ export function ConnectorStatusPage() {
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Connectors" />
       <article
         style={{
           padding: 24,
@@ -65,7 +67,7 @@ export function ConnectorStatusPage() {
         >
           Source freshness
         </p>
-        <h1 style={{ margin: "10px 0 8px" }}>Connector status</h1>
+        <h2 style={{ margin: "10px 0 8px", fontSize: "1.25rem" }}>Connector status</h2>
         <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 760 }}>
           Review source health, last successful sync time, freshness, and the latest sync outcome
           before trusting downstream dashboards or workflows.

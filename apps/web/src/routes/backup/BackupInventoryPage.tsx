@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useSearchParams } from "react-router-dom";
+import { PageTitle } from "../../components/PageTitle";
 import { BackupInventoryTable } from "../../components/backup/BackupInventoryTable";
 import { getBackupInventory, type BackupInventoryParams } from "../../lib/backup";
 
@@ -122,6 +123,7 @@ export function BackupInventoryPage({ trustBoundaryCopy }: BackupInventoryPagePr
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Backup Inventory" />
       <article style={panelStyle}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div>

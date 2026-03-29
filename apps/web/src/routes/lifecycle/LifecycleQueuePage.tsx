@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { PageTitle } from "../../components/PageTitle";
 import { ActiveLifecycleRuns } from "../../components/lifecycle/ActiveLifecycleRuns";
 import { LifecycleTemplateCards } from "../../components/lifecycle/LifecycleTemplateCards";
 import {
@@ -47,6 +48,7 @@ export function LifecycleQueuePage() {
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Lifecycle Queue" />
       <section
         style={{
           ...sectionStyle,

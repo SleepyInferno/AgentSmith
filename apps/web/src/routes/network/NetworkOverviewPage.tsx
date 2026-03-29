@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { PageTitle } from "../../components/PageTitle";
 import { NetworkFindingsQueue } from "../../components/network/NetworkFindingsQueue";
 import { getNetworkFindings, getNetworkMap } from "../../lib/network";
 
@@ -34,6 +35,7 @@ export function NetworkOverviewPage() {
 
   return (
     <section style={{ display: "grid", gap: 20 }}>
+      <PageTitle title="Identity Risk" />
       <section
         style={{
           display: "grid",

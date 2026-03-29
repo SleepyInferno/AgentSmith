@@ -5,7 +5,7 @@ test("covers dashboard hotspots and shell navigation", async ({ page }) => {
   await mockOperatorApp(page);
 
   await page.goto("/");
-  await expect(page.getByLabel("AgentSmith dashboard mockup")).toBeVisible();
+  await expect(page.getByLabel("Operator risk overview")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Review Panel" })).toHaveCount(0);
 
   await page.getByRole("link", { name: "Device Inventory" }).first().click();

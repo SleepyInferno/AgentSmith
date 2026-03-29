@@ -32,7 +32,7 @@ test("navigates the protected shell across primary sections", async ({ page }) =
   await mockAppApi(page);
 
   await page.goto("/");
-  await expect(page.getByLabel("AgentSmith dashboard mockup")).toBeVisible();
+  await expect(page.getByLabel("Operator risk overview")).toBeVisible();
 
   await page.getByRole("link", { name: "Lifecycle Queue" }).first().click();
   await expect(page).toHaveURL(/\/lifecycle$/);

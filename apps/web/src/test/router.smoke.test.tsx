@@ -4,7 +4,7 @@ import { renderApp } from "./renderApp";
 
 describe("web route coverage", () => {
   const cases = [
-    { path: "/", finder: () => screen.findByLabelText("AgentSmith dashboard mockup") },
+    { path: "/", finder: () => screen.findByLabelText("Operator risk overview") },
     { path: "/devices", finder: () => screen.findByText("Filterable device inventory") },
     { path: "/devices/agentsmith-1", finder: () => screen.findByText("Risk summary") },
     { path: "/network", finder: () => screen.findByText("Open network inventory") },

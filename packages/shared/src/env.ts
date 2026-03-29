@@ -9,6 +9,7 @@ const serverEnvSchema = z.object({
   ENTRA_CLIENT_SECRET: z.string(),
   ENTRA_REDIRECT_URI: z.string().url(),
   SESSION_SECRET: z.string().min(1),
+  DEV_AUTH_BYPASS: z.enum(["true", "false"]).optional(),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;

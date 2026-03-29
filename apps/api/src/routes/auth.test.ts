@@ -34,6 +34,7 @@ const completedLogin: CompletedLogin = {
     email: "operator@example.com",
     displayName: "Operator One",
   },
+  redirectPath: null,
 };
 
 function buildPrismaStub() {
@@ -113,6 +114,33 @@ test("GET /auth/login redirects through the auth service", async (t) => {
   assert.equal(response.headers.location, "https://login.microsoftonline.com/common/oauth2/v2.0/authorize");
 });
 
+test("GET /auth/login forwards a safe redirect path into the auth flow", async (t) => {
+  let receivedRedirectPath: string | null | undefined;
+  const { app } = buildServer({
+    env: testEnv,
+    prisma: buildPrismaStub(),
+    authService: buildAuthService({
+      async beginLogin(reply, redirectPath) {
+        receivedRedirectPath = redirectPath;
+        reply.code(302).header("location", "https://login.microsoftonline.com/common/oauth2/v2.0/authorize");
+      },
+    }),
+    auditService: { write: async (input) => createAuditRecord(input) },
+  });
+
+  t.after(async () => {
+    await app.close();
+  });
+
+  const response = await app.inject({
+    method: "GET",
+    url: "/auth/login?redirect=%2Fdocs%2Fsearch%3Fq%3Drestore",
+  });
+
+  assert.equal(response.statusCode, 302);
+  assert.equal(receivedRedirectPath, "/docs/search?q=restore");
+});
+
 test("GET /auth/callback records successful sign-in events and redirects home", async (t) => {
   const writes: AuditWriteInput[] = [];
   const { app } = buildServer({
@@ -146,6 +174,34 @@ test("GET /auth/callback records successful sign-in events and redirects home", 
   assert.equal(writes[0]?.result, "success");
 });
 
+test("GET /auth/callback redirects back to the preserved frontend path after login", async (t) => {
+  const { app } = buildServer({
+    env: testEnv,
+    prisma: buildPrismaStub(),
+    authService: buildAuthService({
+      async completeCallback() {
+        return {
+          ...completedLogin,
+          redirectPath: "/docs/search?q=sharepoint",
+        };
+      },
+    }),
+    auditService: { write: async (input) => createAuditRecord(input) },
+  });
+
+  t.after(async () => {
+    await app.close();
+  });
+
+  const response = await app.inject({
+    method: "GET",
+    url: "/auth/callback?code=test-code&state=test-state",
+  });
+
+  assert.equal(response.statusCode, 302);
+  assert.equal(response.headers.location, "http://localhost:3000/docs/search?q=sharepoint");
+});
+
 test("GET /auth/callback records failed sign-in events when callback validation fails", async (t) => {
   const writes: AuditWriteInput[] = [];
   const { app } = buildServer({
@@ -155,6 +211,7 @@ test("GET /auth/callback records failed sign-in events when callback validation 
       async completeCallback() {
         throw new AuthCallbackError("State mismatch", "state-123", {
           reason: "state_mismatch",
+          redirectPath: "/docs/search?q=restore",
         });
       },
     }),
@@ -176,7 +233,7 @@ test("GET /auth/callback records failed sign-in events when callback validation 
   });
 
   assert.equal(response.statusCode, 302);
-  assert.equal(response.headers.location, "http://localhost:3000/login?error=auth_failed");
+  assert.equal(response.headers.location, "http://localhost:3000/login?error=auth_failed&redirect=%2Fdocs%2Fsearch%3Fq%3Drestore");
   assert.equal(writes.length, 1);
   assert.equal(writes[0]?.action, authAuditActions.loginFailed);
   assert.equal(writes[0]?.actorId, null);

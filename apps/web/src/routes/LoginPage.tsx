@@ -5,6 +5,8 @@ export function LoginPage() {
   const { authenticated, isLoading } = useSession();
   const [searchParams] = useSearchParams();
   const authFailed = searchParams.get("error") === "auth_failed";
+  const redirect = searchParams.get("redirect");
+  const signInHref = redirect ? `/auth/login?redirect=${encodeURIComponent(redirect)}` : "/auth/login";
 
   if (!isLoading && authenticated) {
     return <Navigate to="/" replace />;
@@ -116,7 +118,7 @@ export function LoginPage() {
           ) : null}
 
           <a
-            href="/auth/login"
+            href={signInHref}
             style={{
               display: "inline-flex",
               alignItems: "center",

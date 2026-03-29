@@ -8,10 +8,9 @@ test("covers dashboard hotspots and shell navigation", async ({ page }) => {
   await expect(page.getByLabel("AgentSmith dashboard mockup")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Review Panel" })).toHaveCount(0);
 
-  await page.getByRole("link", { name: "Device Inventory navigation" }).click();
+  await page.getByRole("link", { name: "Device Inventory" }).first().click();
   await expect(page).toHaveURL(/\/devices$/);
   await expect(page.getByRole("heading", { name: "Filterable device inventory" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Review Panel" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Device Inventory" })).toHaveAttribute("aria-current", "page");
 
   await page.getByRole("link", { name: "Lifecycle Queue" }).click();

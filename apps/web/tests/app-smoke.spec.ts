@@ -34,19 +34,19 @@ test("navigates the protected shell across primary sections", async ({ page }) =
   await page.goto("/");
   await expect(page.getByLabel("AgentSmith dashboard mockup")).toBeVisible();
 
-  await page.getByRole("link", { name: "Lifecycle Queue" }).click();
+  await page.getByRole("link", { name: "Lifecycle Queue" }).first().click();
   await expect(page).toHaveURL(/\/lifecycle$/);
   await expect(page.getByText("Lifecycle workflows")).toBeVisible();
 
-  await page.getByRole("link", { name: "Device Inventory" }).click();
+  await page.getByRole("link", { name: "Device Inventory" }).first().click();
   await expect(page).toHaveURL(/\/devices$/);
   await expect(page.getByText("Filterable device inventory")).toBeVisible();
 
-  await page.getByRole("link", { name: "Identity Risk" }).click();
+  await page.getByRole("link", { name: "Identity Risk" }).first().click();
   await expect(page).toHaveURL(/\/network$/);
   await expect(page.getByText("Open network inventory")).toBeVisible();
 
-  await page.getByRole("link", { name: "Backup Confidence" }).click();
+  await page.getByRole("link", { name: "Backup Confidence" }).first().click();
   await expect(page).toHaveURL(/\/backup$/);
   await expect(page.getByText("Open backup inventory")).toBeVisible();
 
@@ -67,7 +67,7 @@ test("covers cross-links and docs metadata review", async ({ page }) => {
   await mockAppApi(page);
 
   await page.goto("/");
-  await page.getByRole("link", { name: "Backup Confidence navigation" }).click();
+  await page.getByRole("link", { name: "Backup Confidence" }).first().click();
   await expect(page).toHaveURL(/\/backup$/);
 
   await page.getByRole("link", { name: "Open backup inventory" }).click();

@@ -179,7 +179,7 @@ Goal: Refresh the shared operator shell so the operator can move through the app
 
 Plans:
 - [x] 07-01-PLAN.md - Remove dead shell components (BrowserToolbar, ReviewPanel) and unify home route into full shell layout
-- [ ] 07-02-PLAN.md - Introduce clean agent-topbar replacing the ProtectedLayout inline-styled header nav
+- [x] 07-02-PLAN.md - Introduce clean agent-topbar replacing the ProtectedLayout inline-styled header nav
 - [ ] 07-03-PLAN.md - Add active-state styling and route context chrome
 - [ ] 07-04-PLAN.md - Replace mockup dashboard with functional risk card dashboard
 - [ ] 07-05-PLAN.md - Rebrand sidebar subtitle and finalize shell polish

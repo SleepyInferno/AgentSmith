@@ -1,14 +1,14 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: Milestone complete
-last_updated: "2026-03-28T19:18:28.419Z"
+milestone: v1.1
+milestone_name: Operator Experience
+status: In progress
+last_updated: "2026-03-29T23:02:25Z"
 progress:
-  total_phases: 6
+  total_phases: 9
   completed_phases: 6
-  total_plans: 26
-  completed_plans: 26
+  total_plans: 41
+  completed_plans: 27
 ---
 
 # State: Solo IT Ops Suite
@@ -29,23 +29,28 @@ See: `.planning/PROJECT.md` (updated 2026-03-28)
 
 ## Current Position
 
-Phase: 01 (foundations-and-secure-data-flow) - COMPLETE
-Plan: all plans complete
+Phase: 07 (operator-shell-refresh)
+Plan: 02 (next)
 
-- Current Phase: None
-- Current Plan: None
-- Last Completed Plan: 01-03-PLAN.md
-- Phase Progress: Phase 01 backfill is complete and verified; all 6 planned phases are now closed
-- Overall Progress: [██████████] 100%
+- Current Phase: 07 of 09
+- Current Plan: 02 of 05 (07-01 complete)
+- Last Completed Plan: 07-01-PLAN.md
+- Phase Progress: Phase 07 Plan 01 complete — dead shell components removed, layout unified
+- Overall Progress: [██████░░░░] 66%
 
 ## Immediate Next Steps
 
-1. Use `$gsd-progress` to review the fully closed roadmap and any residual planning debt.
-2. Decide whether to clean up the unrelated docs and lifecycle TypeScript build debt that still affects the full API package build.
-3. Ship or review the Phase 1 backfill commits alongside the existing completed phase work.
+1. Execute Phase 07 Plan 02: Introduce clean top bar with brand, identity, and sign-out only (replacing inline-styled ProtectedLayout header nav).
+2. Execute Phase 07 Plan 03: Active-state styling and route context improvements.
+3. Keep `npx pnpm test` green after each plan.
 
 ## Recent Decisions
 
+- [Phase 07-01] Home route now renders inside AppShell with sidebar visible — eliminates the mockup-app-shell divergence (D-06).
+- [Phase 07-01] BrowserToolbar removed — mock Safari chrome adds no operator value (D-05).
+- [Phase 07-01] ReviewPanel removed — static/mock content will be reintroduced later with live data (D-10).
+- [Phase 07-01] agent-console grid reduced from 3-column to 2-column (sidebar + main stage).
+- [Phase 07-01] --topbar-height CSS custom property used for min-height forward-compatibility with Plan 07-02's topbar.
 - [Phase 01] Wrapped the current shipped shell in a protected layout instead of reverting to the earlier placeholder screen so the auth backfill preserved later operator workflows.
 - [Phase 01] Centralized browser API requests through a shared credentials-included client and `useSession` so authentication state stays API-backed.
 - [Phase 01] Added direct auth route tests because full API builds are currently blocked by unrelated docs and lifecycle TypeScript errors.
@@ -54,6 +59,7 @@ Plan: all plans complete
 
 ## Recent Execution
 
+- Phase 07 Plan 01 executed on 2026-03-29; summary recorded in `.planning/phases/07-operator-shell-refresh/07-01-SUMMARY.md`.
 - Phase 01 Plan 02 was executed on 2026-03-28; summary recorded in `.planning/phases/01-foundations-and-secure-data-flow/01-02-SUMMARY.md`.
 - Phase 01 Plan 03 was executed on 2026-03-28; summary recorded in `.planning/phases/01-foundations-and-secure-data-flow/01-03-SUMMARY.md`.
 - Phase 01 was verified on 2026-03-28; report recorded in `.planning/phases/01-foundations-and-secure-data-flow/01-VERIFICATION.md`.
@@ -83,12 +89,12 @@ Plan: all plans complete
 | Phase 06 P05 | 15 min | 2 tasks | 8 files | 2026-03-28 |
 | Phase 01 P02 | 23 min | 3 tasks | 18 files | 2026-03-28 |
 | Phase 01 P03 | 2 min | 3 tasks | 12 files | 2026-03-28 |
+| 07 | 01 | 12 min | 3 | 4 | 2026-03-29 |
 
 ## Session Info
 
-- Last session: 2026-03-28T02:23:44Z
-- Stopped at: Phase 01 backfill complete and verified
-- Resume from: Optional cleanup or ship workflow
+- Last session: 2026-03-29T23:02:25Z
+- Stopped at: Completed 07-01-PLAN.md
 
 ## Notes
 

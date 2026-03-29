@@ -54,7 +54,7 @@ test("navigates the protected shell across primary sections", async ({ page }) =
   await expect(page).toHaveURL(/\/docs$/);
   await expect(page.getByText("Open search inventory")).toBeVisible();
 
-  await page.getByLabel("Primary auth navigation").getByRole("link", { name: "Connectors" }).click();
+  await page.getByRole("link", { name: "Connectors" }).click();
   await expect(page).toHaveURL(/\/connectors$/);
   await expect(page.getByText("Connector status")).toBeVisible();
 

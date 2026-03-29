@@ -17,10 +17,10 @@ test("covers dashboard hotspots and shell navigation", async ({ page }) => {
   await expect(page).toHaveURL(/\/lifecycle$/);
   await expect(page.getByRole("heading", { name: "Lifecycle workflows" })).toBeVisible();
 
-  await page.getByRole("link", { name: "Connectors" }).first().click();
+  await page.getByRole("link", { name: "Connectors" }).click();
   await expect(page).toHaveURL(/\/connectors$/);
   await expect(page.getByRole("heading", { name: "Connector status" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Connectors" }).first()).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("link", { name: "Connectors" })).toHaveAttribute("aria-current", "page");
 
   await page.getByRole("link", { name: "Audit Log" }).click();
   await expect(page).toHaveURL(/\/audit$/);

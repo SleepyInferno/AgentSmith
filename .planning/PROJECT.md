@@ -2,11 +2,21 @@
 
 ## What This Is
 
-Solo IT Ops Suite is an internal operations console for a one-person or very small IT team that has to keep devices, accounts, backups, and documentation under control without dropping important tasks. It combines Microsoft tenant visibility with workflow automation so the admin can spot risk fast, act from one place, and leave behind usable operational history instead of scattered notes.
+Solo IT Ops Suite is an internal operations console for a one-person or very small IT team that has to keep devices, accounts, backups, network visibility, and documentation under control without dropping important tasks. It combines Microsoft tenant visibility with guided operational workflows so the admin can spot risk fast, act from one place, and leave behind usable operational history instead of scattered notes.
 
 ## Core Value
 
 One overextended IT generalist can see the highest-risk issues first and complete critical operational workflows consistently without relying on memory.
+
+## Current Milestone: v1.1 Operator Experience
+
+**Goal:** Refresh the existing five-tool experience so the solo operator can move through the app faster, with clearer hierarchy, stronger consistency, and broader non-human UI verification.
+
+**Target features:**
+- Refresh the protected shell, primary navigation, and shared page chrome
+- Unify queue, inventory, detail, and review-panel patterns across the five tools
+- Improve responsive behavior, accessibility, and shared loading, empty, error, stale, and read-only states
+- Expand automated UI verification for route links, back-links, shell infrastructure, and key workflows
 
 ## Requirements
 
@@ -21,40 +31,48 @@ One overextended IT generalist can see the highest-risk issues first and complet
 
 ### Active
 
+- [ ] The protected shell makes primary routes, utility routes, context rails, and review actions easy to scan from any page.
+- [ ] Queue, inventory, detail, and review flows feel visually and behaviorally consistent across devices, lifecycle, network, backup, and docs.
+- [ ] Shared UI states are responsive, keyboard-accessible, and explicit for loading, empty, stale, error, and read-only conditions.
+- [ ] Automated browser and component coverage protects the shell, route links, back-links, and non-human workflow expectations during the overhaul.
+
 ### Out of Scope
 
-- Full PSA/help desk replacement - not core to reducing operational risk in the first release.
-- Full RMM replacement - too broad for v1 and overlaps heavily with established tools.
+- Full PSA/help desk replacement - not core to reducing operational risk in this product.
+- Full RMM replacement - too broad and overlaps heavily with established tools.
 - Advanced network automation - useful later, but secondary to identity, endpoint, backup, and documentation hygiene.
-- Billing, procurement, and contract management - operationally related but not part of the first high-value workflow set.
+- Billing, procurement, and contract management - operationally related but not part of the highest-value workflow set.
+- Net-new operational modules during v1.1 - preserve the five-tool scope while the UI foundation is being refreshed.
+- Broad write automation expansion - strengthen navigation, review UX, and operator confidence before adding more high-trust actions.
 
 ## Context
 
 - The starting point is an existing app that already integrates with Intune for foreign IP monitoring.
 - The target user is effectively a solo IT department covering endpoint support, account lifecycle work, maintenance, networking, and general firefighting.
-- The strongest opportunity is reducing repeated manual checking and turning important but easy-to-forget tasks into guided workflows.
-- The environment is likely Microsoft-centric, with Intune, Entra ID, Microsoft 365, and related security/admin data as primary sources.
+- The strongest opportunity remains reducing repeated manual checking and turning important but easy-to-forget tasks into guided workflows.
+- The environment is Microsoft-centric, with Intune, Entra ID, Microsoft 365, and related security/admin data as primary sources.
 - The product should support both read-heavy oversight workflows and a smaller set of high-confidence administrative actions with strong auditability.
 - Existing EDR coverage reduces the value of a separate identity-risk dashboard, so identity hygiene should live inside the lifecycle workflow surface when it needs tracked follow-through.
 - A lightweight network visibility and mapping surface fills the vacated v1 module slot because it addresses an operational gap that existing endpoint and security tooling does not cover cleanly.
+- v1.0 is complete and verified across foundations, asset health, lifecycle automation, network visibility, backup confidence, and documentation assistant.
+- The next milestone is intentionally focused on operator experience, consistency, and trustworthiness of the current surface before new scope is added.
+- Automated verification now covers API contracts, route-level React rendering, and mocked-browser workflow coverage for the main non-human flows.
 
 ## Current State
 
-- Phase 1 is complete and verified. The app now includes Microsoft Entra sign-in, API-backed session gating, protected connector visibility, and a shared audit timeline surface.
-- Phase 2 is complete and verified. The app now includes a queue-first asset health dashboard, explainable device detail, and a filterable, sortable device inventory backed by one server-owned risk model.
-- Phase 3 is complete and verified. The app now includes a queue-first lifecycle workflow that launches onboarding and offboarding runs, guides grouped step execution with evidence capture, and closes work out with unresolved follow-up visibility.
-- Phase 4 is complete and verified. The app now includes a queue-first network overview, filterable inventory, lightweight topology map, and explanation-first detail flow for network triage.
-- Phase 5 is complete and verified. The app now includes a backup confidence workflow that keeps protection coverage, restore proof, and trust-state explanations read-only and explicit.
-- Phase 6 is complete and verified. The app now includes searchable operational documentation, explanation-first detail, visible review history, and one audited metadata-review flow.
-- All six planned phases are now implemented and verified, including the Phase 1 backfill that closes the protected shell, connector health, and audit groundwork explicitly.
+- v1.0 shipped the protected shell and the five-tool operational workflow set.
+- v1.1 Operator Experience is active and scoped around UI overhaul, navigation consistency, responsive hardening, and stronger automation coverage.
+- The standard root test command now passes across API tests, web unit tests, and Playwright browser tests.
+- The full API typecheck still has pre-existing docs and lifecycle TypeScript debt outside this milestone.
 
 ## Constraints
 
-- **Security**: Admin data and actions must be tightly permissioned and auditable - the app will touch identity, device, and potentially backup metadata.
-- **Integration**: Microsoft Graph, Intune, and Entra ID need to be first-class connectors - the product is most valuable if it fits the current tenant reality.
-- **Usability**: A solo admin needs immediate signal, not a dense enterprise dashboard - every screen should help prioritize next action.
-- **Delivery**: The first release should focus on the five highest-value tools before expanding into broader IT operations features.
-- **Extensibility**: The architecture should support adding future modules such as license tracking, maintenance scheduling, and deeper network automation without a rewrite.
+- **Scope**: Preserve the five-tool surface - strengthen existing workflows before adding new modules.
+- **Security**: Admin data and actions must be tightly permissioned and auditable because the app touches identity, device, backup, and documentation metadata.
+- **Integration**: Microsoft Graph, Intune, and Entra ID remain first-class connectors because the product is most valuable when it fits the current tenant reality.
+- **Usability**: A solo admin needs immediate signal, not dense dashboard sprawl - every screen should help prioritize next action.
+- **Verification**: Non-human UI behavior should be covered by automated tests wherever practical so the overhaul stays regression-resistant.
+- **Architecture**: Keep connector-specific logic isolated from internal domain models.
 
 ## Key Decisions
 
@@ -66,6 +84,8 @@ One overextended IT generalist can see the highest-risk issues first and complet
 | Favor guided workflows and risk summaries over fully automated remediation | A solo IT admin still needs control over sensitive actions | - Pending |
 | Let the EDR own broad identity alerting while AgentSmith owns lifecycle-linked identity follow-through | Avoids duplicating an existing detection surface and keeps this app focused on guided remediation | - Pending |
 | Replace the former security module with Network Visibility Lite | Gives the operator site and infrastructure context that is not already covered by the existing EDR stack | - Pending |
+| Treat the UI overhaul as a focused v1.1 milestone instead of expanding scope immediately | v1.0 already covers the core five-tool surface; operator speed and clarity now offer more leverage than new modules | - Pending |
+| Continue phase numbering from 07 for v1.1 | Preserves planning history and keeps the v1.0 archive intact | - Pending |
 
 ## Evolution
 
@@ -85,4 +105,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-28 after Phase 1 completion*
+*Last updated: 2026-03-28 after starting milestone v1.1 Operator Experience*

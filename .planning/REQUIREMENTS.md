@@ -1,47 +1,34 @@
 # Requirements: Solo IT Ops Suite
 
-**Defined:** 2026-03-26
+**Defined:** 2026-03-28
 **Core Value:** One overextended IT generalist can see the highest-risk issues first and complete critical operational workflows consistently without relying on memory.
+**Prior milestone archive:** `.planning/milestones/v1.0-REQUIREMENTS.md`
 
-## v1 Requirements
+## v1.1 Requirements
 
-### Platform
+### Operator Shell
 
-- [x] **PLAT-01**: Operator can sign in with Entra ID and access the app without managing separate local credentials
-- [x] **PLAT-02**: Operator actions and workflow runs are recorded in an audit log with timestamp, actor, and result
-- [x] **PLAT-03**: Operator can see connector health, last sync time, and data freshness for each integrated source
+- [ ] **SHELL-01**: Operator can move between primary tools and utility routes from persistent navigation with clear active-state feedback.
+- [ ] **SHELL-02**: Operator can understand where they are and what to do next from shared shell chrome, route context, and review-side infrastructure.
+- [ ] **SHELL-03**: Operator can use the shell comfortably on common laptop and tablet widths without clipped, overlapping, or hidden navigation.
 
-### Asset Health
+### Workflow Surfaces
 
-- [x] **ASST-01**: Operator can view a unified device inventory with owner, department, site, OS, encryption, AV, patch status, and last check-in
-- [x] **ASST-02**: Operator can filter and sort devices by risk indicators such as stale check-in, low disk, missing encryption, missing AV, age, and unsupported OS
-- [x] **ASST-03**: Operator can open a device detail view showing the health signals contributing to its risk status
-- [x] **ASST-04**: Operator can see a prioritized "needs attention" queue for the riskiest devices
+- [ ] **FLOW-01**: Operator can move from each overview queue to its matching inventory or detail screen through clear, consistent calls to action.
+- [ ] **FLOW-02**: Operator can move back from every detail screen to the right queue or inventory context without losing relevant filter state.
+- [ ] **FLOW-03**: Operator sees consistent layout patterns for queue cards, inventory tables, detail summaries, and review panels across the five tools.
+- [ ] **FLOW-04**: Operator can distinguish loading, empty, stale, error, read-only, and action-required states without relearning page-specific conventions.
 
-### Lifecycle Automation
+### Experience Hardening
 
-- [x] **LIFE-01**: Operator can start onboarding from a reusable template that includes identity, licensing, group, device, and checklist steps
-- [x] **LIFE-02**: Operator can run offboarding from a guided workflow that covers access removal, device recovery, mailbox or file handoff, and follow-up tasks
-- [x] **LIFE-03**: Operator can mark workflow steps as automated, manual, skipped, or blocked and capture notes or evidence for each
-- [x] **LIFE-04**: Operator can review a final workflow summary showing what completed, what failed, and what still needs manual work
+- [ ] **QUAL-01**: Operator can navigate primary routes, filters, dialogs, and review forms with keyboard access and visible focus treatment.
+- [ ] **QUAL-02**: Operator can rely on accessible labels, headings, and readable contrast across shared navigation and workflow surfaces.
+- [ ] **QUAL-03**: Operator gets responsive layouts that preserve hierarchy, spacing, and tap targets at narrower widths.
 
-### Network Visibility Lite
+### Verification
 
-- [x] **NET-01**: Operator can view a lightweight network inventory across sites, WAN links, firewalls, switches, APs, and key DHCP or VPN services with status and last-seen freshness
-- [x] **NET-02**: Operator can open a network mapper that shows sites, WAN and LAN segments, core network devices, and whether relationships are confirmed or inferred
-- [x] **NET-03**: Operator can review network findings for offline infrastructure, stale telemetry, topology gaps, or unclear ownership and understand the affected site or segment plus the suggested next step
-
-### Backup Confidence
-
-- [x] **BACK-01**: Operator can view a protected-system inventory with backup source, last successful backup, and last restore-test date
-- [x] **BACK-02**: Operator can see systems that are missing backup coverage or have stale backup evidence
-- [x] **BACK-03**: Operator can review backup confidence status using both backup freshness and restore-test recency
-
-### Documentation Assistant
-
-- [x] **DOCS-01**: Operator can search operational documentation across SOPs, vendors, contacts, infrastructure notes, and recovery procedures
-- [x] **DOCS-02**: Operator can tag documents by system, site, owner, and category so search results stay relevant
-- [x] **DOCS-03**: Operator can view document history and review dates so stale documentation is visible
+- [ ] **TEST-01**: Team can run automated UI coverage for shell navigation, route links, back-links, and key workflows from the standard root test command.
+- [ ] **TEST-02**: Team can verify shared UI infrastructure and major workflow components with targeted automated tests before human visual review.
 
 ## v2 Requirements
 
@@ -56,41 +43,33 @@
 
 | Feature | Reason |
 |---------|--------|
-| Full remote monitoring and management suite | Too broad for the first release |
-| End-user self-service portal | Lower value than operator efficiency in v1 |
-| Procurement and budget workflows | Important, but outside the five highest-value tools |
-| Full network automation and configuration management | Higher risk and lower immediate leverage than the chosen v1 scope |
+| Net-new operational modules in v1.1 | Preserve the five-tool surface while the UI foundation is being refreshed |
+| New high-trust write actions | The overhaul should strengthen clarity and review UX before action expansion |
+| Full design-system extraction or token platform work | Keep this milestone focused on the production app experience, not a parallel platform project |
+| Mobile-native app work | The operator web experience remains the priority |
 
 ## Traceability
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PLAT-01 | Phase 1 | Complete |
-| PLAT-02 | Phase 1 | Complete |
-| PLAT-03 | Phase 1 | Complete |
-| ASST-01 | Phase 2 | Complete |
-| ASST-02 | Phase 2 | Complete |
-| ASST-03 | Phase 2 | Complete |
-| ASST-04 | Phase 2 | Complete |
-| LIFE-01 | Phase 3 | Complete |
-| LIFE-02 | Phase 3 | Complete |
-| LIFE-03 | Phase 3 | Complete |
-| LIFE-04 | Phase 3 | Complete |
-| NET-01 | Phase 4 | Complete |
-| NET-02 | Phase 4 | Complete |
-| NET-03 | Phase 4 | Complete |
-| BACK-01 | Phase 5 | Complete |
-| BACK-02 | Phase 5 | Complete |
-| BACK-03 | Phase 5 | Complete |
-| DOCS-01 | Phase 6 | Complete |
-| DOCS-02 | Phase 6 | Complete |
-| DOCS-03 | Phase 6 | Complete |
+| SHELL-01 | Phase 07 | Pending |
+| SHELL-02 | Phase 07 | Pending |
+| SHELL-03 | Phase 07 | Pending |
+| FLOW-01 | Phase 08 | Pending |
+| FLOW-02 | Phase 08 | Pending |
+| FLOW-03 | Phase 08 | Pending |
+| FLOW-04 | Phase 08 | Pending |
+| QUAL-01 | Phase 09 | Pending |
+| QUAL-02 | Phase 09 | Pending |
+| QUAL-03 | Phase 09 | Pending |
+| TEST-01 | Phase 09 | Pending |
+| TEST-02 | Phase 09 | Pending |
 
 **Coverage:**
-- v1 requirements: 20 total
-- Mapped to phases: 20
+- v1.1 requirements: 12 total
+- Mapped to phases: 12
 - Unmapped: 0 - complete
 
 ---
-*Requirements defined: 2026-03-26*
-*Last updated: 2026-03-28 after Phase 1 completion*
+*Requirements defined: 2026-03-28*
+*Last updated: 2026-03-28 after starting milestone v1.1 Operator Experience*

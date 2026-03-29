@@ -119,6 +119,27 @@
   }
 }
 
+.agent-page-title {
+  padding: 20px 24px 0;
+}
+
+.agent-page-title__eyebrow {
+  margin: 0 0 4px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.agent-page-title__heading {
+  margin: 0 0 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
 * {
   box-sizing: border-box;
 }

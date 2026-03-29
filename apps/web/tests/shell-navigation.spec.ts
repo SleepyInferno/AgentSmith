@@ -25,6 +25,17 @@ test("covers dashboard hotspots and shell navigation", async ({ page }) => {
   await page.getByRole("link", { name: "Audit Log" }).click();
   await expect(page).toHaveURL(/\/audit$/);
   await expect(page.getByRole("heading", { name: "Audit trail" })).toBeVisible();
+
+  // Sidebar is the only navigation surface — no top-nav links to dashboard
+  await expect(page.getByLabel("Primary auth navigation")).not.toBeAttached();
+
+  // PageTitle heading is present on device inventory
+  await page.goto("/devices");
+  await expect(page.getByRole("heading", { name: "Device Inventory", level: 1 })).toBeVisible();
+
+  // PageTitle heading is present on lifecycle queue
+  await page.goto("/lifecycle");
+  await expect(page.getByRole("heading", { name: "Lifecycle Queue", level: 1 })).toBeVisible();
 });
 
 test("covers overview-to-detail navigation for network, backup, and docs", async ({ page }) => {
@@ -48,4 +59,27 @@ test("covers overview-to-detail navigation for network, backup, and docs", async
   await page.getByRole("link", { name: "M365 Break Glass Procedure" }).click();
   await expect(page).toHaveURL(/\/docs\/doc-m365-break-glass$/);
   await expect(page.getByRole("heading", { name: "M365 Break Glass Procedure" })).toBeVisible();
+});
+
+test("covers home route shell layout and risk card dashboard", async ({ page }) => {
+  await mockOperatorApp(page);
+
+  await page.goto("/");
+
+  // Sidebar is visible on the home route (D-06: unified layout)
+  await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
+
+  // Dashboard landmark is present (replaced mockup)
+  await expect(page.getByLabel("Operator risk overview")).toBeVisible();
+
+  // All five risk cards are present and link to correct routes (use aria-label to distinguish from sidebar nav)
+  await expect(page.getByRole("link", { name: /Device Inventory: / })).toBeAttached();
+  await expect(page.getByRole("link", { name: /Lifecycle Queue: / })).toBeAttached();
+  await expect(page.getByRole("link", { name: /Backup Confidence: / })).toBeAttached();
+  await expect(page.getByRole("link", { name: /Network Visibility: / })).toBeAttached();
+  await expect(page.getByRole("link", { name: /Documentation: / })).toBeAttached();
+
+  // Top bar has sign-out but no nav links to primary routes
+  await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
+  await expect(page.getByLabel("Primary auth navigation")).not.toBeAttached();
 });

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "../../lib/queryClient";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   updateLifecycleStep,
   type LifecycleRunStep,
@@ -35,6 +34,7 @@ export function LifecycleStepEditor(props: LifecycleStepEditorProps) {
   const { runId, step, isReadOnly } = props;
   const [form, setForm] = useState<FormState>(() => getInitialForm(step));
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     setForm(getInitialForm(step));

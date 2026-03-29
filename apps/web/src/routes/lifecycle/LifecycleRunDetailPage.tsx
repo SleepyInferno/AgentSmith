@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import {
   closeLifecycleRun,
   getLifecycleRun,
   getLifecycleRunSummary,
 } from "../../lib/lifecycle";
-import { queryClient } from "../../lib/queryClient";
 import { LifecycleRunGroupList } from "../../components/lifecycle/LifecycleRunGroupList";
 import { LifecycleSummaryPanel } from "../../components/lifecycle/LifecycleSummaryPanel";
 
@@ -21,6 +20,7 @@ const panelStyle = {
 export function LifecycleRunDetailPage() {
   const { runId = "" } = useParams();
   const [showSummary, setShowSummary] = useState(false);
+  const queryClient = useQueryClient();
 
   const runQuery = useQuery({
     queryKey: ["lifecycle-run", runId],

@@ -12,8 +12,10 @@ export type AuthRoutesDependencies = {
 type AuthRoutesOptions = FastifyPluginOptions & AuthRoutesDependencies;
 
 export async function registerAuthRoutes(app: FastifyInstance, options: AuthRoutesOptions) {
-  app.get("/auth/login", async (_request, reply) => {
-    await options.authService.beginLogin(reply);
+  app.get("/auth/login", async (request, reply) => {
+    const redirectPath = sanitizeRedirectPath((request.query as { redirect?: unknown } | undefined)?.redirect);
+
+    await options.authService.beginLogin(reply, redirectPath);
     return reply.send();
   });
 
@@ -36,7 +38,7 @@ export async function registerAuthRoutes(app: FastifyInstance, options: AuthRout
         },
       });
 
-      reply.redirect(buildWebUrl(options.webOrigin).href);
+      reply.redirect(buildWebUrl(options.webOrigin, completedLogin.redirectPath ?? "/").href);
       return reply;
     } catch (error) {
       const callbackError =
@@ -59,6 +61,13 @@ export async function registerAuthRoutes(app: FastifyInstance, options: AuthRout
 
       const loginUrl = buildWebUrl(options.webOrigin, "/login");
       loginUrl.searchParams.set("error", "auth_failed");
+      const redirectPath = sanitizeRedirectPath(
+        typeof callbackError.metadata.redirectPath === "string" ? callbackError.metadata.redirectPath : null,
+      );
+
+      if (redirectPath) {
+        loginUrl.searchParams.set("redirect", redirectPath);
+      }
 
       reply.redirect(loginUrl.href);
       return reply;
@@ -92,4 +101,18 @@ export async function registerAuthRoutes(app: FastifyInstance, options: AuthRout
 
 function buildWebUrl(origin: string, pathname = "/") {
   return new URL(pathname, origin.endsWith("/") ? origin : `${origin}/`);
+}
+
+function sanitizeRedirectPath(value: unknown) {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const redirectPath = value.trim();
+
+  if (!redirectPath.startsWith("/") || redirectPath.startsWith("//")) {
+    return null;
+  }
+
+  return redirectPath;
 }

@@ -4,7 +4,7 @@ const hotspots = [
   { to: "/lifecycle", label: "Lifecycle Queue navigation", top: 21.4, left: 1.2, width: 17.9, height: 7.7 },
   { to: "/devices", label: "Device Inventory navigation", top: 29.8, left: 1.2, width: 17.9, height: 7.8 },
   { to: "/network", label: "Identity Risk navigation", top: 38, left: 1.2, width: 17.9, height: 7.8 },
-  { to: "/network/map", label: "Backup Confidence navigation", top: 46.6, left: 1.2, width: 17.9, height: 7.8 },
+  { to: "/backup", label: "Backup Confidence navigation", top: 46.6, left: 1.2, width: 17.9, height: 7.8 },
   { to: "/devices/agentsmith-1", label: "Ranked issue one", top: 23.3, left: 20.7, width: 56, height: 8.1 },
   { to: "/lifecycle", label: "Ranked issue two", top: 31.5, left: 20.7, width: 56, height: 8 },
   { to: "/devices/agentsmith-2", label: "Ranked issue three", top: 39.7, left: 20.7, width: 56, height: 8 },

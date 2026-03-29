@@ -15,6 +15,7 @@ type AuthFlowCookiePayload = {
   nonce: string;
   codeVerifier: string;
   initiatedAt: string;
+  redirectPath: string | null;
 };
 
 export type OperatorSession = {
@@ -36,10 +37,11 @@ export type AuthenticatedIdentity = {
 export type CompletedLogin = {
   session: OperatorSession;
   identity: AuthenticatedIdentity;
+  redirectPath: string | null;
 };
 
 export interface AgentSmithAuthService {
-  beginLogin(reply: FastifyReply): Promise<void>;
+  beginLogin(reply: FastifyReply, redirectPath?: string | null): Promise<void>;
   completeCallback(request: FastifyRequest, reply: FastifyReply): Promise<CompletedLogin>;
   getSession(request: FastifyRequest): Promise<OperatorSession | null>;
   clearSession(reply: FastifyReply): void;
@@ -74,16 +76,24 @@ const flowLifetimeMs = 10 * 60 * 1000;
 const sessionLifetimeMs = 8 * 60 * 60 * 1000;
 
 export function createAuthService(options: CreateAuthServiceOptions): AgentSmithAuthService {
+  const isDevBypass =
+    process.env.NODE_ENV !== "production" && process.env.DEV_AUTH_BYPASS === "true";
+
+  if (isDevBypass) {
+    return createDevBypassAuthService(options.env);
+  }
+
   const provider = options.provider ?? new MicrosoftEntraAuthProvider(options.env);
   const now = options.now ?? (() => new Date());
 
   return {
-    async beginLogin(reply) {
+    async beginLogin(reply, redirectPath = null) {
       const flow: AuthFlowCookiePayload = {
         state: oidc.randomState(),
         nonce: oidc.randomNonce(),
         codeVerifier: oidc.randomPKCECodeVerifier(),
         initiatedAt: now().toISOString(),
+        redirectPath,
       };
       const redirectUrl = await provider.buildAuthorizationUrl(flow);
 
@@ -114,6 +124,7 @@ export function createAuthService(options: CreateAuthServiceOptions): AgentSmith
         appendCookies(reply, [clearCookie(authFlowCookieName)]);
         throw new AuthCallbackError("Expired auth flow cookie", currentUrl.searchParams.get("state") ?? flow.state, {
           reason: "expired_auth_flow",
+          redirectPath: flow.redirectPath,
         });
       }
 
@@ -124,6 +135,7 @@ export function createAuthService(options: CreateAuthServiceOptions): AgentSmith
           reason: "provider_error",
           error: providerError,
           errorDescription: currentUrl.searchParams.get("error_description"),
+          redirectPath: flow.redirectPath,
         });
       }
 
@@ -136,6 +148,7 @@ export function createAuthService(options: CreateAuthServiceOptions): AgentSmith
         throw new AuthCallbackError("Token exchange failed", currentUrl.searchParams.get("state") ?? flow.state, {
           reason: "token_exchange_failed",
           error: error instanceof Error ? error.message : "Unknown token exchange error",
+          redirectPath: flow.redirectPath,
         });
       }
 
@@ -187,6 +200,7 @@ export function createAuthService(options: CreateAuthServiceOptions): AgentSmith
           expiresAt,
         },
         identity,
+        redirectPath: flow.redirectPath,
       };
     },
 
@@ -218,6 +232,59 @@ export function createAuthService(options: CreateAuthServiceOptions): AgentSmith
           email: operator.email,
           displayName: operator.displayName,
         },
+        expiresAt: payload.expiresAt,
+      };
+    },
+
+    clearSession(reply) {
+      appendCookies(reply, [clearCookie(sessionCookieName)]);
+    },
+  };
+}
+
+const devUser = {
+  id: "dev-bypass-user",
+  email: "dev@agentsmith.local",
+  displayName: "Dev Operator",
+};
+
+function createDevBypassAuthService(env: Pick<ServerEnv, "SESSION_SECRET" | "WEB_ORIGIN">): AgentSmithAuthService {
+  return {
+    async beginLogin(reply, redirectPath = null) {
+      const expiresAt = new Date(Date.now() + sessionLifetimeMs).toISOString();
+      const payload: SessionCookiePayload = {
+        sessionId: randomUUID(),
+        userId: devUser.id,
+        expiresAt,
+      };
+      appendCookies(reply, [
+        serializeCookie(sessionCookieName, signValue(env.SESSION_SECRET, payload), {
+          httpOnly: true,
+          maxAge: Math.floor(sessionLifetimeMs / 1000),
+          path: "/",
+          sameSite: "Lax",
+          secure: false,
+        }),
+      ]);
+      reply.code(302).header("location", redirectPath ?? "/");
+    },
+
+    async completeCallback(_request, _reply) {
+      throw new AuthCallbackError("completeCallback not available in dev bypass mode", null, {
+        reason: "dev_bypass_active",
+      });
+    },
+
+    async getSession(request) {
+      const payload = readSignedCookie<SessionCookiePayload>(env.SESSION_SECRET, request, sessionCookieName);
+      if (!payload) return null;
+
+      const expiresAt = new Date(payload.expiresAt);
+      if (Number.isNaN(expiresAt.valueOf()) || expiresAt.valueOf() <= Date.now()) return null;
+
+      return {
+        sessionId: payload.sessionId,
+        user: devUser,
         expiresAt: payload.expiresAt,
       };
     },

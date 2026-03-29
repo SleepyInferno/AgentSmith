@@ -70,7 +70,7 @@ export function ProtectedLayout() {
   }
 
   if (!authenticated || !user) {
-    const redirect = `${location.pathname}${location.search}`;
+    const redirect = `${location.pathname}${location.search}${location.hash}`;
     const loginUrl =
       redirect && redirect !== "/" ? `/login?redirect=${encodeURIComponent(redirect)}` : "/login";
 

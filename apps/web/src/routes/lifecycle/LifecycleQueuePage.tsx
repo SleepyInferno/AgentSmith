@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { ActiveLifecycleRuns } from "../../components/lifecycle/ActiveLifecycleRuns";
 import { LifecycleTemplateCards } from "../../components/lifecycle/LifecycleTemplateCards";
@@ -8,7 +8,6 @@ import {
   startLifecycleRun,
   type StartLifecycleRunInput,
 } from "../../lib/lifecycle";
-import { queryClient } from "../../lib/queryClient";
 
 const sectionStyle = {
   padding: 24,
@@ -20,6 +19,7 @@ const sectionStyle = {
 
 export function LifecycleQueuePage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const templatesQuery = useQuery({
     queryKey: ["lifecycle-templates"],

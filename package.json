@@ -15,6 +15,9 @@
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm -r typecheck",
-    "db:generate": "prisma generate --schema prisma/schema.prisma"
+    "db:generate": "prisma generate --schema prisma/schema.prisma",
+    "test": "pnpm --filter @agentsmith/api test && pnpm --filter @agentsmith/web test && pnpm --filter @agentsmith/web test:e2e",
+    "test:api": "pnpm --filter @agentsmith/api test",
+    "test:web": "pnpm --filter @agentsmith/web test && pnpm --filter @agentsmith/web test:e2e"
   }
 }

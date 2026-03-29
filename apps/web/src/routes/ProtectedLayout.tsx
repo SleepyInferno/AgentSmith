@@ -1,19 +1,8 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Navigate, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSession } from "../hooks/useSession";
 import { apiRequest } from "../lib/api";
-
-const navLinkStyle = ({ isActive }: { isActive: boolean }) => ({
-  padding: "10px 14px",
-  borderRadius: "999px",
-  textDecoration: "none",
-  border: isActive ? "1px solid rgba(137, 255, 147, 0.34)" : "1px solid rgba(129, 255, 164, 0.12)",
-  background: isActive ? "rgba(137, 255, 147, 0.12)" : "rgba(10, 17, 11, 0.78)",
-  color: isActive ? "#efffe6" : "#b9d4b0",
-  fontWeight: 700,
-  transition: "border-color 180ms ease, background-color 180ms ease, color 180ms ease",
-});
 
 function LoadingShell() {
   return (
@@ -96,74 +85,32 @@ export function ProtectedLayout() {
 
   return (
     <div>
-      <header
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 10,
-          backdropFilter: "blur(18px)",
-          background: "rgba(5, 9, 5, 0.86)",
-          borderBottom: "1px solid rgba(129, 255, 164, 0.12)",
-        }}
-      >
-        <div
-          style={{
-            width: "min(100%, 1408px)",
-            margin: "0 auto",
-            padding: "14px 20px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "16px",
-            flexWrap: "wrap",
-          }}
-        >
-          <div style={{ display: "grid", gap: "4px" }}>
-            <span
-              style={{
-                color: "#89ff93",
-                textTransform: "uppercase",
-                letterSpacing: "0.16em",
-                fontSize: "0.82rem",
-                fontWeight: 700,
-              }}
-            >
-              Protected Operator Shell
-            </span>
-            <strong style={{ fontSize: "1.05rem" }}>{user.displayName}</strong>
-          </div>
+      <header className="agent-topbar">
+        <div className="agent-topbar__brand">
+          <svg className="agent-topbar__brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3 4.5 6v5.4c0 4.4 2.8 8.5 7.5 10.6 4.7-2.1 7.5-6.2 7.5-10.6V6Z" />
+            <path d="M12 8.1c-1.9 0-3.4 1.5-3.4 3.4 0 1 .4 1.9 1.2 2.5-.2 1.3-.8 2.5-1.8 3.4 1.3-.4 2.7-.6 4-.6s2.7.2 4 .6c-1-.9-1.6-2.1-1.8-3.4.8-.6 1.2-1.5 1.2-2.5 0-1.9-1.5-3.4-3.4-3.4Z" />
+          </svg>
+          <span className="agent-topbar__brand-name">AgentSmith</span>
+        </div>
 
-          <nav style={{ display: "flex", gap: "10px", flexWrap: "wrap" }} aria-label="Primary auth navigation">
-            <NavLink to="/" end style={navLinkStyle}>
-              Dashboard
-            </NavLink>
-            <NavLink to="/connectors" style={navLinkStyle}>
-              Connectors
-            </NavLink>
-            <NavLink to="/audit" style={navLinkStyle}>
-              Audit
-            </NavLink>
-          </nav>
+        <div className="agent-topbar__identity">
+          <span className="agent-topbar__label">Protected Operator Shell</span>
+          <strong className="agent-topbar__user">{user.displayName}</strong>
+        </div>
 
-          <div style={{ display: "grid", justifyItems: "end", gap: "6px" }}>
-            <button
-              type="button"
-              onClick={() => void handleSignOut()}
-              disabled={isSigningOut}
-              style={{
-                minHeight: "42px",
-                padding: "0 14px",
-                borderRadius: "12px",
-                border: "1px solid rgba(129, 255, 164, 0.16)",
-                background: "rgba(10, 17, 11, 0.78)",
-                color: "#dff4d3",
-                cursor: isSigningOut ? "wait" : "pointer",
-              }}
-            >
-              {isSigningOut ? "Signing out..." : "Sign out"}
-            </button>
-            {signOutError ? <span style={{ color: "#ffd8cf", fontSize: "0.85rem" }}>{signOutError}</span> : null}
-          </div>
+        <div className="agent-topbar__actions">
+          <button
+            type="button"
+            className="agent-topbar__signout"
+            onClick={() => void handleSignOut()}
+            disabled={isSigningOut}
+          >
+            {isSigningOut ? "Signing out..." : "Sign out"}
+          </button>
+          {signOutError ? (
+            <span className="agent-topbar__error">{signOutError}</span>
+          ) : null}
         </div>
       </header>
 

@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Core Operational Workflow Foundation
-status: planning
-last_updated: "2026-03-30T22:07:54.744Z"
-last_activity: 2026-03-30 — v1.2 roadmap committed (Phases 10-15)
+status: verifying
+last_updated: "2026-03-30T22:13:45.901Z"
+last_activity: 2026-03-30
 progress:
   total_phases: 11
-  completed_phases: 7
+  completed_phases: 8
   total_plans: 33
-  completed_plans: 32
+  completed_plans: 33
 ---
 
 # State: Solo IT Ops Suite
@@ -31,10 +31,10 @@ See: `.planning/PROJECT.md` (updated 2026-03-30)
 
 ## Current Position
 
-Phase: Phase 10 — Schema and Credential Foundation (in progress)
-Plan: 10-01 complete (1 of 2)
-Status: Plan 10-01 executed — schema additions, migrations, optional Entra env vars
-Last activity: 2026-03-30 — Plan 10-01 executed (schema and credential foundation)
+Phase: Phase 10 — Schema and Credential Foundation (complete)
+Plan: 10-02 complete (2 of 2)
+Status: Phase 10 complete — ready for Phase 11 (First-Run Bootstrap) and Phase 12 (Integrations Settings UI)
+Last activity: 2026-03-30 — Plan 10-02 executed (credential encryption runtime)
 
 ## Immediate Next Steps
 
@@ -56,6 +56,9 @@ Last activity: 2026-03-30 — Plan 10-01 executed (schema and credential foundat
 
 ## Recent Decisions
 
+- [Phase 10-02] HKDF-SHA256 used to derive wrapping key from SESSION_SECRET (fixed salt, domain-separated info) — avoids using raw secret as AES key directly.
+- [Phase 10-02] iv:authTag:ciphertext hex string format for SystemKey.wrappedKey — self-contained, no extra DB columns needed for wrapped key storage.
+- [Phase 10-02] ensureSystemKey not wired into server.ts in Phase 10 — Phase 12 will call it at startup when credential storage becomes active.
 - [Phase 10-01] Manual SQL migration files used (no live DB available; consistent with existing project migration pattern in prisma/migrations/).
 - [Phase 10-01] Env test placed in apps/api/src/lib/ rather than packages/shared/src/ because shared package has no test runner configured.
 - [Phase 10-01] Non-null assertions used in auth.ts for optional Entra vars; Phase 11 will add proper conditional MicrosoftEntraAuthProvider guard.
@@ -77,6 +80,7 @@ Last activity: 2026-03-30 — Plan 10-01 executed (schema and credential foundat
 
 ## Recent Execution
 
+- Phase 10 Plan 02 executed on 2026-03-30; summary recorded in `.planning/phases/10-schema-and-credential-foundation/10-02-SUMMARY.md`.
 - Phase 07 Plan 05 executed on 2026-03-29; summary recorded in `.planning/phases/07-operator-shell-refresh/07-05-SUMMARY.md`.
 - Phase 07 Plan 04 executed on 2026-03-29; summary recorded in `.planning/phases/07-operator-shell-refresh/07-04-SUMMARY.md`.
 - Phase 07 Plan 02 executed on 2026-03-29; summary recorded in `.planning/phases/07-operator-shell-refresh/07-02-SUMMARY.md`.
@@ -116,6 +120,7 @@ Last activity: 2026-03-30 — Plan 10-01 executed (schema and credential foundat
 | Phase 07 P03 | 5 min | 2 tasks | 17 files | |
 | Phase 07 P05 | 15min | 3 tasks | 1 files | |
 | Phase 10 P01 | 6min | 2 tasks | 7 files |
+| Phase 10 P02 | 2min | 2 tasks | 4 files |
 
 ## Session Info
 

@@ -44,7 +44,7 @@
 - [x] **CRED-01**: Operator can configure Intune credentials (tenant ID, client ID, client secret) from the integrations settings page.
 - [x] **CRED-02**: Operator can configure an OpenAI API key from the integrations settings page.
 - [x] **CRED-03**: Credentials are stored encrypted server-side and never returned to the browser after initial save.
-- [ ] **CRED-04**: Operator can verify connection health for each integration and see last-sync status from the settings page.
+- [x] **CRED-04**: Operator can verify connection health for each integration and see last-sync status from the settings page.
 
 ### Intune Sync
 
@@ -108,7 +108,7 @@
 | CRED-01 | Phase 12 | Complete |
 | CRED-02 | Phase 12 | Complete |
 | CRED-03 | Phase 12 | Complete |
-| CRED-04 | Phase 12 | Pending |
+| CRED-04 | Phase 12 | Complete |
 | SYNC-01 | Phase 13 | Pending |
 | SYNC-02 | Phase 13 | Pending |
 | SYNC-03 | Phase 13 | Pending |

@@ -24,7 +24,7 @@
 
 ### v1.2 — Intune Integration
 
-- [ ] **Phase 10: Schema and Credential Foundation** - Lay the database and encryption infrastructure that every v1.2 feature depends on
+- [x] **Phase 10: Schema and Credential Foundation** - Lay the database and encryption infrastructure that every v1.2 feature depends on (completed 2026-03-30)
 - [ ] **Phase 11: First-Run Bootstrap** - Let the operator create a local admin account and reach the app without Entra ID
 - [ ] **Phase 12: Integrations Settings UI** - Give the operator a secure page to configure and verify Intune and OpenAI credentials
 - [ ] **Phase 13: Intune Device Sync** - Replace mock device data with live Intune inventory and compliance state
@@ -270,11 +270,11 @@ Success criteria:
 3. The pgvector extension is active in the database and the `DocumentEmbedding` table with HNSW index exists, ready to accept embedding vectors.
 4. Entra ID environment variables are marked optional so the app starts and logs in without Entra pre-configuration.
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 10-01-PLAN.md — Prisma schema additions (User fields, IntegrationCredential, SystemKey, pgvector/DocumentEmbedding) + Entra env vars optional
-- [ ] 10-02-PLAN.md — Credential encryption runtime (credential-crypto module, SystemKey boot initialization, tests)
+- [x] 10-02-PLAN.md — Credential encryption runtime (credential-crypto module, SystemKey boot initialization, tests)
 
 ### Phase 11: First-Run Bootstrap
 
@@ -387,7 +387,7 @@ Plans:
 | 7. Operator Shell Refresh | 5/5 | Complete | 2026-03-29 |
 | 8. Queue and Detail Refresh | 0/TBD | Deferred → v1.3 | - |
 | 9. Interface Consistency and Hardening | 0/TBD | Deferred → v1.3 | - |
-| 10. Schema and Credential Foundation | 1/2 | In Progress|  |
+| 10. Schema and Credential Foundation | 2/2 | Complete   | 2026-03-30 |
 | 11. First-Run Bootstrap | 0/TBD | Not started | - |
 | 12. Integrations Settings UI | 0/TBD | Not started | - |
 | 13. Intune Device Sync | 0/TBD | Not started | - |

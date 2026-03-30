@@ -270,7 +270,11 @@ Success criteria:
 3. The pgvector extension is active in the database and the `DocumentEmbedding` table with HNSW index exists, ready to accept embedding vectors.
 4. Entra ID environment variables are marked optional so the app starts and logs in without Entra pre-configuration.
 
-**Plans:** TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 10-01-PLAN.md — Prisma schema additions (User fields, IntegrationCredential, SystemKey, pgvector/DocumentEmbedding) + Entra env vars optional
+- [ ] 10-02-PLAN.md — Credential encryption runtime (credential-crypto module, SystemKey boot initialization, tests)
 
 ### Phase 11: First-Run Bootstrap
 
@@ -368,7 +372,7 @@ Success criteria:
 - Phases 13 and 14 can be developed in parallel once Phase 12 delivers a working credential store.
 
 ---
-*Last updated: 2026-03-30 — v1.2 phases 10-15 added*
+*Last updated: 2026-03-30 — Phase 10 plans defined*
 
 ## Progress
 
@@ -383,7 +387,7 @@ Success criteria:
 | 7. Operator Shell Refresh | 5/5 | Complete | 2026-03-29 |
 | 8. Queue and Detail Refresh | 0/TBD | Deferred → v1.3 | - |
 | 9. Interface Consistency and Hardening | 0/TBD | Deferred → v1.3 | - |
-| 10. Schema and Credential Foundation | 0/TBD | Not started | - |
+| 10. Schema and Credential Foundation | 0/2 | Planned | - |
 | 11. First-Run Bootstrap | 0/TBD | Not started | - |
 | 12. Integrations Settings UI | 0/TBD | Not started | - |
 | 13. Intune Device Sync | 0/TBD | Not started | - |

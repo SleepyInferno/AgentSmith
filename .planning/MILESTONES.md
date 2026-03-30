@@ -12,6 +12,8 @@
 
 - `v1.0` roadmap snapshot: `.planning/milestones/v1.0-ROADMAP.md`
 - `v1.0` requirements snapshot: `.planning/milestones/v1.0-REQUIREMENTS.md`
+- `v1.1` roadmap snapshot: `.planning/milestones/v1.1-ROADMAP.md`
+- `v1.1` requirements snapshot: `.planning/milestones/v1.1-REQUIREMENTS.md`
 
 ---
-*Last updated: 2026-03-28 after starting milestone v1.1 Operator Experience*
+*Last updated: 2026-03-30 — v1.1 closed, v1.2 starting*

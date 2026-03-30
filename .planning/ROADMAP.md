@@ -1,19 +1,35 @@
 # Roadmap: Solo IT Ops Suite
 
 **Created:** 2026-03-26
-**Phases:** 6
+**Phases:** 13 (7 complete, 6 planned for v1.2)
 **v1 Requirements Covered:** 20 of 20
+**v1.2 Requirements Covered:** 17 of 17
 
-## Summary
+## Phases
 
-| # | Phase | Goal | Requirements | Success Criteria |
-|---|-------|------|--------------|------------------|
-| 1 | Foundations and Secure Data Flow | Establish auth, connector sync visibility, audit logging, and the shared data backbone | 3 | 4 |
-| 2 | Asset Health Dashboard | Deliver the first high-signal operational dashboard for device risk | 4 | 4 |
-| 3 | Lifecycle Automation | Ship guided onboarding and offboarding workflows with evidence capture | 4 | 4 |
-| 4 | Network Visibility Lite | Deliver a lightweight network inventory, mapper, and triage view for WAN and LAN health | 3 | 4 |
-| 5 | Backup Confidence Dashboard | Show whether systems are protected and recoverable | 3 | 4 |
-| 6 | Documentation Assistant | Make core IT documentation searchable, structured, and reviewable | 3 | 4 |
+### v1.0 — Core Operational Workflow Foundation
+
+- [x] **Phase 1: Foundations and Secure Data Flow** - Establish auth, connector sync visibility, audit logging, and the shared data backbone
+- [x] **Phase 2: Asset Health Dashboard** - Deliver the first high-signal operational dashboard for device risk
+- [x] **Phase 3: Lifecycle Automation** - Ship guided onboarding and offboarding workflows with evidence capture
+- [x] **Phase 4: Network Visibility Lite** - Deliver a lightweight network inventory, mapper, and triage view for WAN and LAN health
+- [x] **Phase 5: Backup Confidence Dashboard** - Show whether systems are protected and recoverable
+- [x] **Phase 6: Documentation Assistant** - Make core IT documentation searchable, structured, and reviewable
+
+### v1.1 — Operator Experience
+
+- [x] **Phase 7: Operator Shell Refresh** - Refresh persistent navigation, active-state styling, shared browser chrome, and functional home dashboard
+- [ ] **Phase 8: Queue and Detail Refresh** *(stub — deferred to v1.3)* - Consistent queue-to-detail handoffs and shared layout rhythm
+- [ ] **Phase 9: Interface Consistency and Hardening** *(stub — deferred to v1.3)* - Keyboard access, responsive refinements, and deeper automation
+
+### v1.2 — Intune Integration
+
+- [ ] **Phase 10: Schema and Credential Foundation** - Lay the database and encryption infrastructure that every v1.2 feature depends on
+- [ ] **Phase 11: First-Run Bootstrap** - Let the operator create a local admin account and reach the app without Entra ID
+- [ ] **Phase 12: Integrations Settings UI** - Give the operator a secure page to configure and verify Intune and OpenAI credentials
+- [ ] **Phase 13: Intune Device Sync** - Replace mock device data with live Intune inventory and compliance state
+- [ ] **Phase 14: Document Ingest Pipeline** - Parse, classify, and organize documents automatically with AI assistance
+- [ ] **Phase 15: RAG Search** - Let the operator find documents using natural language with synthesized answers
 
 ## Phase Details
 
@@ -197,6 +213,148 @@ Success criteria:
 
 UI hint: yes
 
+### Phase 8: Queue and Detail Refresh *(stub — deferred to v1.3)*
+
+Goal: Deliver consistent queue-to-detail and queue-to-inventory handoffs, back-links, shared layout rhythm, and coherent empty/error/stale state treatment across the five tools.
+
+**Depends on:** Phase 7
+
+Requirements:
+- FLOW-01
+- FLOW-02
+- FLOW-03
+- FLOW-04
+
+Success criteria:
+1. Operator can move from each overview queue to its matching inventory or detail screen through a consistent call to action.
+2. Operator can return from every detail screen to the correct queue or inventory context without losing filter state.
+3. Queue cards, inventory tables, detail summaries, and review panels share a recognizable layout rhythm across all five tools.
+4. Loading, empty, stale, error, read-only, and action-required states are visually distinguishable without page-specific conventions.
+
+**Plans:** TBD
+**UI hint**: yes
+
+### Phase 9: Interface Consistency and Hardening *(stub — deferred to v1.3)*
+
+Goal: Harden the operator experience with keyboard access, accessible labels, responsive layouts, and broader automated UI coverage.
+
+**Depends on:** Phase 8
+
+Requirements:
+- QUAL-01
+- QUAL-02
+- QUAL-03
+- TEST-01
+- TEST-02
+
+Success criteria:
+1. Operator can navigate primary routes, filters, dialogs, and review forms entirely by keyboard with visible focus indicators.
+2. Shared navigation and workflow surfaces carry accessible labels, correct heading hierarchy, and sufficient color contrast.
+3. All layouts preserve hierarchy, spacing, and tap targets at narrower widths without horizontal scroll.
+4. Shell navigation, route links, back-links, and key workflows are covered by automated tests that run from the standard test command.
+
+**Plans:** TBD
+**UI hint**: yes
+
+### Phase 10: Schema and Credential Foundation
+
+**Goal:** Lay the database schema and server-side encryption infrastructure that every v1.2 runtime feature depends on. No feature that reads credentials, stores local auth state, or writes embeddings can be built safely until this phase is complete.
+
+**Depends on:** Phase 7
+
+**Requirements:** None (infrastructure prerequisite — unlocks BOOT-01..03, CRED-01..04, INGEST-01..05, RAG-01..02)
+
+**Success criteria** (what must be TRUE):
+1. Database has a `User.passwordHash` field and `User.role` field available for local admin creation without breaking existing Entra login.
+2. An `IntegrationCredential` table exists with AES-256-GCM encrypted value storage; no plaintext credential can be written through any API route.
+3. The pgvector extension is active in the database and the `DocumentEmbedding` table with HNSW index exists, ready to accept embedding vectors.
+4. Entra ID environment variables are marked optional so the app starts and logs in without Entra pre-configuration.
+
+**Plans:** TBD
+
+### Phase 11: First-Run Bootstrap
+
+**Goal:** Let the operator create a local admin account and reach the full application on a fresh install before any external service is configured.
+
+**Depends on:** Phase 10
+
+**Requirements:** BOOT-01, BOOT-02, BOOT-03
+
+**Success criteria** (what must be TRUE):
+1. On first launch with no admin account, the operator is automatically redirected to a setup screen rather than a login or error page.
+2. Operator can submit a username and password on the setup screen and immediately log in with those credentials.
+3. After the first admin is created, the setup endpoint returns a permanent error for any further attempt — the screen is inaccessible to all subsequent visitors.
+4. Operator can reach all protected routes using local credentials without configuring Entra ID.
+
+**Plans:** TBD
+**UI hint**: yes
+
+### Phase 12: Integrations Settings UI
+
+**Goal:** Give the operator a secure, in-app page to configure Intune and OpenAI credentials and confirm that each connection is working before sync or ingest is attempted.
+
+**Depends on:** Phase 10
+
+**Requirements:** CRED-01, CRED-02, CRED-03, CRED-04
+
+**Success criteria** (what must be TRUE):
+1. Operator can enter tenant ID, client ID, and client secret for Intune and save them; the form confirms save success without echoing the secret back.
+2. Operator can enter an OpenAI API key and save it; the saved value is never returned in full to the browser on any subsequent page load.
+3. Operator can press a test-connection button for each integration and see a clear pass or fail result with a human-readable hint on failure.
+4. Operator can see the last-verified time and current health status for each integration from the settings page without leaving it.
+
+**Plans:** TBD
+**UI hint**: yes
+
+### Phase 13: Intune Device Sync
+
+**Goal:** Replace mock device data with a live, paginated pull from Microsoft Graph so the asset health dashboard reflects the real Intune fleet.
+
+**Depends on:** Phase 12
+
+**Requirements:** SYNC-01, SYNC-02, SYNC-03
+
+**Success criteria** (what must be TRUE):
+1. Operator can view a device inventory populated with real Intune data including device name, compliance state, OS and version, last check-in, and encryption status.
+2. Operator can see per-device compliance policy assignments and whether each policy is passing or failing on that device.
+3. Operator can see when the last sync completed, how many devices were retrieved, and whether the data is stale or the last sync failed.
+4. Operator can trigger a manual sync from the UI and see the inventory refresh when it completes.
+
+**Plans:** TBD
+
+### Phase 14: Document Ingest Pipeline
+
+**Goal:** Automatically parse, classify, and organize documents from a source folder using OpenAI so the documentation library stays current without manual curation.
+
+**Depends on:** Phase 12
+
+**Requirements:** INGEST-01, INGEST-02, INGEST-03, INGEST-04, INGEST-05
+
+**Success criteria** (what must be TRUE):
+1. Operator can configure a source folder path and an output folder path from the settings page and save them without the paths being the same location.
+2. When a supported file (md, txt, docx, pdf) is added to the source folder, it is automatically classified, summarized, tagged, and copied to the output folder in an organized hierarchy without operator action.
+3. Operator can trigger ingest manually from the UI and see per-file status (pending, processing, done, or failed) update during the run.
+4. A file that fails to parse or classify is recorded with a failed status and does not block other files in the same run.
+5. Files already processed are not re-ingested on restart or re-trigger unless they have changed.
+
+**Plans:** TBD
+
+### Phase 15: RAG Search
+
+**Goal:** Make the documentation library answerable in natural language so the operator can ask questions and get synthesized responses with traceable sources rather than scanning a list of files.
+
+**Depends on:** Phase 14
+
+**Requirements:** RAG-01, RAG-02
+
+**Success criteria** (what must be TRUE):
+1. Operator can type a natural-language question into the search interface and receive a synthesized answer that cites the specific documents it drew from.
+2. Each citation in the answer links to or identifies the source document so the operator can verify the answer without trusting it blindly.
+3. When no OpenAI key is configured or vector similarity falls below a useful threshold, the search interface falls back to keyword results rather than returning no answer.
+
+**Plans:** TBD
+**UI hint**: yes
+
 ## Delivery Notes
 
 - Each phase should leave behind something directly useful to the solo IT admin, not only internal plumbing.
@@ -205,19 +363,29 @@ UI hint: yes
 - Identity hygiene can still land later as a lifecycle enhancement if a concrete gap remains after the EDR plus workflow combination is in use.
 - Deferred modules such as ticket triage and maintenance scheduling should only enter planning after the five-tool v1 is stable.
 - Phase 7 begins v1.1 Operator Experience milestone, refreshing UX without expanding the five-tool scope.
+- Phases 8 and 9 are reserved stubs for deferred v1.1 work; they execute under v1.3.
+- Phase 10 carries no named user-facing requirement but is a mandatory infrastructure prerequisite — every v1.2 runtime feature depends on the schema and encryption it delivers.
+- Phases 13 and 14 can be developed in parallel once Phase 12 delivers a working credential store.
 
 ---
-*Last updated: 2026-03-29 after completing Phase 7 Plan 01*
+*Last updated: 2026-03-30 — v1.2 phases 10-15 added*
 
-## Backlog
+## Progress
 
-### Phase 999.1: Integrations Settings Page (BACKLOG)
-
-**Goal:** Allow the operator to configure third-party integrations through a secure UI — Intune (tenant ID, client ID, client secret) and OpenAI API key. Credentials stored server-side via a write endpoint, never held in the browser. Status indicators show connection health and last-sync time. Extends the existing /connectors page into a full integrations hub with write capability.
-
-**Milestone target:** v1.2 Intune Integration
-**Requirements:** TBD
-**Plans:** 0 plans
-
-Plans:
-- [ ] TBD (promote with /gsd:review-backlog when ready)
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 1. Foundations and Secure Data Flow | 3/3 | Complete | 2026-03-28 |
+| 2. Asset Health Dashboard | 4/4 | Complete | 2026-03-28 |
+| 3. Lifecycle Automation | 5/5 | Complete | 2026-03-26 |
+| 4. Network Visibility Lite | 4/4 | Complete | 2026-03-27 |
+| 5. Backup Confidence Dashboard | 5/5 | Complete | 2026-03-27 |
+| 6. Documentation Assistant | 5/5 | Complete | 2026-03-28 |
+| 7. Operator Shell Refresh | 5/5 | Complete | 2026-03-29 |
+| 8. Queue and Detail Refresh | 0/TBD | Deferred → v1.3 | - |
+| 9. Interface Consistency and Hardening | 0/TBD | Deferred → v1.3 | - |
+| 10. Schema and Credential Foundation | 0/TBD | Not started | - |
+| 11. First-Run Bootstrap | 0/TBD | Not started | - |
+| 12. Integrations Settings UI | 0/TBD | Not started | - |
+| 13. Intune Device Sync | 0/TBD | Not started | - |
+| 14. Document Ingest Pipeline | 0/TBD | Not started | - |
+| 15. RAG Search | 0/TBD | Not started | - |

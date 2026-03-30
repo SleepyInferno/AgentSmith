@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Intune Integration
-status: Defining requirements
+status: Roadmap defined — ready for Phase 10 planning
 last_updated: "2026-03-30T00:00:00.000Z"
 progress:
-  total_phases: 0
+  total_phases: 6
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -15,29 +15,43 @@ progress:
 
 ## Project Reference
 
-See: `.planning/PROJECT.md` (updated 2026-03-28)
+See: `.planning/PROJECT.md` (updated 2026-03-30)
 
 **Core value:** One overextended IT generalist can see the highest-risk issues first and complete critical operational workflows consistently without relying on memory.
-**Current focus:** All planned v1 phases are complete
+**Current focus:** v1.2 Intune Integration — Phase 10 next (Schema and Credential Foundation)
 
 ## Roadmap Status
 
-- Current phase: complete
-- Phases completed: 6 of 6
-- v1 requirements: 20
-- Completed requirements: 20
+- Milestone: v1.2 Intune Integration
+- v1.2 phases: 10, 11, 12, 13, 14, 15 (6 phases)
+- v1.2 requirements: 17
+- Completed v1.2 phases: 0 of 6
+- Overall phases complete: 7 of 15 (Phases 1-7; Phases 8-9 deferred to v1.3)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: Phase 10 — Schema and Credential Foundation (not started)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-03-30 — Milestone v1.2 started
+Status: Roadmap defined — ready for Phase 10 planning
+Last activity: 2026-03-30 — v1.2 roadmap committed (Phases 10-15)
 
 ## Immediate Next Steps
 
-1. Requirements and roadmap being finalized for v1.2.
-2. Run `/gsd:plan-phase [N]` once roadmap is committed.
+1. Run `/gsd:plan-phase 10` to produce the executable plan for Phase 10.
+2. Phase 10 has no named user requirements but is a mandatory infrastructure prerequisite for all v1.2 phases.
+3. After Phase 10, Phase 11 (First-Run Bootstrap) and Phase 12 (Integrations Settings UI) can both start.
+4. Phases 13 (Intune Sync) and 14 (Document Ingest Pipeline) can run in parallel once Phase 12 is complete.
+
+## v1.2 Phase Summary
+
+| Phase | Name | Requires | Key Deliverables |
+|-------|------|----------|-----------------|
+| 10 | Schema and Credential Foundation | Phase 7 | User schema (passwordHash, role), IntegrationCredential table (AES-256-GCM), pgvector extension + DocumentEmbedding table + HNSW index, Entra env vars optional |
+| 11 | First-Run Bootstrap | Phase 10 | Setup screen, local admin creation endpoint (one-time, DB-locked), LocalAuthProvider, session ID rotation |
+| 12 | Integrations Settings UI | Phase 10 | IntegrationsPage (masked credential display, per-section save, test-connection button, health badge) |
+| 13 | Intune Device Sync | Phase 12 | Live Graph API pull with pagination, DeviceCompliancePolicy + DeviceComplianceAssignment models, sync freshness indicator, manual trigger |
+| 14 | Document Ingest Pipeline | Phase 12 | runDocumentIngest (parse/classify/embed/copy), chokidar watch-folder, manual trigger, per-file status, ingest folder settings |
+| 15 | RAG Search | Phase 14 | docs.rag.ts, POST /api/docs/rag-search, RAG mode UI with citation panel, keyword fallback |
 
 ## Recent Decisions
 
@@ -95,13 +109,13 @@ Last activity: 2026-03-30 — Milestone v1.2 started
 | 07 | 01 | 12 min | 3 | 4 | 2026-03-29 |
 | 07 | 02 | 2 min | 3 | 5 | 2026-03-29 |
 | 07 | 04 | 10 min | 3 | 5 | 2026-03-29 |
-| Phase 07 P03 | 5 min | 2 tasks | 17 files |
-| Phase 07 P05 | 15min | 3 tasks | 1 files |
+| Phase 07 P03 | 5 min | 2 tasks | 17 files | |
+| Phase 07 P05 | 15min | 3 tasks | 1 files | |
 
 ## Session Info
 
-- Last session: 2026-03-30T09:43:00Z
-- Stopped at: Phase 07 fully complete — banner topbar (Option B, AgentSmithBannerv2.png) applied to all routes via ProtectedLayout.tsx
+- Last session: 2026-03-30T00:00:00Z
+- Stopped at: v1.2 roadmap committed — Phases 10-15 defined, traceability updated
 
 ## Notes
 
@@ -110,6 +124,9 @@ Last activity: 2026-03-30 — Milestone v1.2 started
 - Backup Confidence intentionally keeps manual proof and exception handling read-only in v1 so audit-sensitive writes remain explicit future work.
 - Network visibility backend includes canonical resource, relationship, and finding models plus seeded-example fallback repository and server-derived queue logic.
 - Documentation search and metadata review are complete, but unrelated docs and lifecycle TypeScript errors still affect the full API package build.
+- Critical security invariant for v1.2: credentials must never reach the browser — `GET /api/integrations/:key` returns `{ configured: boolean }` only, never the secret value.
+- Graph API pagination is mandatory from day one: build `graphPageAll()` helper before any device domain mapping to prevent silent truncation at 100 devices.
+- Bootstrap endpoint must use a DB-backed guard (`prisma.user.count` check), not a config flag, so it remains locked across restarts.
 
 ---
-*Last updated: 2026-03-28 after Phase 1 completion and verification*
+*Last updated: 2026-03-30 after v1.2 roadmap definition*

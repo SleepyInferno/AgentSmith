@@ -102,28 +102,28 @@
 | QUAL-03 | Phase 09 | Deferred → v1.3 |
 | TEST-01 | Phase 09 | Deferred → v1.3 |
 | TEST-02 | Phase 09 | Deferred → v1.3 |
-| BOOT-01 | TBD | Pending |
-| BOOT-02 | TBD | Pending |
-| BOOT-03 | TBD | Pending |
-| CRED-01 | TBD | Pending |
-| CRED-02 | TBD | Pending |
-| CRED-03 | TBD | Pending |
-| CRED-04 | TBD | Pending |
-| SYNC-01 | TBD | Pending |
-| SYNC-02 | TBD | Pending |
-| SYNC-03 | TBD | Pending |
-| INGEST-01 | TBD | Pending |
-| INGEST-02 | TBD | Pending |
-| INGEST-03 | TBD | Pending |
-| INGEST-04 | TBD | Pending |
-| INGEST-05 | TBD | Pending |
-| RAG-01 | TBD | Pending |
-| RAG-02 | TBD | Pending |
+| BOOT-01 | Phase 11 | Pending |
+| BOOT-02 | Phase 11 | Pending |
+| BOOT-03 | Phase 11 | Pending |
+| CRED-01 | Phase 12 | Pending |
+| CRED-02 | Phase 12 | Pending |
+| CRED-03 | Phase 12 | Pending |
+| CRED-04 | Phase 12 | Pending |
+| SYNC-01 | Phase 13 | Pending |
+| SYNC-02 | Phase 13 | Pending |
+| SYNC-03 | Phase 13 | Pending |
+| INGEST-01 | Phase 14 | Pending |
+| INGEST-02 | Phase 14 | Pending |
+| INGEST-03 | Phase 14 | Pending |
+| INGEST-04 | Phase 14 | Pending |
+| INGEST-05 | Phase 14 | Pending |
+| RAG-01 | Phase 15 | Pending |
+| RAG-02 | Phase 15 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 12 total (3 complete, 9 deferred → v1.3)
-- v1.2 requirements: 16 total, mapped to phases by roadmap
+- v1.2 requirements: 17 total (17 mapped across Phases 11-15; Phase 10 is infrastructure with no named user requirement)
 
 ---
 *Requirements defined: 2026-03-28*
-*Last updated: 2026-03-30 — v1.2 requirements added*
+*Last updated: 2026-03-30 — v1.2 traceability finalized (Phases 10-15)*

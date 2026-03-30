@@ -19,29 +19,29 @@ progress:
 See: `.planning/PROJECT.md` (updated 2026-03-30)
 
 **Core value:** One overextended IT generalist can see the highest-risk issues first and complete critical operational workflows consistently without relying on memory.
-**Current focus:** v1.2 Intune Integration — Phase 10 next (Schema and Credential Foundation)
+**Current focus:** v1.2 Intune Integration — Phase 11 next (First-Run Bootstrap)
 
 ## Roadmap Status
 
 - Milestone: v1.2 Intune Integration
 - v1.2 phases: 10, 11, 12, 13, 14, 15 (6 phases)
 - v1.2 requirements: 17
-- Completed v1.2 phases: 0 of 6
+- Completed v1.2 phases: 1 of 6 (Phase 10 complete)
 - Overall phases complete: 7 of 15 (Phases 1-7; Phases 8-9 deferred to v1.3)
 
 ## Current Position
 
-Phase: Phase 10 — Schema and Credential Foundation (complete)
-Plan: 10-02 complete (2 of 2)
-Status: Phase 10 complete — ready for Phase 11 (First-Run Bootstrap) and Phase 12 (Integrations Settings UI)
-Last activity: 2026-03-30 — Plan 10-02 executed (credential encryption runtime)
+Phase: Phase 11 — First-Run Bootstrap (next)
+Plan: 0 of N (not yet planned)
+Status: Phase 10 verified complete (13/13 must-haves). Ready for Phase 11 (First-Run Bootstrap) and Phase 12 (Integrations Settings UI) planning.
+Last activity: 2026-03-30 — Phase 10 verified (schema + credential encryption runtime complete)
 
 ## Immediate Next Steps
 
-1. Run `/gsd:plan-phase 10` to produce the executable plan for Phase 10.
-2. Phase 10 has no named user requirements but is a mandatory infrastructure prerequisite for all v1.2 phases.
-3. After Phase 10, Phase 11 (First-Run Bootstrap) and Phase 12 (Integrations Settings UI) can both start.
-4. Phases 13 (Intune Sync) and 14 (Document Ingest Pipeline) can run in parallel once Phase 12 is complete.
+1. Phase 11 (First-Run Bootstrap) — plan and execute next (BOOT-01, BOOT-02, BOOT-03).
+2. Phase 12 (Integrations Settings UI) can also be planned in parallel with Phase 11.
+3. Phases 13 (Intune Sync) and 14 (Document Ingest Pipeline) unblock once Phase 12 is complete.
+4. Before Phase 11: apply the three migration SQL files to the live PostgreSQL instance (pgvector extension required for migration 3).
 
 ## v1.2 Phase Summary
 

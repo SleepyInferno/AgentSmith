@@ -12,7 +12,7 @@ const panelStyle = {
   padding: 20,
   borderRadius: 20,
   border: "1px solid rgba(148, 163, 184, 0.22)",
-  background: "rgba(248, 250, 252, 0.96)",
+  background: "rgba(10, 17, 11, 0.97)",
 } as const;
 
 export function ActiveLifecycleRuns(props: ActiveLifecycleRunsProps) {
@@ -63,7 +63,7 @@ export function ActiveLifecycleRuns(props: ActiveLifecycleRunsProps) {
               ...panelStyle,
               display: "grid",
               gap: 16,
-              background: unresolved > 0 ? "#fff7ed" : "rgba(248, 250, 252, 0.96)",
+              background: unresolved > 0 ? "rgba(244, 192, 73, 0.08)" : "rgba(10, 17, 11, 0.97)",
             }}
           >
             <div
@@ -79,7 +79,7 @@ export function ActiveLifecycleRuns(props: ActiveLifecycleRunsProps) {
                 <p
                   style={{
                     margin: 0,
-                    color: run.kind === "offboarding" ? "#b45309" : "#0369a1",
+                    color: run.kind === "offboarding" ? "#b45309" : "#89ff93",
                     textTransform: "uppercase",
                     letterSpacing: "0.14em",
                     fontSize: 12,
@@ -88,8 +88,8 @@ export function ActiveLifecycleRuns(props: ActiveLifecycleRunsProps) {
                 >
                   {run.kind}
                 </p>
-                <h4 style={{ margin: 0, fontSize: "1.2rem", color: "#0f172a" }}>{run.subjectDisplayName}</h4>
-                <p style={{ margin: 0, color: "#475569" }}>
+                <h4 style={{ margin: 0, fontSize: "1.2rem", color: "#dff4d3" }}>{run.subjectDisplayName}</h4>
+                <p style={{ margin: 0, color: "#9eb79b" }}>
                   {run.subjectEmail ?? "No email captured"} · updatedAt {formatUpdatedAt(run.updatedAt)}
                 </p>
               </div>
@@ -98,7 +98,7 @@ export function ActiveLifecycleRuns(props: ActiveLifecycleRunsProps) {
                   padding: "10px 14px",
                   borderRadius: 999,
                   background: unresolved > 0 ? "rgba(249, 115, 22, 0.14)" : "rgba(14, 165, 233, 0.12)",
-                  color: unresolved > 0 ? "#9a3412" : "#075985",
+                  color: unresolved > 0 ? "#fdba74" : "#075985",
                   fontWeight: 700,
                 }}
               >
@@ -107,14 +107,14 @@ export function ActiveLifecycleRuns(props: ActiveLifecycleRunsProps) {
             </div>
 
             {summaryQuery.isPending ? (
-              <p style={{ margin: 0, color: "#475569" }}>Loading grouped progress...</p>
+              <p style={{ margin: 0, color: "#9eb79b" }}>Loading grouped progress...</p>
             ) : summaryQuery.isError ? (
-              <p style={{ margin: 0, color: "#991b1b" }}>Unable to load grouped progress.</p>
+              <p style={{ margin: 0, color: "#fca5a5" }}>Unable to load grouped progress.</p>
             ) : (
               <>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-                  <ProgressStat label="completed" value={completedCount} tone="#166534" />
-                  <ProgressStat label="manual" value={manualCount} tone="#0369a1" />
+                  <ProgressStat label="completed" value={completedCount} tone="#86efac" />
+                  <ProgressStat label="manual" value={manualCount} tone="#89ff93" />
                   <ProgressStat label="blocked" value={blockedCount} tone="#b91c1c" />
                   <ProgressStat label="skipped" value={skippedCount} tone="#92400e" />
                 </div>
@@ -126,17 +126,17 @@ export function ActiveLifecycleRuns(props: ActiveLifecycleRunsProps) {
                       style={{
                         padding: 14,
                         borderRadius: 16,
-                        background: "#ffffff",
+                        background: "rgba(10, 17, 11, 0.97)",
                         border: "1px solid rgba(148, 163, 184, 0.18)",
                         display: "grid",
                         gap: 6,
                       }}
                     >
-                      <strong style={{ color: "#0f172a" }}>{group.title}</strong>
-                      <span style={{ color: "#475569", fontSize: 14 }}>
+                      <strong style={{ color: "#dff4d3" }}>{group.title}</strong>
+                      <span style={{ color: "#9eb79b", fontSize: 14 }}>
                         {group.completedCount} complete · {group.pendingCount} pending
                       </span>
-                      <span style={{ color: "#475569", fontSize: 14 }}>
+                      <span style={{ color: "#9eb79b", fontSize: 14 }}>
                         {group.unresolvedCount} unresolved · {group.blockedCount} blocked
                       </span>
                     </section>
@@ -144,9 +144,9 @@ export function ActiveLifecycleRuns(props: ActiveLifecycleRunsProps) {
                 </div>
 
                 <div style={{ display: "grid", gap: 8 }}>
-                  <strong style={{ color: "#0f172a" }}>Unresolved follow-up</strong>
+                  <strong style={{ color: "#dff4d3" }}>Unresolved follow-up</strong>
                   {summary && summary.unresolvedFollowUps.length > 0 ? (
-                    <ul style={{ margin: 0, paddingLeft: 18, color: "#475569", display: "grid", gap: 6 }}>
+                    <ul style={{ margin: 0, paddingLeft: 18, color: "#9eb79b", display: "grid", gap: 6 }}>
                       {summary.unresolvedFollowUps.map((item) => (
                         <li key={item.stepId}>
                           {item.title} ({item.status}){item.statusReason ? ` - ${item.statusReason}` : ""}
@@ -154,7 +154,7 @@ export function ActiveLifecycleRuns(props: ActiveLifecycleRunsProps) {
                       ))}
                     </ul>
                   ) : (
-                    <p style={{ margin: 0, color: "#475569" }}>No unresolved follow-up right now.</p>
+                    <p style={{ margin: 0, color: "#9eb79b" }}>No unresolved follow-up right now.</p>
                   )}
                 </div>
 
@@ -167,13 +167,13 @@ export function ActiveLifecycleRuns(props: ActiveLifecycleRunsProps) {
                     flexWrap: "wrap",
                   }}
                 >
-                  <span style={{ color: "#475569", fontSize: 14 }}>
+                  <span style={{ color: "#9eb79b", fontSize: 14 }}>
                     Reopen the guided run record to update steps and review close-out.
                   </span>
                   <Link
                     to={`/lifecycle/runs/${run.runId}`}
                     style={{
-                      color: "#0f172a",
+                      color: "#dff4d3",
                       fontWeight: 700,
                       textDecoration: "none",
                     }}
@@ -196,7 +196,7 @@ function ProgressStat(props: { label: string; value: number; tone: string }) {
       style={{
         padding: "10px 12px",
         borderRadius: 14,
-        background: "#ffffff",
+        background: "rgba(10, 17, 11, 0.97)",
         border: "1px solid rgba(148, 163, 184, 0.18)",
         color: props.tone,
         fontWeight: 700,

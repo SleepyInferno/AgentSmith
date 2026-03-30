@@ -46,12 +46,12 @@ export function NetworkOverviewPage() {
         <article
           style={{
             ...panelStyle,
-            background: "linear-gradient(135deg, rgba(240, 249, 255, 0.96), rgba(255, 255, 255, 0.98))",
+            background: "rgba(10, 17, 11, 0.97)",
           }}
         >
           <p style={eyebrowStyle}>Needs review</p>
           <h2 style={{ margin: "12px 0 10px", fontSize: "2rem" }}>Needs review</h2>
-          <p style={{ margin: 0, color: "#334155", lineHeight: 1.7, maxWidth: 720 }}>
+          <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.7, maxWidth: 720 }}>
             Start with the network findings queue, confirm what is stale or inferred, and move into
             inventory only when you need a broader scan across sites, WAN links, and core
             infrastructure.
@@ -61,12 +61,12 @@ export function NetworkOverviewPage() {
         <article
           style={{
             ...panelStyle,
-            background: isStale ? "#fff7ed" : "#ecfeff",
+            background: isStale ? "rgba(244, 192, 73, 0.08)" : "#ecfeff",
             border: `1px solid ${isStale ? "rgba(249, 115, 22, 0.28)" : "rgba(14, 165, 233, 0.25)"}`,
           }}
         >
           <h2 style={{ marginTop: 0, fontSize: "1rem" }}>Topology confidence</h2>
-          <p style={{ margin: "10px 0 0", color: "#334155", lineHeight: 1.7 }}>{freshnessMessage}</p>
+          <p style={{ margin: "10px 0 0", color: "#9eb79b", lineHeight: 1.7 }}>{freshnessMessage}</p>
           <div
             style={{
               marginTop: 16,
@@ -132,7 +132,7 @@ export function NetworkOverviewPage() {
       >
         <div>
           <h2 style={{ margin: "0 0 8px" }}>Inventory navigation</h2>
-          <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 720 }}>
+          <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6, maxWidth: 720 }}>
             Open the mapper when you need relationship context, then move into the full inventory
             for site filters, operational status checks, or a denser scan of every tracked resource.
           </p>
@@ -160,8 +160,8 @@ export function NetworkOverviewPage() {
               alignItems: "center",
               padding: "12px 18px",
               borderRadius: 999,
-              background: "#0f172a",
-              color: "#f8fafc",
+              background: "#dff4d3",
+              color: "rgba(10, 17, 11, 0.97)",
               textDecoration: "none",
               fontWeight: 600,
             }}
@@ -176,7 +176,7 @@ export function NetworkOverviewPage() {
 
 const eyebrowStyle = {
   margin: 0,
-  color: "#0369a1",
+  color: "#89ff93",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -186,7 +186,7 @@ const eyebrowStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
 };
@@ -202,11 +202,11 @@ const metricCardStyle = {
 
 const metricValueStyle = {
   fontSize: "1.5rem",
-  color: "#0f172a",
+  color: "#dff4d3",
 };
 
 const metricLabelStyle = {
-  color: "#475569",
+  color: "#9eb79b",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.08em",

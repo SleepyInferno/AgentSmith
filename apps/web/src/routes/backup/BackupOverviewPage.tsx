@@ -14,7 +14,7 @@ const defaultTrustBoundaryCopy =
 function toneForCard(tone: string) {
   switch (tone) {
     case "high_risk":
-      return { background: "#fee2e2", color: "#991b1b" };
+      return { background: "#fee2e2", color: "#fca5a5" };
     case "watch":
       return { background: "#ffedd5", color: "#9a3412" };
     case "unknown":
@@ -22,7 +22,7 @@ function toneForCard(tone: string) {
     case "healthy":
       return { background: "#dcfce7", color: "#166534" };
     default:
-      return { background: "#e2e8f0", color: "#334155" };
+      return { background: "rgba(129, 255, 164, 0.08)", color: "#9eb79b" };
   }
 }
 
@@ -66,16 +66,16 @@ export function BackupOverviewPage({ trustBoundaryCopy }: BackupOverviewPageProp
         <article
           style={{
             ...panelStyle,
-            background: "linear-gradient(135deg, rgba(240, 249, 255, 0.96), rgba(255, 255, 255, 0.98))",
+            background: "rgba(10, 17, 11, 0.97)",
           }}
         >
           <p style={eyebrowStyle}>Needs review</p>
           <h2 style={{ margin: "12px 0 10px", fontSize: "2rem" }}>Needs review</h2>
-          <p style={{ margin: 0, color: "#334155", lineHeight: 1.7, maxWidth: 760 }}>
+          <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.7, maxWidth: 760 }}>
             Start with systems missing coverage, stale restore proof, or unclear provider telemetry,
             then widen out into the protected-system inventory only when you need a full baseline scan.
           </p>
-          <p style={{ margin: "14px 0 0", color: "#0f172a", fontWeight: 700 }}>
+          <p style={{ margin: "14px 0 0", color: "#dff4d3", fontWeight: 700 }}>
             {trustBoundaryCopy || defaultTrustBoundaryCopy}
           </p>
         </article>
@@ -83,12 +83,12 @@ export function BackupOverviewPage({ trustBoundaryCopy }: BackupOverviewPageProp
         <article
           style={{
             ...panelStyle,
-            background: hasStaleTelemetry ? "#fff7ed" : "#ecfeff",
+            background: hasStaleTelemetry ? "rgba(244, 192, 73, 0.08)" : "#ecfeff",
             border: `1px solid ${hasStaleTelemetry ? "rgba(249, 115, 22, 0.28)" : "rgba(14, 165, 233, 0.25)"}`,
           }}
         >
           <h2 style={{ marginTop: 0, fontSize: "1rem" }}>Restore proof</h2>
-          <p style={{ margin: "10px 0 0", color: "#334155", lineHeight: 1.7 }}>
+          <p style={{ margin: "10px 0 0", color: "#9eb79b", lineHeight: 1.7 }}>
             {hasStaleTelemetry
               ? "Backup telemetry is stale or incomplete"
               : "Restore-test evidence and provider telemetry are current enough for review"}
@@ -151,7 +151,7 @@ export function BackupOverviewPage({ trustBoundaryCopy }: BackupOverviewPageProp
           <div>
             <p style={eyebrowStyle}>Coverage baseline</p>
             <h2 style={{ margin: "10px 0 8px" }}>Coverage baseline</h2>
-            <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 760 }}>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6, maxWidth: 760 }}>
               These cards come directly from the backup overview contract so the dashboard uses the
               same coverage and confidence semantics as the inventory and future detail routes.
             </p>
@@ -181,15 +181,15 @@ export function BackupOverviewPage({ trustBoundaryCopy }: BackupOverviewPageProp
                   style={{
                     padding: 18,
                     borderRadius: 20,
-                    background: "#f8fafc",
+                    background: "rgba(10, 17, 11, 0.97)",
                     border: "1px solid rgba(148, 163, 184, 0.16)",
                     display: "grid",
                     gap: 8,
                   }}
                 >
                   <span style={{ ...chipStyle, ...tone }}>{card.label}</span>
-                  <strong style={{ fontSize: "1.8rem", color: "#0f172a" }}>{card.value}</strong>
-                  <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>{card.summary}</p>
+                  <strong style={{ fontSize: "1.8rem", color: "#dff4d3" }}>{card.value}</strong>
+                  <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>{card.summary}</p>
                 </article>
               );
             })}
@@ -200,7 +200,7 @@ export function BackupOverviewPage({ trustBoundaryCopy }: BackupOverviewPageProp
       <section style={panelStyle}>
         <p style={eyebrowStyle}>Inventory navigation</p>
         <h2 style={{ margin: "10px 0 8px" }}>Inventory navigation</h2>
-        <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 760 }}>
+        <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6, maxWidth: 760 }}>
           Open the protected-system inventory when you need server-driven filters for provider,
           site, or confidence state while keeping seeded-example and stale-telemetry disclosure visible.
         </p>
@@ -212,8 +212,8 @@ export function BackupOverviewPage({ trustBoundaryCopy }: BackupOverviewPageProp
               alignItems: "center",
               padding: "12px 18px",
               borderRadius: 999,
-              background: "#0f172a",
-              color: "#f8fafc",
+              background: "#dff4d3",
+              color: "rgba(10, 17, 11, 0.97)",
               textDecoration: "none",
               fontWeight: 600,
             }}
@@ -231,7 +231,7 @@ export function BackupOverviewPage({ trustBoundaryCopy }: BackupOverviewPageProp
 
 const eyebrowStyle = {
   margin: 0,
-  color: "#0369a1",
+  color: "#89ff93",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -250,7 +250,7 @@ const chipStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
 };
@@ -266,11 +266,11 @@ const metricCardStyle = {
 
 const metricValueStyle = {
   fontSize: "1.5rem",
-  color: "#0f172a",
+  color: "#dff4d3",
 };
 
 const metricLabelStyle = {
-  color: "#475569",
+  color: "#9eb79b",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.08em",
@@ -280,7 +280,7 @@ const summaryBadgeStyle = {
   padding: "14px 16px",
   borderRadius: 18,
   background: "#eff6ff",
-  color: "#0f172a",
+  color: "#dff4d3",
   fontWeight: 700,
   alignSelf: "start",
 };

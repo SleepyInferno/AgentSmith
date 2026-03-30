@@ -53,7 +53,7 @@ function FilterSelect(props: {
   onChange: (name: string, value: string) => void;
 }) {
   return (
-    <label style={{ display: "grid", gap: 8, color: "#334155", fontWeight: 600 }}>
+    <label style={{ display: "grid", gap: 8, color: "#9eb79b", fontWeight: 600 }}>
       <span>{props.label}</span>
       <select
         value={props.value}
@@ -79,7 +79,7 @@ function FilterInput(props: {
   onChange: (name: string, value: string) => void;
 }) {
   return (
-    <label style={{ display: "grid", gap: 8, color: "#334155", fontWeight: 600 }}>
+    <label style={{ display: "grid", gap: 8, color: "#9eb79b", fontWeight: 600 }}>
       <span>{props.label}</span>
       <input
         value={props.value}
@@ -129,11 +129,11 @@ export function BackupInventoryPage({ trustBoundaryCopy }: BackupInventoryPagePr
           <div>
             <p style={eyebrowStyle}>Backup inventory</p>
             <h2 style={{ margin: "10px 0 8px", fontSize: "2rem" }}>Protected-system inventory</h2>
-            <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 780 }}>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6, maxWidth: 780 }}>
               Filters stay server-driven and bookmarkable, so the queue, inventory, and future detail
               routes all use one backend-owned confidence view instead of React-side filtering.
             </p>
-            <p style={{ margin: "12px 0 0", color: "#0f172a", fontWeight: 700 }}>
+            <p style={{ margin: "12px 0 0", color: "#dff4d3", fontWeight: 700 }}>
               {trustBoundaryCopy || defaultTrustBoundaryCopy}
             </p>
           </div>
@@ -142,8 +142,8 @@ export function BackupInventoryPage({ trustBoundaryCopy }: BackupInventoryPagePr
             style={{
               padding: 16,
               borderRadius: 18,
-              background: hasStaleTelemetry ? "#fff7ed" : "#eff6ff",
-              color: hasStaleTelemetry ? "#9a3412" : "#0f172a",
+              background: hasStaleTelemetry ? "rgba(244, 192, 73, 0.08)" : "#eff6ff",
+              color: hasStaleTelemetry ? "#9a3412" : "#dff4d3",
               maxWidth: 320,
             }}
           >
@@ -212,8 +212,8 @@ export function BackupInventoryPage({ trustBoundaryCopy }: BackupInventoryPagePr
               padding: "0 16px",
               borderRadius: 14,
               border: "1px solid rgba(148, 163, 184, 0.35)",
-              background: "#f8fafc",
-              color: "#0f172a",
+              background: "rgba(10, 17, 11, 0.97)",
+              color: "#dff4d3",
               fontWeight: 600,
               cursor: "pointer",
             }}
@@ -227,8 +227,8 @@ export function BackupInventoryPage({ trustBoundaryCopy }: BackupInventoryPagePr
             marginTop: 18,
             padding: "14px 16px",
             borderRadius: 18,
-            background: "#f8fafc",
-            color: "#334155",
+            background: "rgba(10, 17, 11, 0.97)",
+            color: "#9eb79b",
             border: "1px solid rgba(148, 163, 184, 0.16)",
           }}
         >
@@ -248,7 +248,7 @@ export function BackupInventoryPage({ trustBoundaryCopy }: BackupInventoryPagePr
       >
         <div>
           <h2 style={{ margin: "0 0 8px" }}>Inventory navigation</h2>
-          <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 720 }}>
+          <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6, maxWidth: 720 }}>
             Adjust filters here or head back to the queue-first overview when you want the ranked review list again.
           </p>
         </div>
@@ -259,8 +259,8 @@ export function BackupInventoryPage({ trustBoundaryCopy }: BackupInventoryPagePr
             alignItems: "center",
             padding: "12px 18px",
             borderRadius: 999,
-            background: "#0f172a",
-            color: "#f8fafc",
+            background: "#dff4d3",
+            color: "rgba(10, 17, 11, 0.97)",
             textDecoration: "none",
             fontWeight: 600,
           }}
@@ -276,7 +276,7 @@ export function BackupInventoryPage({ trustBoundaryCopy }: BackupInventoryPagePr
       ) : rows.length === 0 ? (
         <div style={panelStyle}>
           <strong style={{ display: "block", marginBottom: 8 }}>No protected systems match the current filters</strong>
-          <span style={{ color: "#475569", lineHeight: 1.6 }}>
+          <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>
             Clear one or more filters to widen the protected-system review scope.
           </span>
         </div>
@@ -292,12 +292,12 @@ const filterControlStyle = {
   borderRadius: 14,
   border: "1px solid rgba(148, 163, 184, 0.42)",
   padding: "10px 12px",
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
 };
 
 const eyebrowStyle = {
   margin: 0,
-  color: "#0369a1",
+  color: "#89ff93",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -307,7 +307,7 @@ const eyebrowStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
 };

@@ -19,7 +19,7 @@ const columns = [
     cell: (info) => (
       <Link
         to={`/backup/systems/${info.row.original.systemId}`}
-        style={{ color: "#0f172a", fontWeight: 700, textDecoration: "none" }}
+        style={{ color: "#dff4d3", fontWeight: 700, textDecoration: "none" }}
       >
         {info.getValue()}
       </Link>
@@ -54,11 +54,11 @@ const columns = [
               ))}
             </div>
           ) : null}
-          <span style={{ color: "#334155", lineHeight: 1.6 }}>{info.getValue()}</span>
+          <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>{info.getValue()}</span>
           <Link
             to={`/backup/systems/${info.row.original.systemId}`}
             style={{
-              color: "#0369a1",
+              color: "#89ff93",
               fontWeight: 700,
               textDecoration: "none",
               fontSize: 13,
@@ -96,18 +96,18 @@ function buildInventoryTags(row: BackupInventoryRow) {
 
 function toneForTag(tag: string) {
   if (tag === "Excluded by policy") {
-    return { color: "#334155", background: "#e2e8f0" };
+    return { color: "#9eb79b", background: "rgba(129, 255, 164, 0.08)" };
   }
 
   if (tag === "Duplicate match needs review") {
-    return { color: "#9a3412", background: "#ffedd5" };
+    return { color: "#fdba74", background: "rgba(234, 88, 12, 0.12)" };
   }
 
   if (tag === "Telemetry unknown") {
-    return { color: "#1d4ed8", background: "#dbeafe" };
+    return { color: "#93c5fd", background: "rgba(59, 130, 246, 0.15)" };
   }
 
-  return { color: "#0369a1", background: "#e0f2fe" };
+  return { color: "#89ff93", background: "rgba(59, 130, 246, 0.15)" };
 }
 
 function formatDateTime(value: string | null) {
@@ -139,11 +139,11 @@ export function BackupInventoryTable({ rows }: BackupInventoryTableProps) {
         overflowX: "auto",
         borderRadius: 24,
         border: "1px solid rgba(148, 163, 184, 0.22)",
-        background: "#ffffff",
+        background: "rgba(10, 17, 11, 0.97)",
       }}
     >
       <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 1320 }}>
-        <thead style={{ background: "#e2e8f0" }}>
+        <thead style={{ background: "rgba(129, 255, 164, 0.08)" }}>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
@@ -152,7 +152,7 @@ export function BackupInventoryTable({ rows }: BackupInventoryTableProps) {
                   style={{
                     textAlign: "left",
                     padding: "14px 16px",
-                    color: "#334155",
+                    color: "#9eb79b",
                     fontSize: 13,
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
@@ -170,7 +170,7 @@ export function BackupInventoryTable({ rows }: BackupInventoryTableProps) {
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id} style={{ borderTop: "1px solid rgba(226, 232, 240, 0.9)" }}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} style={{ padding: "14px 16px", color: "#0f172a", verticalAlign: "top" }}>
+                <td key={cell.id} style={{ padding: "14px 16px", color: "#dff4d3", verticalAlign: "top" }}>
                   {formatCell(flexRender(cell.column.columnDef.cell, cell.getContext()) as string | number | null)}
                 </td>
               ))}

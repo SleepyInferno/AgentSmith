@@ -40,9 +40,9 @@ function freshnessTone(state: string) {
       return { color: "#9a3412", background: "#ffedd5" };
     case "stale":
     case "error":
-      return { color: "#991b1b", background: "#fee2e2" };
+      return { color: "#fca5a5", background: "#fee2e2" };
     default:
-      return { color: "#334155", background: "#e2e8f0" };
+      return { color: "#9eb79b", background: "rgba(129, 255, 164, 0.08)" };
   }
 }
 
@@ -51,11 +51,11 @@ function statusTone(status: string | null) {
     case "online":
       return { color: "#166534", background: "#dcfce7" };
     case "offline":
-      return { color: "#991b1b", background: "#fee2e2" };
+      return { color: "#fca5a5", background: "#fee2e2" };
     case "degraded":
       return { color: "#9a3412", background: "#ffedd5" };
     default:
-      return { color: "#334155", background: "#e2e8f0" };
+      return { color: "#9eb79b", background: "rgba(129, 255, 164, 0.08)" };
   }
 }
 
@@ -85,14 +85,14 @@ export function NetworkDetailPage() {
       <article
         style={{
           ...panelStyle,
-          background: "linear-gradient(135deg, rgba(240, 249, 255, 0.96), rgba(255, 255, 255, 0.98))",
+          background: "rgba(10, 17, 11, 0.97)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", alignItems: "flex-start" }}>
           <div>
             <p style={eyebrowStyle}>Network detail</p>
             <h2 style={{ margin: "10px 0 8px", fontSize: "2rem" }}>{detail.resourceName}</h2>
-            <p style={{ margin: 0, color: "#334155", lineHeight: 1.7, maxWidth: 780 }}>{detail.summary}</p>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.7, maxWidth: 780 }}>{detail.summary}</p>
           </div>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             <Link to="/network/map" style={ghostLinkStyle}>
@@ -126,7 +126,7 @@ export function NetworkDetailPage() {
       >
         <article style={panelStyle}>
           <h3 style={{ marginTop: 0 }}>Resource scope</h3>
-          <p style={{ margin: "0 0 18px", color: "#475569", lineHeight: 1.6 }}>
+          <p style={{ margin: "0 0 18px", color: "#9eb79b", lineHeight: 1.6 }}>
             {detail.scopeSummary}
           </p>
           <div style={definitionGridStyle}>
@@ -162,7 +162,7 @@ export function NetworkDetailPage() {
       <article style={panelStyle}>
         <h3 style={{ marginTop: 0 }}>Related infrastructure</h3>
         {!hasRelatedResources ? (
-          <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
+          <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>
             No related infrastructure returned by the network API.
           </p>
         ) : (
@@ -173,7 +173,7 @@ export function NetworkDetailPage() {
                 style={{
                   padding: 18,
                   borderRadius: 20,
-                  background: "#f8fafc",
+                  background: "rgba(10, 17, 11, 0.97)",
                   border: "1px solid rgba(148, 163, 184, 0.18)",
                   display: "grid",
                   gap: 12,
@@ -181,8 +181,8 @@ export function NetworkDetailPage() {
               >
                 <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
                   <div>
-                    <strong style={{ display: "block", color: "#0f172a", fontSize: "1rem" }}>{resource.resourceName}</strong>
-                    <span style={{ color: "#475569", lineHeight: 1.5 }}>
+                    <strong style={{ display: "block", color: "#dff4d3", fontSize: "1rem" }}>{resource.resourceName}</strong>
+                    <span style={{ color: "#9eb79b", lineHeight: 1.5 }}>
                       {formatLabel(resource.resourceKind)} in {valueOrUnknown(resource.siteName)}
                     </span>
                   </div>
@@ -211,7 +211,7 @@ export function NetworkDetailPage() {
       <article style={panelStyle}>
         <h3 style={{ marginTop: 0 }}>Open findings</h3>
         {!hasFindings ? (
-          <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
+          <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>
             No open findings are attached to this network resource right now.
           </p>
         ) : (
@@ -222,7 +222,7 @@ export function NetworkDetailPage() {
                 style={{
                   padding: 18,
                   borderRadius: 20,
-                  background: "#ffffff",
+                  background: "rgba(10, 17, 11, 0.97)",
                   border: "1px solid rgba(148, 163, 184, 0.18)",
                   boxShadow: "0 12px 32px rgba(15, 23, 42, 0.06)",
                   display: "grid",
@@ -231,8 +231,8 @@ export function NetworkDetailPage() {
               >
                 <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
                   <div>
-                    <strong style={{ display: "block", color: "#0f172a" }}>{finding.summary}</strong>
-                    <span style={{ color: "#475569", lineHeight: 1.5 }}>
+                    <strong style={{ display: "block", color: "#dff4d3" }}>{finding.summary}</strong>
+                    <span style={{ color: "#9eb79b", lineHeight: 1.5 }}>
                       {valueOrUnknown(finding.scopeLabel ?? detail.siteName)} | Queue rank #{finding.queueRank}
                     </span>
                   </div>
@@ -260,21 +260,21 @@ function DefinitionItem(props: { label: string; value: string }) {
       style={{
         padding: 14,
         borderRadius: 16,
-        background: "#f8fafc",
+        background: "rgba(10, 17, 11, 0.97)",
         border: "1px solid rgba(148, 163, 184, 0.14)",
         display: "grid",
         gap: 6,
       }}
     >
       <span style={labelStyle}>{props.label}</span>
-      <strong style={{ color: "#0f172a", lineHeight: 1.5 }}>{props.value}</strong>
+      <strong style={{ color: "#dff4d3", lineHeight: 1.5 }}>{props.value}</strong>
     </div>
   );
 }
 
 const eyebrowStyle = {
   margin: 0,
-  color: "#0369a1",
+  color: "#89ff93",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -284,7 +284,7 @@ const eyebrowStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
 };
@@ -296,7 +296,7 @@ const definitionGridStyle = {
 };
 
 const labelStyle = {
-  color: "#64748b",
+  color: "#9eb79b",
   fontSize: 12,
   textTransform: "uppercase" as const,
   letterSpacing: "0.1em",
@@ -316,8 +316,8 @@ const primaryLinkStyle = {
   alignItems: "center",
   padding: "12px 18px",
   borderRadius: 999,
-  background: "#0f172a",
-  color: "#f8fafc",
+  background: "#dff4d3",
+  color: "rgba(10, 17, 11, 0.97)",
   textDecoration: "none",
   fontWeight: 600,
 };
@@ -327,8 +327,8 @@ const ghostLinkStyle = {
   alignItems: "center",
   padding: "12px 18px",
   borderRadius: 999,
-  background: "#e2e8f0",
-  color: "#0f172a",
+  background: "rgba(129, 255, 164, 0.08)",
+  color: "#dff4d3",
   textDecoration: "none",
   fontWeight: 600,
 };

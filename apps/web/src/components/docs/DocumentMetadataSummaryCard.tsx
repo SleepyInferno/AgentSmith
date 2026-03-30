@@ -29,13 +29,13 @@ export function DocumentMetadataSummaryCard({
     <article style={panelStyle}>
       <p style={eyebrowStyle}>Next review window</p>
       <h3 style={{ margin: "10px 0 8px" }}>Next review window</h3>
-      <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
+      <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>
         Review age, due-window status, and recent history are summarized together before any metadata review is opened.
       </p>
 
       <div style={statusHeroStyle}>
-        <strong style={{ fontSize: "1.2rem", color: "#0f172a" }}>{nextReviewStatus}</strong>
-        <span style={{ color: "#334155", lineHeight: 1.6 }}>{reviewAgeLabel}</span>
+        <strong style={{ fontSize: "1.2rem", color: "#dff4d3" }}>{nextReviewStatus}</strong>
+        <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>{reviewAgeLabel}</span>
       </div>
 
       <div style={definitionGridStyle}>
@@ -49,7 +49,7 @@ export function DocumentMetadataSummaryCard({
       </div>
 
       <div style={{ display: "grid", gap: 10, marginTop: 18 }}>
-        <strong style={{ color: "#0f172a" }}>History highlights</strong>
+        <strong style={{ color: "#dff4d3" }}>History highlights</strong>
         {historyHighlights.map((highlight) => (
           <div key={highlight} style={highlightStyle}>
             {highlight}
@@ -58,8 +58,8 @@ export function DocumentMetadataSummaryCard({
       </div>
 
       <div style={nextStepStyle}>
-        <strong style={{ color: "#0f172a" }}>Suggested next step</strong>
-        <span style={{ color: "#334155", lineHeight: 1.6 }}>
+        <strong style={{ color: "#dff4d3" }}>Suggested next step</strong>
+        <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>
           {suggestedNextStep ?? "No explicit next step is queued for this documentation record."}
         </span>
       </div>
@@ -71,7 +71,7 @@ function DefinitionItem(props: { label: string; value: string }) {
   return (
     <div style={definitionItemStyle}>
       <span style={labelStyle}>{props.label}</span>
-      <strong style={{ color: "#0f172a", lineHeight: 1.5 }}>{props.value}</strong>
+      <strong style={{ color: "#dff4d3", lineHeight: 1.5 }}>{props.value}</strong>
     </div>
   );
 }
@@ -93,7 +93,7 @@ function formatLabel(value: string) {
 
 const eyebrowStyle = {
   margin: 0,
-  color: "#0369a1",
+  color: "#89ff93",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -103,7 +103,7 @@ const eyebrowStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
   display: "grid",
@@ -113,7 +113,7 @@ const panelStyle = {
 const statusHeroStyle = {
   padding: "18px 20px",
   borderRadius: 20,
-  background: "linear-gradient(135deg, rgba(239, 246, 255, 0.96), rgba(248, 250, 252, 0.98))",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(147, 197, 253, 0.28)",
   display: "grid",
   gap: 6,
@@ -128,14 +128,14 @@ const definitionGridStyle = {
 const definitionItemStyle = {
   padding: 14,
   borderRadius: 16,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.14)",
   display: "grid",
   gap: 6,
 };
 
 const labelStyle = {
-  color: "#64748b",
+  color: "#9eb79b",
   fontSize: 12,
   textTransform: "uppercase" as const,
   letterSpacing: "0.1em",
@@ -145,16 +145,16 @@ const labelStyle = {
 const highlightStyle = {
   padding: "12px 14px",
   borderRadius: 16,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.14)",
-  color: "#334155",
+  color: "#9eb79b",
   lineHeight: 1.6,
 };
 
 const nextStepStyle = {
   padding: "16px 18px",
   borderRadius: 18,
-  background: "#eff6ff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(59, 130, 246, 0.18)",
   display: "grid",
   gap: 8,

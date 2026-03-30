@@ -1,5 +1,7 @@
+import { randomUUID } from "node:crypto";
 import { PrismaClient, type AuditEvent, type LifecycleRun, type LifecycleRunGroup, type LifecycleRunStep, type Prisma } from "@prisma/client";
 import { buildLifecycleRunSnapshot, buildLifecycleRunSummary, validateLifecycleStepUpdate } from "./lifecycle.service.js";
+import { lifecycleFixtureRuns } from "./lifecycle.fixtures.js";
 import { lifecycleTemplates } from "./lifecycle.templates.js";
 import type {
   LifecycleRunDetail,
@@ -9,6 +11,76 @@ import type {
   LifecycleTemplate,
   LifecycleTemplateKey,
 } from "./lifecycle.types.js";
+
+class LifecycleSeededStore {
+  private runs: Map<string, LifecycleRunDetail>;
+
+  constructor() {
+    this.runs = new Map(lifecycleFixtureRuns.map((run) => [run.id, structuredClone(run)]));
+  }
+
+  listActive(): LifecycleRunListRow[] {
+    return [...this.runs.values()]
+      .filter((run) => run.status === "active")
+      .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+      .map(({ groups: _groups, ...row }) => row);
+  }
+
+  get(runId: string): LifecycleRunDetail | null {
+    return structuredClone(this.runs.get(runId) ?? null);
+  }
+
+  create(detail: LifecycleRunDetail): LifecycleRunDetail {
+    this.runs.set(detail.id, structuredClone(detail));
+    return structuredClone(detail);
+  }
+
+  updateStep(runId: string, stepKey: string, input: LifecycleStepUpdateInput): LifecycleRunDetail | null {
+    const run = this.runs.get(runId);
+    if (!run) return null;
+
+    const payload = validateLifecycleStepUpdate(input);
+    const now = payload.completedAt ?? new Date().toISOString();
+
+    for (const group of run.groups) {
+      const step = group.steps.find((s) => s.key === stepKey);
+      if (step) {
+        step.status = payload.status;
+        step.statusReason = payload.statusReason ?? null;
+        step.note = payload.note ?? null;
+        step.ticketId = payload.ticketId ?? null;
+        step.assetId = payload.assetId ?? null;
+        step.mailboxRef = payload.mailboxRef ?? null;
+        step.handoffRef = payload.handoffRef ?? null;
+        step.completedAt = now;
+        break;
+      }
+    }
+
+    run.updatedAt = new Date().toISOString();
+    return structuredClone(run);
+  }
+
+  close(runId: string): LifecycleRunSummary | null {
+    const run = this.runs.get(runId);
+    if (!run) return null;
+
+    const summary = buildLifecycleRunSummary(run);
+    run.status = "completed";
+    run.closedAt = new Date().toISOString();
+    run.updatedAt = run.closedAt;
+    return summary;
+  }
+}
+
+let seededStore: LifecycleSeededStore | null = null;
+
+function getSeededStore(): LifecycleSeededStore {
+  if (!seededStore) {
+    seededStore = new LifecycleSeededStore();
+  }
+  return seededStore;
+}
 
 type LifecycleRunRecord = LifecycleRun & {
   groups: Array<LifecycleRunGroup & { steps: LifecycleRunStep[] }>;
@@ -35,6 +107,23 @@ const lifecycleRunInclude = {
 export class LifecycleRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
+  private seededModeCache: boolean | null = null;
+
+  private async isSeededMode(): Promise<boolean> {
+    if (this.seededModeCache !== null) {
+      return this.seededModeCache;
+    }
+
+    try {
+      await this.prisma.lifecycleRun.count();
+      this.seededModeCache = false;
+    } catch {
+      this.seededModeCache = true;
+    }
+
+    return this.seededModeCache;
+  }
+
   async listTemplates(): Promise<LifecycleTemplate[]> {
     return lifecycleTemplates.map((template) => ({
       ...template,
@@ -46,6 +135,10 @@ export class LifecycleRepository {
   }
 
   async listActiveRuns(): Promise<LifecycleRunListRow[]> {
+    if (await this.isSeededMode()) {
+      return getSeededStore().listActive();
+    }
+
     const runs = await this.prisma.lifecycleRun.findMany({
       where: {
         status: "active",
@@ -57,6 +150,15 @@ export class LifecycleRepository {
   }
 
   async startRun(input: StartLifecycleRunInput): Promise<LifecycleRunDetail> {
+    if (await this.isSeededMode()) {
+      const snapshot = buildLifecycleRunSnapshot(input.templateKey, {
+        displayName: input.subjectDisplayName,
+        email: input.subjectEmail,
+        requestedBy: input.requestedBy,
+      });
+      return getSeededStore().create({ id: randomUUID(), ...snapshot });
+    }
+
     const snapshot = buildLifecycleRunSnapshot(input.templateKey, {
       displayName: input.subjectDisplayName,
       email: input.subjectEmail,
@@ -119,6 +221,10 @@ export class LifecycleRepository {
   }
 
   async getRun(runId: string): Promise<LifecycleRunDetail | null> {
+    if (await this.isSeededMode()) {
+      return getSeededStore().get(runId);
+    }
+
     const run = await this.prisma.lifecycleRun.findUnique({
       where: {
         id: runId,
@@ -130,6 +236,10 @@ export class LifecycleRepository {
   }
 
   async updateRunStep(runId: string, stepId: string, input: LifecycleStepUpdateInput): Promise<LifecycleRunDetail | null> {
+    if (await this.isSeededMode()) {
+      return getSeededStore().updateStep(runId, stepId, input);
+    }
+
     const payload = validateLifecycleStepUpdate(input);
     const now = payload.completedAt ? new Date(payload.completedAt) : new Date();
 
@@ -221,6 +331,10 @@ export class LifecycleRepository {
   }
 
   async closeRun(runId: string): Promise<LifecycleRunSummary | null> {
+    if (await this.isSeededMode()) {
+      return getSeededStore().close(runId);
+    }
+
     const now = new Date();
 
     return this.prisma.$transaction(async (tx) => {

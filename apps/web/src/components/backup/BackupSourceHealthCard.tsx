@@ -16,7 +16,7 @@ export function BackupSourceHealthCard({
       style={{
         padding: 20,
         borderRadius: 22,
-        background: "#ffffff",
+        background: "rgba(10, 17, 11, 0.97)",
         border: "1px solid rgba(148, 163, 184, 0.18)",
         boxShadow: "0 16px 36px rgba(15, 23, 42, 0.06)",
         display: "grid",
@@ -25,8 +25,8 @@ export function BackupSourceHealthCard({
     >
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
         <div>
-          <strong style={{ display: "block", color: "#0f172a", fontSize: "1rem" }}>{source.providerLabel}</strong>
-          <span style={{ color: "#475569", lineHeight: 1.5 }}>{source.summary}</span>
+          <strong style={{ display: "block", color: "#dff4d3", fontSize: "1rem" }}>{source.providerLabel}</strong>
+          <span style={{ color: "#9eb79b", lineHeight: 1.5 }}>{source.summary}</span>
         </div>
         <span style={{ ...chipStyle, ...toneForFreshness(source.state) }}>{formatState(source.state)}</span>
       </div>
@@ -71,16 +71,16 @@ function formatDateTime(value: string | null) {
 function toneForFreshness(value: string) {
   switch (value) {
     case "error":
-      return { color: "#991b1b", background: "#fee2e2" };
+      return { color: "#fca5a5", background: "rgba(220, 38, 38, 0.15)" };
     case "stale":
-      return { color: "#9a3412", background: "#ffedd5" };
+      return { color: "#fdba74", background: "rgba(234, 88, 12, 0.12)" };
     case "missing":
-      return { color: "#991b1b", background: "#fee2e2" };
+      return { color: "#fca5a5", background: "rgba(220, 38, 38, 0.15)" };
     case "unknown":
-      return { color: "#1d4ed8", background: "#dbeafe" };
+      return { color: "#93c5fd", background: "rgba(59, 130, 246, 0.15)" };
     case "current":
     default:
-      return { color: "#166534", background: "#dcfce7" };
+      return { color: "#86efac", background: "rgba(134, 239, 172, 0.12)" };
   }
 }
 
@@ -90,14 +90,14 @@ function DefinitionItem(props: { label: string; value: string }) {
       style={{
         padding: 12,
         borderRadius: 16,
-        background: "#f8fafc",
+        background: "rgba(10, 17, 11, 0.97)",
         border: "1px solid rgba(148, 163, 184, 0.14)",
         display: "grid",
         gap: 6,
       }}
     >
       <span style={labelStyle}>{props.label}</span>
-      <strong style={{ color: "#0f172a", lineHeight: 1.5 }}>{props.value}</strong>
+      <strong style={{ color: "#dff4d3", lineHeight: 1.5 }}>{props.value}</strong>
     </div>
   );
 }
@@ -117,7 +117,7 @@ const definitionGridStyle = {
 };
 
 const labelStyle = {
-  color: "#64748b",
+  color: "#9eb79b",
   fontSize: 12,
   textTransform: "uppercase" as const,
   letterSpacing: "0.1em",

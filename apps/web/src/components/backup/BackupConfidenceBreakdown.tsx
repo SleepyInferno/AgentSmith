@@ -100,14 +100,14 @@ function DefinitionItem(props: { label: string; value: string; emphasized?: bool
       style={{
         padding: 16,
         borderRadius: 18,
-        background: props.emphasized ? "#eef2ff" : "#f8fafc",
+        background: props.emphasized ? "rgba(10, 17, 11, 0.97)" : "rgba(10, 17, 11, 0.97)",
         border: "1px solid rgba(148, 163, 184, 0.16)",
         display: "grid",
         gap: 8,
       }}
     >
       <span style={labelStyle}>{props.label}</span>
-      <strong style={{ color: "#0f172a", lineHeight: 1.6, fontWeight: props.emphasized ? 700 : 600 }}>
+      <strong style={{ color: "#dff4d3", lineHeight: 1.6, fontWeight: props.emphasized ? 700 : 600 }}>
         {props.value}
       </strong>
     </div>
@@ -115,7 +115,7 @@ function DefinitionItem(props: { label: string; value: string; emphasized?: bool
 }
 
 const labelStyle = {
-  color: "#64748b",
+  color: "#9eb79b",
   fontSize: 12,
   textTransform: "uppercase" as const,
   letterSpacing: "0.1em",

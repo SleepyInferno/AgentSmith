@@ -1,4 +1,5 @@
 import { PrismaClient, type Prisma } from "@prisma/client";
+import { assetFixtureDetails, assetFixtureInventory, assetFixtureQueue } from "./asset-health.fixtures.js";
 import type {
   AssetDetail,
   AssetInventoryFilters,
@@ -27,6 +28,15 @@ export class AssetHealthRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
   async listInventory(filters: AssetInventoryFilters = {}): Promise<AssetInventoryRow[]> {
+    const isSeeded = await this.isSeededMode();
+    if (isSeeded) {
+      return sortInventoryRows(
+        applyInventoryFilters(assetFixtureInventory, filters),
+        filters.sortField,
+        filters.sortDirection,
+      );
+    }
+
     const devices = await this.prisma.device.findMany({
       where: buildDeviceWhere(filters),
       include: {
@@ -49,6 +59,11 @@ export class AssetHealthRepository {
   }
 
   async listQueue(limit: number): Promise<AssetQueueItem[]> {
+    const isSeeded = await this.isSeededMode();
+    if (isSeeded) {
+      return assetFixtureQueue.slice(0, limit);
+    }
+
     const devices = await this.prisma.device.findMany({
       where: {
         riskAssessment: {
@@ -91,6 +106,11 @@ export class AssetHealthRepository {
   }
 
   async getDeviceDetail(deviceId: string): Promise<AssetDetail | null> {
+    const isSeeded = await this.isSeededMode();
+    if (isSeeded) {
+      return assetFixtureDetails[deviceId] ?? null;
+    }
+
     const device = await this.prisma.device.findUnique({
       where: {
         id: deviceId,
@@ -118,6 +138,23 @@ export class AssetHealthRepository {
     };
   }
 
+  private seededModeCache: boolean | null = null;
+
+  private async isSeededMode(): Promise<boolean> {
+    if (this.seededModeCache !== null) {
+      return this.seededModeCache;
+    }
+
+    try {
+      const count = await this.prisma.device.count();
+      this.seededModeCache = count === 0;
+    } catch {
+      this.seededModeCache = true;
+    }
+
+    return this.seededModeCache;
+  }
+
   private async loadOwners(devices: AssetDeviceRecord[]): Promise<Map<string, AssetOwnerRecord>> {
     const ownerIds = [...new Set(devices.map((device) => device.ownerId).filter((ownerId): ownerId is string => Boolean(ownerId)))];
 
@@ -141,6 +178,23 @@ export class AssetHealthRepository {
 
     return new Map(owners.map((owner) => [owner.id, owner]));
   }
+}
+
+function applyInventoryFilters(rows: AssetInventoryRow[], filters: AssetInventoryFilters): AssetInventoryRow[] {
+  return rows
+    .filter((d) => !filters.department || d.department === filters.department)
+    .filter((d) => !filters.site || d.site === filters.site)
+    .filter((d) => !filters.riskLevel || d.riskLevel === filters.riskLevel)
+    .filter((d) => !filters.encryptionStatus || d.encryptionStatus === filters.encryptionStatus)
+    .filter((d) => !filters.antivirusStatus || d.antivirusStatus === filters.antivirusStatus)
+    .filter((d) => !filters.patchStatus || d.patchStatus === filters.patchStatus)
+    .filter((d) => !filters.riskSignal || d.signals.some((s) => s.code === filters.riskSignal))
+    .filter((d) => !filters.staleOnly || d.freshnessState === "stale")
+    .filter((d) => {
+      if (!filters.search) return true;
+      const q = filters.search.toLowerCase();
+      return [d.name, d.ownerName, d.operatingSystem, d.site, d.department].some((v) => v?.toLowerCase().includes(q));
+    });
 }
 
 function buildDeviceWhere(filters: AssetInventoryFilters): Prisma.DeviceWhereInput {

@@ -157,7 +157,7 @@ function AppShell() {
             </div>
             <div>
               <p className="agent-sidebar__brand-title">AgentSmith</p>
-              <p className="agent-sidebar__brand-subtitle">Agent-OS</p>
+              <p className="agent-sidebar__brand-subtitle">S-OS</p>
             </div>
           </div>
 

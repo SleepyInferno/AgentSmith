@@ -9,27 +9,27 @@ type NetworkFindingsQueueProps = {
 function toneForSeverity(severity: string) {
   switch (severity) {
     case "critical":
-      return { color: "#7f1d1d", background: "#fecaca" };
+      return { color: "#fca5a5", background: "rgba(220, 38, 38, 0.18)" };
     case "high":
-      return { color: "#9a3412", background: "#fed7aa" };
+      return { color: "#fdba74", background: "rgba(234, 88, 12, 0.15)" };
     case "watch":
-      return { color: "#854d0e", background: "#fde68a" };
+      return { color: "#fcd34d", background: "rgba(202, 138, 4, 0.15)" };
     default:
-      return { color: "#0f766e", background: "#ccfbf1" };
+      return { color: "#5eead4", background: "rgba(20, 184, 166, 0.15)" };
   }
 }
 
 function toneForFreshness(freshnessState: string) {
   switch (freshnessState) {
     case "healthy":
-      return { color: "#166534", background: "#dcfce7" };
+      return { color: "#86efac", background: "rgba(134, 239, 172, 0.12)" };
     case "warning":
-      return { color: "#9a3412", background: "#ffedd5" };
+      return { color: "#fdba74", background: "rgba(234, 88, 12, 0.12)" };
     case "stale":
     case "error":
-      return { color: "#7f1d1d", background: "#fee2e2" };
+      return { color: "#fca5a5", background: "rgba(220, 38, 38, 0.15)" };
     default:
-      return { color: "#334155", background: "#e2e8f0" };
+      return { color: "#9eb79b", background: "rgba(129, 255, 164, 0.08)" };
   }
 }
 
@@ -38,7 +38,7 @@ export function NetworkFindingsQueue({ items, emptyTitle }: NetworkFindingsQueue
     return (
       <section style={panelStyle}>
         <h2 style={{ marginTop: 0 }}>{emptyTitle ?? "No network findings need review right now"}</h2>
-        <p style={{ marginBottom: 0, color: "#475569", lineHeight: 1.6 }}>
+        <p style={{ marginBottom: 0, color: "#9eb79b", lineHeight: 1.6 }}>
           The network queue is clear. Open inventory if you want to review scope, site coverage,
           or current freshness across all tracked resources.
         </p>
@@ -62,7 +62,7 @@ export function NetworkFindingsQueue({ items, emptyTitle }: NetworkFindingsQueue
               color: "inherit",
               borderRadius: 24,
               padding: 20,
-              background: "#ffffff",
+              background: "rgba(10, 17, 11, 0.97)",
               border: "1px solid rgba(148, 163, 184, 0.22)",
               boxShadow: "0 12px 36px rgba(15, 23, 42, 0.08)",
             }}
@@ -91,20 +91,20 @@ export function NetworkFindingsQueue({ items, emptyTitle }: NetworkFindingsQueue
                   >
                     {item.severity}
                   </span>
-                  <span style={{ color: "#475569", fontSize: 13 }}>Queue rank #{item.queueRank}</span>
-                  <span style={{ color: "#475569", fontSize: 13 }}>{item.resourceKind}</span>
-                  {item.siteName ? <span style={{ color: "#475569", fontSize: 13 }}>{item.siteName}</span> : null}
+                  <span style={{ color: "#9eb79b", fontSize: 13 }}>Queue rank #{item.queueRank}</span>
+                  <span style={{ color: "#9eb79b", fontSize: 13 }}>{item.resourceKind}</span>
+                  {item.siteName ? <span style={{ color: "#9eb79b", fontSize: 13 }}>{item.siteName}</span> : null}
                 </div>
                 <h3 style={{ margin: "12px 0 8px", fontSize: "1.25rem" }}>{item.resourceName}</h3>
-                <p style={{ margin: 0, color: "#334155", lineHeight: 1.6 }}>{item.summary}</p>
+                <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>{item.summary}</p>
                 <div
                   style={{
                     marginTop: 14,
                     padding: 14,
                     borderRadius: 18,
-                    background: "#f8fafc",
+                    background: "rgba(10, 17, 11, 0.97)",
                     border: "1px solid rgba(148, 163, 184, 0.14)",
-                    color: "#334155",
+                    color: "#9eb79b",
                   }}
                 >
                   <strong style={{ display: "block", marginBottom: 6 }}>suggestedNextStep</strong>
@@ -143,15 +143,15 @@ export function NetworkFindingsQueue({ items, emptyTitle }: NetworkFindingsQueue
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
 };
 
 const statusCardStyle = {
   padding: 14,
   borderRadius: 18,
-  background: "#eff6ff",
-  color: "#0f172a",
+  background: "rgba(10, 17, 11, 0.97)",
+  color: "#dff4d3",
   display: "grid",
   gap: 6,
 };

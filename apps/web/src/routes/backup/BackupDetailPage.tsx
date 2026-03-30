@@ -40,14 +40,14 @@ export function BackupDetailPage() {
       <article
         style={{
           ...panelStyle,
-          background: "linear-gradient(135deg, rgba(240, 249, 255, 0.96), rgba(255, 255, 255, 0.98))",
+          background: "rgba(10, 17, 11, 0.97)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", alignItems: "flex-start" }}>
           <div>
             <p style={eyebrowStyle}>Backup detail</p>
             <h2 style={{ margin: "10px 0 8px", fontSize: "2rem" }}>{detail.systemName}</h2>
-            <p style={{ margin: 0, color: "#334155", lineHeight: 1.7, maxWidth: 780 }}>{detail.summary}</p>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.7, maxWidth: 780 }}>{detail.summary}</p>
           </div>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             <Link to="/backup" style={ghostLinkStyle}>
@@ -87,8 +87,8 @@ export function BackupDetailPage() {
         ) : null}
 
         <div style={trustNoteStyle}>
-          <strong style={{ color: "#0f172a" }}>{trustBoundaryCopy}</strong>
-          <span style={{ color: "#475569", lineHeight: 1.6 }}>
+          <strong style={{ color: "#dff4d3" }}>{trustBoundaryCopy}</strong>
+          <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>
             Matching confidence and evidence provenance stay visible before the operator decides what to review next.
           </span>
         </div>
@@ -106,7 +106,7 @@ export function BackupDetailPage() {
         <article style={panelStyle}>
           <p style={eyebrowStyle}>Confidence breakdown</p>
           <h3 style={{ marginTop: 10 }}>Confidence breakdown</h3>
-          <p style={{ margin: "0 0 18px", color: "#475569", lineHeight: 1.6 }}>
+          <p style={{ margin: "0 0 18px", color: "#9eb79b", lineHeight: 1.6 }}>
             Coverage, freshness thresholds, and restore-test recency are explained here so the current confidenceState never looks like an opaque status pill.
           </p>
           <BackupConfidenceBreakdown detail={detail} />
@@ -115,7 +115,7 @@ export function BackupDetailPage() {
         <article style={panelStyle}>
           <p style={eyebrowStyle}>Policy window</p>
           <h3 style={{ marginTop: 10 }}>Policy window</h3>
-          <p style={{ margin: "0 0 18px", color: "#475569", lineHeight: 1.6 }}>
+          <p style={{ margin: "0 0 18px", color: "#9eb79b", lineHeight: 1.6 }}>
             Provider scope and review thresholds come from the server-owned policy summary for this system.
           </p>
           <div style={definitionGridStyle}>
@@ -132,7 +132,7 @@ export function BackupDetailPage() {
       <article style={panelStyle}>
         <p style={eyebrowStyle}>Coverage evidence</p>
         <h3 style={{ marginTop: 10 }}>Coverage evidence</h3>
-        <p style={{ margin: "0 0 18px", color: "#475569", lineHeight: 1.6 }}>
+        <p style={{ margin: "0 0 18px", color: "#9eb79b", lineHeight: 1.6 }}>
           Provider-backed workload evidence explains what is covered, what is stale, and which telemetry the system currently depends on.
         </p>
         {providerEvidence.length === 0 ? (
@@ -151,7 +151,7 @@ export function BackupDetailPage() {
       <article style={panelStyle}>
         <p style={eyebrowStyle}>Restore proof</p>
         <h3 style={{ marginTop: 10 }}>Restore proof</h3>
-        <p style={{ margin: "0 0 18px", color: "#475569", lineHeight: 1.6 }}>
+        <p style={{ margin: "0 0 18px", color: "#9eb79b", lineHeight: 1.6 }}>
           The timeline shows the latest successful backup, the last failed backup, the latest restore proof, and any operator-attested evidence in chronological order.
         </p>
         <BackupEvidenceTimeline entries={detail.timeline} />
@@ -161,7 +161,7 @@ export function BackupDetailPage() {
         <article style={panelStyle}>
           <p style={eyebrowStyle}>Source health</p>
           <h3 style={{ marginTop: 10 }}>Source health</h3>
-          <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
+          <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>
             Provider freshness, connector freshness, evidence source, and the read-only trust boundary are disclosed here before any operator decides what to review next.
           </p>
         </article>
@@ -239,7 +239,7 @@ function buildDetailStateBadges(detail: BackupSystemDetail, operatorAttestedProo
 
 function toneForStateBadge(badge: string) {
   if (badge === "Excluded by policy") {
-    return { color: "#334155", background: "#e2e8f0" };
+    return { color: "#9eb79b", background: "rgba(129, 255, 164, 0.08)" };
   }
 
   if (badge === "Duplicate match needs review") {
@@ -250,7 +250,7 @@ function toneForStateBadge(badge: string) {
     return { color: "#1d4ed8", background: "#dbeafe" };
   }
 
-  return { color: "#0369a1", background: "#e0f2fe" };
+  return { color: "#89ff93", background: "#e0f2fe" };
 }
 
 function getEvidenceSources(detail: BackupSystemDetail, providerKey: string) {
@@ -290,7 +290,7 @@ function formatState(value: string) {
 function toneForConfidence(value: string) {
   switch (value) {
     case "high_risk":
-      return { color: "#991b1b", background: "#fee2e2" };
+      return { color: "#fca5a5", background: "#fee2e2" };
     case "watch":
       return { color: "#9a3412", background: "#ffedd5" };
     case "unknown":
@@ -316,11 +316,11 @@ function toneForMatchingConfidence(value: string) {
 function toneForCoverage(value: string) {
   switch (value) {
     case "missing":
-      return { color: "#991b1b", background: "#fee2e2" };
+      return { color: "#fca5a5", background: "#fee2e2" };
     case "partial":
       return { color: "#9a3412", background: "#ffedd5" };
     case "excluded":
-      return { color: "#334155", background: "#e2e8f0" };
+      return { color: "#9eb79b", background: "rgba(129, 255, 164, 0.08)" };
     case "unknown":
       return { color: "#1d4ed8", background: "#dbeafe" };
     case "protected":
@@ -331,14 +331,14 @@ function toneForCoverage(value: string) {
 
 function toneForEvidenceSource(value: string | null) {
   if (value === "operator_attested") {
-    return { color: "#0369a1", background: "#e0f2fe" };
+    return { color: "#89ff93", background: "#e0f2fe" };
   }
 
   if (value === "provider_sync") {
     return { color: "#0f766e", background: "#ccfbf1" };
   }
 
-  return { color: "#334155", background: "#e2e8f0" };
+  return { color: "#9eb79b", background: "rgba(129, 255, 164, 0.08)" };
 }
 
 function toneForFreshness(value: string) {
@@ -346,7 +346,7 @@ function toneForFreshness(value: string) {
     case "stale":
       return { color: "#9a3412", background: "#ffedd5" };
     case "missing":
-      return { color: "#991b1b", background: "#fee2e2" };
+      return { color: "#fca5a5", background: "#fee2e2" };
     case "unknown":
       return { color: "#1d4ed8", background: "#dbeafe" };
     case "current":
@@ -357,11 +357,11 @@ function toneForFreshness(value: string) {
 
 function toneForCallout(detail: BackupSystemDetail) {
   if (detail.coverageState === "excluded") {
-    return { color: "#334155", background: "#e2e8f0", borderColor: "rgba(148, 163, 184, 0.4)" };
+    return { color: "#9eb79b", background: "rgba(129, 255, 164, 0.08)", borderColor: "rgba(148, 163, 184, 0.4)" };
   }
 
   if (detail.coverageState === "missing" || detail.confidenceState === "high_risk") {
-    return { color: "#991b1b", background: "#fee2e2", borderColor: "rgba(239, 68, 68, 0.28)" };
+    return { color: "#fca5a5", background: "#fee2e2", borderColor: "rgba(239, 68, 68, 0.28)" };
   }
 
   if (detail.confidenceState === "unknown") {
@@ -389,14 +389,14 @@ function DefinitionItem(props: { label: string; value: string }) {
       style={{
         padding: 14,
         borderRadius: 16,
-        background: "#f8fafc",
+        background: "rgba(10, 17, 11, 0.97)",
         border: "1px solid rgba(148, 163, 184, 0.14)",
         display: "grid",
         gap: 6,
       }}
     >
       <span style={labelStyle}>{props.label}</span>
-      <strong style={{ color: "#0f172a", lineHeight: 1.5 }}>{props.value}</strong>
+      <strong style={{ color: "#dff4d3", lineHeight: 1.5 }}>{props.value}</strong>
     </div>
   );
 }
@@ -407,7 +407,7 @@ function CoverageEvidenceCard(props: { item: BackupProviderEvidence }) {
       style={{
         padding: 18,
         borderRadius: 20,
-        background: "#ffffff",
+        background: "rgba(10, 17, 11, 0.97)",
         border: "1px solid rgba(148, 163, 184, 0.18)",
         boxShadow: "0 12px 32px rgba(15, 23, 42, 0.06)",
         display: "grid",
@@ -416,10 +416,10 @@ function CoverageEvidenceCard(props: { item: BackupProviderEvidence }) {
     >
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
         <div>
-          <strong style={{ display: "block", color: "#0f172a", fontSize: "1rem" }}>
+          <strong style={{ display: "block", color: "#dff4d3", fontSize: "1rem" }}>
             {props.item.providerKey} | {props.item.workloadKind}
           </strong>
-          <span style={{ color: "#475569", lineHeight: 1.5 }}>{props.item.summary}</span>
+          <span style={{ color: "#9eb79b", lineHeight: 1.5 }}>{props.item.summary}</span>
         </div>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           <span style={{ ...chipStyle, ...toneForCoverage(props.item.coverageState) }}>
@@ -443,7 +443,7 @@ function CoverageEvidenceCard(props: { item: BackupProviderEvidence }) {
 
 const eyebrowStyle = {
   margin: 0,
-  color: "#0369a1",
+  color: "#89ff93",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -453,7 +453,7 @@ const eyebrowStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
 };
@@ -465,7 +465,7 @@ const definitionGridStyle = {
 };
 
 const labelStyle = {
-  color: "#64748b",
+  color: "#9eb79b",
   fontSize: 12,
   textTransform: "uppercase" as const,
   letterSpacing: "0.1em",
@@ -493,7 +493,7 @@ const trustNoteStyle = {
   marginTop: 16,
   padding: "16px 18px",
   borderRadius: 18,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.16)",
   display: "grid",
   gap: 8,
@@ -512,8 +512,8 @@ const primaryLinkStyle = {
   alignItems: "center",
   padding: "12px 18px",
   borderRadius: 999,
-  background: "#0f172a",
-  color: "#f8fafc",
+  background: "#dff4d3",
+  color: "rgba(10, 17, 11, 0.97)",
   textDecoration: "none",
   fontWeight: 600,
 };
@@ -523,8 +523,8 @@ const ghostLinkStyle = {
   alignItems: "center",
   padding: "12px 18px",
   borderRadius: 999,
-  background: "#e2e8f0",
-  color: "#0f172a",
+  background: "rgba(129, 255, 164, 0.08)",
+  color: "#dff4d3",
   textDecoration: "none",
   fontWeight: 600,
 };
@@ -542,8 +542,8 @@ const seededBannerStyle = {
 const emptyStateStyle = {
   padding: 18,
   borderRadius: 20,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.16)",
-  color: "#475569",
+  color: "#9eb79b",
   lineHeight: 1.6,
 };

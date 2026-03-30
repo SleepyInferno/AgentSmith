@@ -116,7 +116,7 @@ export function NetworkMapCanvas({ map }: NetworkMapCanvasProps) {
               return null;
             }
 
-            const stroke = relationship.confidence === "confirmed" ? "#0f766e" : "#b45309";
+            const stroke = relationship.confidence === "confirmed" ? "#5eead4" : "#b45309";
             const controlOffset = Math.max(42, Math.abs(to.x - from.x) * 0.35);
 
             return (
@@ -160,7 +160,7 @@ export function NetworkMapCanvas({ map }: NetworkMapCanvasProps) {
                 }}
               >
                 <p style={columnLabelStyle}>{column}</p>
-                <strong style={{ color: "#0f172a", fontSize: "1.05rem" }}>{columns[column].length} items</strong>
+                <strong style={{ color: "#dff4d3", fontSize: "1.05rem" }}>{columns[column].length} items</strong>
               </header>
 
               {columns[column].map((node, index) => {
@@ -178,8 +178,8 @@ export function NetworkMapCanvas({ map }: NetworkMapCanvasProps) {
                     <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "flex-start" }}>
                       <div style={{ minWidth: 0 }}>
                         <span style={{ ...kindPillStyle, ...node.tone }}>{node.kindLabel}</span>
-                        <h3 style={{ margin: "12px 0 6px", fontSize: "1rem", color: "#0f172a" }}>{node.title}</h3>
-                        <p style={{ margin: 0, color: "#475569", lineHeight: 1.55 }}>{node.subtitle}</p>
+                        <h3 style={{ margin: "12px 0 6px", fontSize: "1rem", color: "#dff4d3" }}>{node.title}</h3>
+                        <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.55 }}>{node.subtitle}</p>
                       </div>
                       <span style={metaLabelStyle}>{node.metaLabel}</span>
                     </div>
@@ -297,11 +297,11 @@ function formatLabel(value: string) {
 function toneForKind(kind: string): CSSProperties {
   switch (kind) {
     case "site":
-      return { color: "#1d4ed8", background: "#dbeafe" };
+      return { color: "#93c5fd", background: "rgba(59, 130, 246, 0.15)" };
     case "wan_link":
-      return { color: "#0f766e", background: "#ccfbf1" };
+      return { color: "#5eead4", background: "rgba(20, 184, 166, 0.15)" };
     case "lan_segment":
-      return { color: "#7c3aed", background: "#ede9fe" };
+      return { color: "#c4b5fd", background: "rgba(124, 58, 237, 0.15)" };
     default:
       return { color: "#92400e", background: "#fef3c7" };
   }
@@ -310,33 +310,33 @@ function toneForKind(kind: string): CSSProperties {
 function toneForStatus(status: string): CSSProperties {
   switch (status) {
     case "online":
-      return { color: "#166534", background: "#dcfce7" };
+      return { color: "#86efac", background: "rgba(134, 239, 172, 0.12)" };
     case "offline":
-      return { color: "#991b1b", background: "#fee2e2" };
+      return { color: "#fca5a5", background: "rgba(220, 38, 38, 0.15)" };
     case "degraded":
-      return { color: "#9a3412", background: "#ffedd5" };
+      return { color: "#fdba74", background: "rgba(234, 88, 12, 0.12)" };
     default:
-      return { color: "#334155", background: "#e2e8f0" };
+      return { color: "#9eb79b", background: "rgba(129, 255, 164, 0.08)" };
   }
 }
 
 function toneForFreshness(state: string): CSSProperties {
   switch (state) {
     case "healthy":
-      return { color: "#166534", background: "#dcfce7" };
+      return { color: "#86efac", background: "rgba(134, 239, 172, 0.12)" };
     case "warning":
-      return { color: "#9a3412", background: "#ffedd5" };
+      return { color: "#fdba74", background: "rgba(234, 88, 12, 0.12)" };
     case "stale":
     case "error":
-      return { color: "#991b1b", background: "#fee2e2" };
+      return { color: "#fca5a5", background: "rgba(220, 38, 38, 0.15)" };
     default:
-      return { color: "#334155", background: "#e2e8f0" };
+      return { color: "#9eb79b", background: "rgba(129, 255, 164, 0.08)" };
   }
 }
 
 const columnLabelStyle = {
   margin: 0,
-  color: "#0369a1",
+  color: "#89ff93",
   fontSize: 12,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -372,7 +372,7 @@ const badgeStyle = {
 };
 
 const metaLabelStyle = {
-  color: "#64748b",
+  color: "#9eb79b",
   fontSize: 12,
   textTransform: "uppercase" as const,
   letterSpacing: "0.08em",
@@ -380,6 +380,6 @@ const metaLabelStyle = {
 
 const lastSeenStyle = {
   margin: "12px 0 0",
-  color: "#475569",
+  color: "#9eb79b",
   fontSize: 13,
 };

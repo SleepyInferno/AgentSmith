@@ -59,7 +59,7 @@ function FilterSelect(props: {
   onChange: (name: string, value: string) => void;
 }) {
   return (
-    <label style={{ display: "grid", gap: 8, color: "#334155", fontWeight: 600 }}>
+    <label style={{ display: "grid", gap: 8, color: "#9eb79b", fontWeight: 600 }}>
       <span>{props.label}</span>
       <select
         value={props.value}
@@ -69,7 +69,7 @@ function FilterSelect(props: {
           borderRadius: 14,
           border: "1px solid rgba(148, 163, 184, 0.42)",
           padding: "10px 12px",
-          background: "#ffffff",
+          background: "rgba(10, 17, 11, 0.97)",
         }}
       >
         <option value="">All</option>
@@ -124,17 +124,17 @@ export function DeviceInventoryPage() {
         style={{
           padding: 24,
           borderRadius: 24,
-          background: "#ffffff",
+          background: "rgba(10, 17, 11, 0.97)",
           border: "1px solid rgba(148, 163, 184, 0.22)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div>
-            <p style={{ margin: 0, color: "#0f172a", fontSize: 14, textTransform: "uppercase", letterSpacing: "0.14em" }}>
+            <p style={{ margin: 0, color: "#dff4d3", fontSize: 14, textTransform: "uppercase", letterSpacing: "0.14em" }}>
               Device inventory
             </p>
             <h2 style={{ margin: "10px 0 8px", fontSize: "2rem" }}>Filterable device inventory</h2>
-            <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>
               Filters call the asset API directly so queue and inventory rankings stay aligned.
             </p>
           </div>
@@ -143,8 +143,8 @@ export function DeviceInventoryPage() {
               padding: 16,
               borderRadius: 18,
               background:
-                rows.some((row) => row.sourceFreshnessState !== "healthy") ? "#fff7ed" : "#eff6ff",
-              color: "#334155",
+                rows.some((row) => row.sourceFreshnessState !== "healthy") ? "rgba(244, 192, 73, 0.08)" : "#eff6ff",
+              color: "#9eb79b",
             }}
           >
             {rows.some((row) => row.sourceFreshnessState !== "healthy")
@@ -203,7 +203,7 @@ export function DeviceInventoryPage() {
             options={["healthy", "warning", "missing", "unknown", "unsupported"]}
             onChange={updateFilter}
           />
-          <label style={{ display: "grid", gap: 8, color: "#334155", fontWeight: 600 }}>
+          <label style={{ display: "grid", gap: 8, color: "#9eb79b", fontWeight: 600 }}>
             <span>staleOnly</span>
             <input
               type="checkbox"
@@ -222,7 +222,7 @@ export function DeviceInventoryPage() {
       ) : rows.length === 0 ? (
         <div style={panelStyle}>
           <strong style={{ display: "block", marginBottom: 8 }}>No devices match the current filters</strong>
-          <span style={{ color: "#475569", lineHeight: 1.6 }}>
+          <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>
             Clear one or more filters to widen the triage view.
           </span>
         </div>
@@ -236,6 +236,6 @@ export function DeviceInventoryPage() {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
 };

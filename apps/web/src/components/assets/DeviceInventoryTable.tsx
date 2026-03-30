@@ -17,7 +17,7 @@ const columns = [
   columnHelper.accessor("deviceName", {
     header: "Device",
     cell: (info) => (
-      <Link to={`/devices/${info.row.original.deviceId}`} style={{ color: "#0f172a", fontWeight: 700 }}>
+      <Link to={`/devices/${info.row.original.deviceId}`} style={{ color: "#dff4d3", fontWeight: 700 }}>
         {info.getValue()}
       </Link>
     ),
@@ -65,11 +65,11 @@ export function DeviceInventoryTable({ rows }: DeviceInventoryTableProps) {
         overflowX: "auto",
         borderRadius: 24,
         border: "1px solid rgba(148, 163, 184, 0.22)",
-        background: "#ffffff",
+        background: "rgba(10, 17, 11, 0.97)",
       }}
     >
       <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 1080 }}>
-        <thead style={{ background: "#e2e8f0" }}>
+        <thead style={{ background: "rgba(129, 255, 164, 0.08)" }}>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
@@ -78,7 +78,7 @@ export function DeviceInventoryTable({ rows }: DeviceInventoryTableProps) {
                   style={{
                     textAlign: "left",
                     padding: "14px 16px",
-                    color: "#334155",
+                    color: "#9eb79b",
                     fontSize: 13,
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
@@ -96,7 +96,7 @@ export function DeviceInventoryTable({ rows }: DeviceInventoryTableProps) {
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id} style={{ borderTop: "1px solid rgba(226, 232, 240, 0.9)" }}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} style={{ padding: "14px 16px", color: "#0f172a", verticalAlign: "top" }}>
+                <td key={cell.id} style={{ padding: "14px 16px", color: "#dff4d3", verticalAlign: "top" }}>
                   {formatCell(flexRender(cell.column.columnDef.cell, cell.getContext()) as string | number | null)}
                 </td>
               ))}

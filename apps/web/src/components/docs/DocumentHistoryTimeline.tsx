@@ -9,7 +9,7 @@ export function DocumentHistoryTimeline({ history }: DocumentHistoryTimelineProp
     <article style={panelStyle}>
       <p style={eyebrowStyle}>Review history</p>
       <h3 style={{ margin: "10px 0 8px" }}>Review history</h3>
-      <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
+      <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>
         Source syncs, metadata reviews, and review-completion checkpoints stay visible in chronological order so staleness is never hidden behind raw timestamps.
       </p>
 
@@ -27,9 +27,9 @@ export function DocumentHistoryTimeline({ history }: DocumentHistoryTimelineProp
                       <span style={{ ...typeChipStyle, ...toneForRevisionType(entry.revisionType) }}>
                         {formatLabel(entry.revisionType)}
                       </span>
-                      <span style={{ color: "#475569", fontSize: 13 }}>{formatDateTime(entry.createdAt)}</span>
+                      <span style={{ color: "#9eb79b", fontSize: 13 }}>{formatDateTime(entry.createdAt)}</span>
                     </div>
-                    <strong style={{ display: "block", marginTop: 10, color: "#0f172a" }}>{entry.summary}</strong>
+                    <strong style={{ display: "block", marginTop: 10, color: "#dff4d3" }}>{entry.summary}</strong>
                   </div>
                   <span style={metaBadgeStyle}>{formatLabel(entry.reviewState)}</span>
                 </div>
@@ -55,7 +55,7 @@ function DefinitionItem(props: { label: string; value: string }) {
   return (
     <div style={definitionItemStyle}>
       <span style={labelStyle}>{props.label}</span>
-      <strong style={{ color: "#0f172a", lineHeight: 1.5 }}>{props.value}</strong>
+      <strong style={{ color: "#dff4d3", lineHeight: 1.5 }}>{props.value}</strong>
     </div>
   );
 }
@@ -78,18 +78,18 @@ function formatLabel(value: string) {
 function toneForRevisionType(revisionType: string) {
   switch (revisionType) {
     case "source_sync":
-      return { color: "#1d4ed8", background: "#dbeafe" };
+      return { color: "#93c5fd", background: "rgba(59, 130, 246, 0.15)" };
     case "metadata_review":
-      return { color: "#9a3412", background: "#ffedd5" };
+      return { color: "#fdba74", background: "rgba(234, 88, 12, 0.12)" };
     case "review_completed":
     default:
-      return { color: "#166534", background: "#dcfce7" };
+      return { color: "#86efac", background: "rgba(134, 239, 172, 0.12)" };
   }
 }
 
 const eyebrowStyle = {
   margin: 0,
-  color: "#0369a1",
+  color: "#89ff93",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -99,7 +99,7 @@ const eyebrowStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
   display: "grid",
@@ -112,7 +112,7 @@ const timelineItemStyle = {
   gap: 14,
   padding: 18,
   borderRadius: 20,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.16)",
 };
 
@@ -136,8 +136,8 @@ const metaBadgeStyle = {
   alignItems: "center",
   padding: "6px 10px",
   borderRadius: 999,
-  background: "#e2e8f0",
-  color: "#334155",
+  background: "rgba(129, 255, 164, 0.08)",
+  color: "#9eb79b",
   fontSize: 12,
   fontWeight: 700,
   height: "fit-content",
@@ -152,14 +152,14 @@ const metaGridStyle = {
 const definitionItemStyle = {
   padding: 12,
   borderRadius: 16,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.16)",
   display: "grid",
   gap: 6,
 };
 
 const labelStyle = {
-  color: "#64748b",
+  color: "#9eb79b",
   fontSize: 12,
   textTransform: "uppercase" as const,
   letterSpacing: "0.1em",
@@ -169,8 +169,8 @@ const labelStyle = {
 const emptyStateStyle = {
   padding: "16px 18px",
   borderRadius: 18,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.16)",
-  color: "#475569",
+  color: "#9eb79b",
   lineHeight: 1.6,
 };

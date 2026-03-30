@@ -13,7 +13,7 @@ export function NetworkRelationshipLegend({ map }: NetworkRelationshipLegendProp
       <div style={legendRowStyle}>
         <span style={{ ...legendSwatchStyle, borderTop: "3px solid #0f766e" }} />
         <div>
-          <strong style={{ display: "block", color: "#0f172a" }}>Confirmed relationship</strong>
+          <strong style={{ display: "block", color: "#dff4d3" }}>Confirmed relationship</strong>
           <span style={legendCopyStyle}>
             These links come directly from a trusted source record and can be reviewed as authoritative until freshness
             drops.
@@ -30,7 +30,7 @@ export function NetworkRelationshipLegend({ map }: NetworkRelationshipLegendProp
           }}
         />
         <div>
-          <strong style={{ display: "block", color: "#0f172a" }}>Inferred relationship</strong>
+          <strong style={{ display: "block", color: "#dff4d3" }}>Inferred relationship</strong>
           <span style={legendCopyStyle}>
             These links are useful hints, but they still need operator confirmation before you treat them as hard truth.
           </span>
@@ -48,7 +48,7 @@ const legendRowStyle = {
   alignItems: "center",
   padding: 16,
   borderRadius: 18,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.16)",
 };
 
@@ -59,12 +59,12 @@ const legendSwatchStyle = {
 };
 
 const legendCopyStyle = {
-  color: "#475569",
+  color: "#9eb79b",
   lineHeight: 1.6,
 };
 
 const legendCountStyle = {
   minWidth: 34,
   textAlign: "right" as const,
-  color: "#0f172a",
+  color: "#dff4d3",
 };

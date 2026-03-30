@@ -89,7 +89,7 @@ export function LifecycleStepEditor(props: LifecycleStepEditorProps) {
       style={{
         padding: 18,
         borderRadius: 18,
-        background: "#ffffff",
+        background: "rgba(10, 17, 11, 0.97)",
         border: "1px solid rgba(148, 163, 184, 0.2)",
         display: "grid",
         gap: 16,
@@ -106,15 +106,15 @@ export function LifecycleStepEditor(props: LifecycleStepEditorProps) {
           }}
         >
           <div style={{ display: "grid", gap: 6 }}>
-            <strong style={{ color: "#0f172a", fontSize: 16 }}>{step.title}</strong>
-            <span style={{ color: "#475569", lineHeight: 1.6 }}>{step.instructions}</span>
+            <strong style={{ color: "#dff4d3", fontSize: 16 }}>{step.title}</strong>
+            <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>{step.instructions}</span>
           </div>
           <span
             style={{
               padding: "8px 12px",
               borderRadius: 999,
               background: "rgba(226, 232, 240, 0.7)",
-              color: "#334155",
+              color: "#9eb79b",
               fontWeight: 700,
               textTransform: "capitalize",
             }}
@@ -123,7 +123,7 @@ export function LifecycleStepEditor(props: LifecycleStepEditorProps) {
           </span>
         </div>
         {step.completedAt ? (
-          <span style={{ color: "#64748b", fontSize: 13 }}>
+          <span style={{ color: "#9eb79b", fontSize: 13 }}>
             Last recorded {formatTimestamp(step.completedAt)}
           </span>
         ) : null}
@@ -226,7 +226,7 @@ export function LifecycleStepEditor(props: LifecycleStepEditorProps) {
       ) : null}
 
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-        <span style={{ color: "#64748b", fontSize: 13 }}>
+        <span style={{ color: "#9eb79b", fontSize: 13 }}>
           Records review evidence only. This action does not trigger live provisioning or deprovisioning.
         </span>
         <button
@@ -239,8 +239,8 @@ export function LifecycleStepEditor(props: LifecycleStepEditorProps) {
             padding: "11px 16px",
             borderRadius: 14,
             border: "none",
-            background: isReadOnly || isSaving ? "#cbd5e1" : "#0369a1",
-            color: isReadOnly || isSaving ? "#64748b" : "#f8fafc",
+            background: isReadOnly || isSaving ? "#cbd5e1" : "#89ff93",
+            color: isReadOnly || isSaving ? "#9eb79b" : "rgba(10, 17, 11, 0.97)",
             fontWeight: 700,
             cursor: isReadOnly || isSaving ? "not-allowed" : "pointer",
           }}
@@ -284,7 +284,7 @@ function formatTimestamp(value: string) {
 }
 
 const labelStyle = {
-  color: "#0f172a",
+  color: "#dff4d3",
   fontWeight: 600,
 } as const;
 
@@ -292,8 +292,8 @@ const fieldStyle = {
   padding: "11px 13px",
   borderRadius: 12,
   border: "1px solid rgba(148, 163, 184, 0.35)",
-  background: "#ffffff",
-  color: "#0f172a",
+  background: "rgba(10, 17, 11, 0.97)",
+  color: "#dff4d3",
 } as const;
 
 const textAreaStyle = {
@@ -306,13 +306,13 @@ const textAreaStyle = {
 const warningStyle = {
   padding: 14,
   borderRadius: 14,
-  background: "#fff7ed",
-  color: "#9a3412",
+  background: "rgba(244, 192, 73, 0.08)",
+  color: "#fdba74",
 } as const;
 
 const errorStyle = {
   padding: 14,
   borderRadius: 14,
   background: "#fef2f2",
-  color: "#991b1b",
+  color: "#fca5a5",
 } as const;

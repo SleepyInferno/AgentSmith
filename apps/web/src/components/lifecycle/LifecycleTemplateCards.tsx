@@ -19,17 +19,17 @@ const panelStyle = {
   padding: 20,
   borderRadius: 20,
   border: "1px solid rgba(148, 163, 184, 0.22)",
-  background: "rgba(248, 250, 252, 0.9)",
+  background: "rgba(10, 17, 11, 0.97)",
 } as const;
 
 const templateTone: Record<LifecycleTemplateKey, { accent: string; surface: string }> = {
   "employee-onboarding": {
-    accent: "#0369a1",
-    surface: "rgba(224, 242, 254, 0.7)",
+    accent: "#89ff93",
+    surface: "rgba(59, 130, 246, 0.08)",
   },
   "employee-offboarding": {
     accent: "#b45309",
-    surface: "rgba(255, 237, 213, 0.78)",
+    surface: "rgba(234, 88, 12, 0.08)",
   },
 };
 
@@ -121,10 +121,10 @@ export function LifecycleTemplateCards(props: LifecycleTemplateCardsProps) {
                 >
                   {template.templateKey}
                 </p>
-                <h4 style={{ margin: "10px 0 8px", fontSize: "1.25rem", color: "#0f172a" }}>{template.title}</h4>
-                <p style={{ margin: 0, color: "#334155", lineHeight: 1.6 }}>{template.description}</p>
+                <h4 style={{ margin: "10px 0 8px", fontSize: "1.25rem", color: "#dff4d3" }}>{template.title}</h4>
+                <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>{template.description}</p>
               </div>
-              <p style={{ margin: 0, color: "#475569", fontSize: 14 }}>
+              <p style={{ margin: 0, color: "#9eb79b", fontSize: 14 }}>
                 {groupCount} groups across {stepCount} tracked steps.
               </p>
             </div>
@@ -132,15 +132,15 @@ export function LifecycleTemplateCards(props: LifecycleTemplateCardsProps) {
             <div style={{ display: "grid", gap: 10 }}>
               {template.groups.map((group) => (
                 <div key={group.groupKey} style={{ display: "grid", gap: 4 }}>
-                  <strong style={{ color: "#0f172a", fontSize: 14 }}>{group.title}</strong>
-                  <span style={{ color: "#475569", fontSize: 13 }}>{group.steps.length} steps</span>
+                  <strong style={{ color: "#dff4d3", fontSize: 14 }}>{group.title}</strong>
+                  <span style={{ color: "#9eb79b", fontSize: 13 }}>{group.steps.length} steps</span>
                 </div>
               ))}
             </div>
 
             <div style={{ display: "grid", gap: 12 }}>
               <label style={{ display: "grid", gap: 6 }}>
-                <span style={{ color: "#0f172a", fontWeight: 600 }}>Subject display name</span>
+                <span style={{ color: "#dff4d3", fontWeight: 600 }}>Subject display name</span>
                 <input
                   value={formState.subjectDisplayName}
                   onChange={(event) => updateForm(template.templateKey, "subjectDisplayName", event.target.value)}
@@ -149,7 +149,7 @@ export function LifecycleTemplateCards(props: LifecycleTemplateCardsProps) {
                 />
               </label>
               <label style={{ display: "grid", gap: 6 }}>
-                <span style={{ color: "#0f172a", fontWeight: 600 }}>Subject email</span>
+                <span style={{ color: "#dff4d3", fontWeight: 600 }}>Subject email</span>
                 <input
                   type="email"
                   value={formState.subjectEmail}
@@ -169,7 +169,7 @@ export function LifecycleTemplateCards(props: LifecycleTemplateCardsProps) {
                   borderRadius: 14,
                   border: "none",
                   background: isDisabled ? "#cbd5e1" : tone.accent,
-                  color: isDisabled ? "#64748b" : "#f8fafc",
+                  color: isDisabled ? "#9eb79b" : "rgba(10, 17, 11, 0.97)",
                   fontWeight: 700,
                   cursor: isDisabled ? "not-allowed" : "pointer",
                 }}
@@ -182,7 +182,7 @@ export function LifecycleTemplateCards(props: LifecycleTemplateCardsProps) {
       })}
 
       {launchError ? (
-        <div style={{ ...panelStyle, gridColumn: "1 / -1", color: "#991b1b", background: "#fef2f2" }}>
+        <div style={{ ...panelStyle, gridColumn: "1 / -1", color: "#fca5a5", background: "#fef2f2" }}>
           Unable to launch the run right now. {launchError}
         </div>
       ) : null}
@@ -194,8 +194,8 @@ const inputStyle = {
   padding: "12px 14px",
   borderRadius: 14,
   border: "1px solid rgba(148, 163, 184, 0.4)",
-  background: "#ffffff",
-  color: "#0f172a",
+  background: "rgba(10, 17, 11, 0.97)",
+  color: "#dff4d3",
 } as const;
 
 const fallbackTemplates: LifecycleTemplate[] = [

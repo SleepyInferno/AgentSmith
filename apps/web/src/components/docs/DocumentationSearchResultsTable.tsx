@@ -31,7 +31,7 @@ const columns = [
               focusReason,
               searchQuery: tableMeta?.searchQuery ?? "",
             }}
-            style={{ color: "#0f172a", fontWeight: 700, textDecoration: "none" }}
+            style={{ color: "#dff4d3", fontWeight: 700, textDecoration: "none" }}
           >
             {info.getValue()}
           </Link>
@@ -71,10 +71,10 @@ const columns = [
     header: "matchedExcerpt",
     cell: (info) => (
       <div style={{ display: "grid", gap: 8, minWidth: 300 }}>
-        <span style={{ color: "#334155", lineHeight: 1.6 }}>
+        <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>
           {info.getValue() ?? info.row.original.summary ?? "No matched excerpt"}
         </span>
-        <span style={{ color: "#0369a1", fontSize: 13, fontWeight: 700 }}>
+        <span style={{ color: "#89ff93", fontSize: 13, fontWeight: 700 }}>
           {info.row.original.linkedSystems.length > 0
             ? `${info.row.original.linkedSystems.length} linked systems`
             : "No linked systems"}
@@ -115,11 +115,11 @@ export function DocumentationSearchResultsTable({
         overflowX: "auto",
         borderRadius: 24,
         border: "1px solid rgba(148, 163, 184, 0.22)",
-        background: "#ffffff",
+        background: "rgba(10, 17, 11, 0.97)",
       }}
     >
       <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 1360 }}>
-        <thead style={{ background: "#e2e8f0" }}>
+        <thead style={{ background: "rgba(129, 255, 164, 0.08)" }}>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
@@ -128,7 +128,7 @@ export function DocumentationSearchResultsTable({
                   style={{
                     textAlign: "left",
                     padding: "14px 16px",
-                    color: "#334155",
+                    color: "#9eb79b",
                     fontSize: 13,
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
@@ -150,7 +150,7 @@ export function DocumentationSearchResultsTable({
                   key={cell.id}
                   style={{
                     padding: "14px 16px",
-                    color: "#0f172a",
+                    color: "#dff4d3",
                     verticalAlign: "top",
                   }}
                 >
@@ -170,8 +170,8 @@ const reasonChipStyle = {
   alignItems: "center",
   padding: "6px 10px",
   borderRadius: 999,
-  background: "#eff6ff",
-  color: "#1d4ed8",
+  background: "rgba(10, 17, 11, 0.97)",
+  color: "#93c5fd",
   fontSize: 12,
   fontWeight: 700,
 };

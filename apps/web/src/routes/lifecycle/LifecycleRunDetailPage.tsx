@@ -13,7 +13,7 @@ import { LifecycleSummaryPanel } from "../../components/lifecycle/LifecycleSumma
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
 } as const;
@@ -65,7 +65,7 @@ export function LifecycleRunDetailPage() {
         style={{
           ...panelStyle,
           background:
-            "linear-gradient(135deg, rgba(240, 249, 255, 0.96), rgba(255, 255, 255, 0.98))",
+            "rgba(10, 17, 11, 0.97)",
         }}
       >
         <div
@@ -82,7 +82,7 @@ export function LifecycleRunDetailPage() {
               <p
                 style={{
                   margin: 0,
-                  color: run.kind === "offboarding" ? "#b45309" : "#0369a1",
+                  color: run.kind === "offboarding" ? "#fdba74" : "#89ff93",
                   fontSize: 13,
                   textTransform: "uppercase",
                   letterSpacing: "0.14em",
@@ -91,10 +91,10 @@ export function LifecycleRunDetailPage() {
               >
                 lifecycle-run detail
               </p>
-              <h2 style={{ margin: "10px 0 8px", fontSize: "2rem", color: "#0f172a" }}>
+              <h2 style={{ margin: "10px 0 8px", fontSize: "2rem", color: "#dff4d3" }}>
                 {run.subjectDisplayName}
               </h2>
-              <p style={{ margin: 0, color: "#475569", lineHeight: 1.7, maxWidth: 760 }}>
+              <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.7, maxWidth: 760 }}>
                 Review grouped workflow steps, record operator evidence, and close the run only
                 after the outcome has been explicitly reviewed. The app records work only; it does
                 not execute the lifecycle task itself.
@@ -109,7 +109,7 @@ export function LifecycleRunDetailPage() {
           </div>
 
           <div style={{ display: "grid", gap: 10, justifyItems: "end" }}>
-            <Link to="/lifecycle" style={{ color: "#0f172a", fontWeight: 700 }}>
+            <Link to="/lifecycle" style={{ color: "#dff4d3", fontWeight: 700 }}>
               Back to lifecycle queue
             </Link>
             <button
@@ -123,8 +123,8 @@ export function LifecycleRunDetailPage() {
                 padding: "12px 18px",
                 borderRadius: 14,
                 border: "none",
-                background: isClosed || closeRunMutation.isPending ? "#cbd5e1" : "#0f172a",
-                color: isClosed || closeRunMutation.isPending ? "#64748b" : "#f8fafc",
+                background: isClosed || closeRunMutation.isPending ? "rgba(129, 255, 164, 0.12)" : "#dff4d3",
+                color: isClosed || closeRunMutation.isPending ? "#9eb79b" : "rgba(10, 17, 11, 0.97)",
                 fontWeight: 700,
                 cursor: isClosed || closeRunMutation.isPending ? "not-allowed" : "pointer",
               }}
@@ -145,8 +145,8 @@ export function LifecycleRunDetailPage() {
               marginTop: 16,
               padding: 14,
               borderRadius: 14,
-              background: "#fef2f2",
-              color: "#991b1b",
+              background: "rgba(220, 38, 38, 0.15)",
+              color: "#fca5a5",
             }}
           >
             Unable to close this run right now. {closeRunMutation.error.message}
@@ -155,8 +155,8 @@ export function LifecycleRunDetailPage() {
       </article>
 
       <article style={panelStyle}>
-        <h3 style={{ marginTop: 0, color: "#0f172a" }}>Review state before close-out</h3>
-        <p style={{ margin: 0, color: "#475569", lineHeight: 1.7 }}>
+        <h3 style={{ marginTop: 0, color: "#dff4d3" }}>Review state before close-out</h3>
+        <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.7 }}>
           Update each grouped step with recorded status, a note when helpful, and structured
           evidence fields for ticket, asset, mailbox, or handoff references. If a step is skipped
           or blocked, the reason must be explicit before the update is sent.
@@ -181,8 +181,8 @@ function Badge(props: { label: string }) {
       style={{
         padding: "8px 12px",
         borderRadius: 999,
-        background: "rgba(226, 232, 240, 0.8)",
-        color: "#334155",
+        background: "rgba(129, 255, 164, 0.08)",
+        color: "#9eb79b",
         fontWeight: 700,
       }}
     >

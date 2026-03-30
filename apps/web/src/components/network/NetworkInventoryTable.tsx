@@ -19,7 +19,7 @@ const columns = [
     cell: (info) => (
       <Link
         to={`/network/resources/${info.row.original.resourceId}`}
-        style={{ color: "#0f172a", fontWeight: 700, textDecoration: "none" }}
+        style={{ color: "#dff4d3", fontWeight: 700, textDecoration: "none" }}
       >
         {info.getValue()}
       </Link>
@@ -37,11 +37,11 @@ const columns = [
     header: "Summary",
     cell: (info) => (
       <div style={{ display: "grid", gap: 10, minWidth: 260 }}>
-        <span style={{ color: "#334155", lineHeight: 1.6 }}>{info.getValue()}</span>
+        <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>{info.getValue()}</span>
         <Link
           to={`/network/resources/${info.row.original.resourceId}`}
           style={{
-            color: "#0369a1",
+            color: "#89ff93",
             fontWeight: 700,
             textDecoration: "none",
             fontSize: 13,
@@ -83,11 +83,11 @@ export function NetworkInventoryTable({ rows }: NetworkInventoryTableProps) {
         overflowX: "auto",
         borderRadius: 24,
         border: "1px solid rgba(148, 163, 184, 0.22)",
-        background: "#ffffff",
+        background: "rgba(10, 17, 11, 0.97)",
       }}
     >
         <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 1120 }}>
-        <thead style={{ background: "#e2e8f0" }}>
+        <thead style={{ background: "rgba(129, 255, 164, 0.08)" }}>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
@@ -96,7 +96,7 @@ export function NetworkInventoryTable({ rows }: NetworkInventoryTableProps) {
                   style={{
                     textAlign: "left",
                     padding: "14px 16px",
-                    color: "#334155",
+                    color: "#9eb79b",
                     fontSize: 13,
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
@@ -114,7 +114,7 @@ export function NetworkInventoryTable({ rows }: NetworkInventoryTableProps) {
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id} style={{ borderTop: "1px solid rgba(226, 232, 240, 0.9)" }}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} style={{ padding: "14px 16px", color: "#0f172a", verticalAlign: "top" }}>
+                <td key={cell.id} style={{ padding: "14px 16px", color: "#dff4d3", verticalAlign: "top" }}>
                   {formatCell(flexRender(cell.column.columnDef.cell, cell.getContext()) as string | number | null)}
                 </td>
               ))}

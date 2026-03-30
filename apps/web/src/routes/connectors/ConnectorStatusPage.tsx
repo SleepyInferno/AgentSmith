@@ -19,11 +19,11 @@ function toneForState(state: string) {
     case "warning":
       return { background: "#fef3c7", color: "#92400e" };
     case "stale":
-      return { background: "#fee2e2", color: "#991b1b" };
+      return { background: "#fee2e2", color: "#fca5a5" };
     case "error":
       return { background: "#fecaca", color: "#7f1d1d" };
     default:
-      return { background: "#e2e8f0", color: "#334155" };
+      return { background: "rgba(129, 255, 164, 0.08)", color: "#9eb79b" };
   }
 }
 
@@ -50,7 +50,7 @@ export function ConnectorStatusPage() {
         style={{
           padding: 24,
           borderRadius: 24,
-          background: "#ffffff",
+          background: "rgba(10, 17, 11, 0.97)",
           border: "1px solid rgba(148, 163, 184, 0.22)",
           boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
         }}
@@ -58,7 +58,7 @@ export function ConnectorStatusPage() {
         <p
           style={{
             margin: 0,
-            color: "#0369a1",
+            color: "#89ff93",
             fontSize: 13,
             textTransform: "uppercase",
             letterSpacing: "0.14em",
@@ -68,7 +68,7 @@ export function ConnectorStatusPage() {
           Source freshness
         </p>
         <h2 style={{ margin: "10px 0 8px", fontSize: "1.25rem" }}>Connector status</h2>
-        <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 760 }}>
+        <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6, maxWidth: 760 }}>
           Review source health, last successful sync time, freshness, and the latest sync outcome
           before trusting downstream dashboards or workflows.
         </p>
@@ -92,7 +92,7 @@ export function ConnectorStatusPage() {
             <article key={connector.id} style={panelStyle}>
               <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
                 <div>
-                  <p style={{ margin: 0, color: "#64748b", textTransform: "uppercase", fontSize: 12, letterSpacing: "0.12em" }}>
+                  <p style={{ margin: 0, color: "#9eb79b", textTransform: "uppercase", fontSize: 12, letterSpacing: "0.12em" }}>
                     Connector
                   </p>
                   <h2 style={{ margin: "8px 0 0", fontSize: "1.25rem" }}>{connector.label}</h2>
@@ -121,11 +121,11 @@ export function ConnectorStatusPage() {
               <dl style={{ margin: "18px 0 0", display: "grid", gap: 10 }}>
                 <div>
                   <dt style={metricLabelStyle}>Last successful sync</dt>
-                  <dd style={{ margin: "4px 0 0", color: "#0f172a" }}>{formatTimestamp(connector.lastSuccessfulSyncAt)}</dd>
+                  <dd style={{ margin: "4px 0 0", color: "#dff4d3" }}>{formatTimestamp(connector.lastSuccessfulSyncAt)}</dd>
                 </div>
                 <div>
                   <dt style={metricLabelStyle}>Last attempted sync</dt>
-                  <dd style={{ margin: "4px 0 0", color: "#0f172a" }}>{formatTimestamp(connector.lastAttemptedSyncAt)}</dd>
+                  <dd style={{ margin: "4px 0 0", color: "#dff4d3" }}>{formatTimestamp(connector.lastAttemptedSyncAt)}</dd>
                 </div>
               </dl>
             </article>
@@ -139,7 +139,7 @@ export function ConnectorStatusPage() {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
 };
@@ -157,14 +157,14 @@ const badgeStyle = {
 const metricStyle = {
   padding: 14,
   borderRadius: 18,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.18)",
   display: "grid",
   gap: 6,
 };
 
 const metricLabelStyle = {
-  color: "#64748b",
+  color: "#9eb79b",
   fontSize: 12,
   textTransform: "uppercase" as const,
   letterSpacing: "0.08em",

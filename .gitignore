@@ -1,10 +1,25 @@
 node_modules/
 dist/
 build/
-.env
-.env.*
 coverage/
 playwright-report/
 test-results/
 .DS_Store
 Thumbs.db
+
+# Secrets and environment
+.env
+.env.*
+*.secrets
+secrets/
+
+# AI assistant local state (Claude Code settings, memory, conversation history)
+.claude/
+
+# Windows reserved-name artifacts
+CON
+PRN
+AUX
+NUL
+COM[1-9]
+LPT[1-9]

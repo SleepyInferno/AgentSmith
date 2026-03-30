@@ -61,17 +61,17 @@ export function DocumentationOverviewPage({ trustBoundaryCopy }: DocumentationOv
         <article
           style={{
             ...panelStyle,
-            background: "linear-gradient(135deg, rgba(240, 249, 255, 0.96), rgba(255, 255, 255, 0.98))",
+            background: "rgba(10, 17, 11, 0.97)",
           }}
         >
           <p style={eyebrowStyle}>Needs review</p>
           <h2 style={{ margin: "12px 0 10px", fontSize: "2rem" }}>Needs review</h2>
-          <p style={{ margin: 0, color: "#334155", lineHeight: 1.7, maxWidth: 760 }}>
+          <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.7, maxWidth: 760 }}>
             Start with stale or weakly classified knowledge, then move into search inventory only
             when you need a broader scan across SOPs, vendor notes, contacts, infrastructure notes,
             and recovery procedures.
           </p>
-          <p style={{ margin: "14px 0 0", color: "#0f172a", fontWeight: 700 }}>
+          <p style={{ margin: "14px 0 0", color: "#dff4d3", fontWeight: 700 }}>
             {trustBoundaryCopy || defaultTrustBoundaryCopy}
           </p>
         </article>
@@ -85,7 +85,7 @@ export function DocumentationOverviewPage({ trustBoundaryCopy }: DocumentationOv
         >
           <p style={eyebrowStyle}>Search coverage</p>
           <h2 style={{ margin: "10px 0 8px" }}>Search coverage</h2>
-          <p style={{ margin: 0, color: "#334155", lineHeight: 1.7 }}>
+          <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.7 }}>
             {searchCoverageQuery.isPending
               ? "Loading documentation search coverage..."
               : searchCoverageQuery.isError
@@ -153,7 +153,7 @@ export function DocumentationOverviewPage({ trustBoundaryCopy }: DocumentationOv
           <div>
             <p style={eyebrowStyle}>Review aging</p>
             <h2 style={{ margin: "10px 0 8px" }}>Review aging</h2>
-            <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 760 }}>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6, maxWidth: 760 }}>
               Queue ordering comes from the server-owned overview contract, so overdue review,
               metadata gaps, and recent changes stay aligned with the search inventory.
             </p>
@@ -170,23 +170,23 @@ export function DocumentationOverviewPage({ trustBoundaryCopy }: DocumentationOv
           }}
         >
           <article style={agingCardStyle}>
-            <span style={{ ...chipStyle, background: "#fee2e2", color: "#991b1b" }}>review_overdue</span>
-            <strong style={{ fontSize: "1.8rem", color: "#0f172a" }}>{overdueCount}</strong>
-            <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
+            <span style={{ ...chipStyle, background: "#fee2e2", color: "#fca5a5" }}>review_overdue</span>
+            <strong style={{ fontSize: "1.8rem", color: "#dff4d3" }}>{overdueCount}</strong>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>
               Documents already past the expected review window.
             </p>
           </article>
           <article style={agingCardStyle}>
             <span style={{ ...chipStyle, background: "#ffedd5", color: "#9a3412" }}>metadata_incomplete</span>
-            <strong style={{ fontSize: "1.8rem", color: "#0f172a" }}>{metadataIncompleteCount}</strong>
-            <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
+            <strong style={{ fontSize: "1.8rem", color: "#dff4d3" }}>{metadataIncompleteCount}</strong>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>
               Records missing owner, site, category, or other relevance context.
             </p>
           </article>
           <article style={agingCardStyle}>
             <span style={{ ...chipStyle, background: "#dbeafe", color: "#1d4ed8" }}>recent_change</span>
-            <strong style={{ fontSize: "1.8rem", color: "#0f172a" }}>{recentChangeCount}</strong>
-            <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
+            <strong style={{ fontSize: "1.8rem", color: "#dff4d3" }}>{recentChangeCount}</strong>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>
               Documents updated after the most recent review checkpoint.
             </p>
           </article>
@@ -196,7 +196,7 @@ export function DocumentationOverviewPage({ trustBoundaryCopy }: DocumentationOv
       <section style={panelStyle}>
         <p style={eyebrowStyle}>Search inventory</p>
         <h2 style={{ margin: "10px 0 8px" }}>Search inventory</h2>
-        <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 760 }}>
+        <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6, maxWidth: 760 }}>
           Open the bookmarkable inventory when you need server-driven search filters and explicit
           relevance explanations instead of a client-side table filter.
         </p>
@@ -208,8 +208,8 @@ export function DocumentationOverviewPage({ trustBoundaryCopy }: DocumentationOv
               alignItems: "center",
               padding: "12px 18px",
               borderRadius: 999,
-              background: "#0f172a",
-              color: "#f8fafc",
+              background: "#dff4d3",
+              color: "rgba(10, 17, 11, 0.97)",
               textDecoration: "none",
               fontWeight: 600,
             }}
@@ -229,7 +229,7 @@ export function DocumentationOverviewPage({ trustBoundaryCopy }: DocumentationOv
 
 const eyebrowStyle = {
   margin: 0,
-  color: "#0369a1",
+  color: "#89ff93",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -248,7 +248,7 @@ const chipStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
 };
@@ -264,11 +264,11 @@ const metricCardStyle = {
 
 const metricValueStyle = {
   fontSize: "1.5rem",
-  color: "#0f172a",
+  color: "#dff4d3",
 };
 
 const metricLabelStyle = {
-  color: "#475569",
+  color: "#9eb79b",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.08em",
@@ -277,7 +277,7 @@ const metricLabelStyle = {
 const agingCardStyle = {
   padding: 18,
   borderRadius: 20,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.16)",
   display: "grid",
   gap: 8,
@@ -287,7 +287,7 @@ const summaryBadgeStyle = {
   padding: "14px 16px",
   borderRadius: 18,
   background: "#eff6ff",
-  color: "#0f172a",
+  color: "#dff4d3",
   fontWeight: 700,
   alignSelf: "start",
   maxWidth: 260,

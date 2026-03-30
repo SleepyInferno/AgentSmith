@@ -67,14 +67,14 @@ export function DocumentMetadataReviewPanel(props: DocumentMetadataReviewPanelPr
         </div>
 
         <div style={trustBannerStyle}>
-          <strong style={{ color: "#0f172a" }}>Document content stays read-only in this phase.</strong>
-          <span style={{ color: "#334155", lineHeight: 1.6 }}>{props.trustBoundaryCopy}</span>
+          <strong style={{ color: "#dff4d3" }}>Document content stays read-only in this phase.</strong>
+          <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>{props.trustBoundaryCopy}</span>
         </div>
 
         {props.submissionResult ? (
           <div style={receiptStyle}>
-            <strong style={{ color: "#166534" }}>Metadata review saved.</strong>
-            <span style={{ color: "#166534", lineHeight: 1.6 }}>
+            <strong style={{ color: "#86efac" }}>Metadata review saved.</strong>
+            <span style={{ color: "#86efac", lineHeight: 1.6 }}>
               Audit action: {props.submissionResult.auditAction}. History entry: {props.submissionResult.historyEntryId}.
             </span>
           </div>
@@ -151,7 +151,7 @@ export function DocumentMetadataReviewPanel(props: DocumentMetadataReviewPanelPr
         </label>
 
         <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-          <span style={{ color: "#475569", lineHeight: 1.6 }}>
+          <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>
             Before-and-after changes stay visible here so the write boundary is explicit before submit.
           </span>
           <button type="submit" disabled={!canSubmit || props.isSubmitting} style={primaryButtonStyle}>
@@ -174,7 +174,7 @@ function ReviewFieldSection(props: {
     <section style={fieldSectionStyle}>
       <div>
         <h4 style={{ margin: 0, fontSize: "1rem" }}>{props.title}</h4>
-        <p style={{ margin: "8px 0 0", color: "#475569", lineHeight: 1.6 }}>
+        <p style={{ margin: "8px 0 0", color: "#9eb79b", lineHeight: 1.6 }}>
           Before and after values stay visible while you review the update.
         </p>
       </div>
@@ -209,7 +209,7 @@ function ReviewDateSection(props: {
     <section style={fieldSectionStyle}>
       <div>
         <h4 style={{ margin: 0, fontSize: "1rem" }}>reviewDueAt</h4>
-        <p style={{ margin: "8px 0 0", color: "#475569", lineHeight: 1.6 }}>
+        <p style={{ margin: "8px 0 0", color: "#9eb79b", lineHeight: 1.6 }}>
           The review date update is shown side by side before it is written.
         </p>
       </div>
@@ -230,7 +230,7 @@ function ReviewDateSection(props: {
 function MetadataValueList(props: { heading: string; values: string[] }) {
   return (
     <div style={valueCardStyle}>
-      <strong style={{ color: "#0f172a" }}>{props.heading}</strong>
+      <strong style={{ color: "#dff4d3" }}>{props.heading}</strong>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         {props.values.length === 0 ? (
           <span style={emptyValueStyle}>No values selected</span>
@@ -297,7 +297,7 @@ function formatDate(value: string) {
 
 const eyebrowStyle = {
   margin: 0,
-  color: "#7c2d12",
+  color: "#fdba74",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -307,7 +307,7 @@ const eyebrowStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "linear-gradient(145deg, rgba(255, 251, 235, 0.98), rgba(255, 255, 255, 0.98))",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(245, 158, 11, 0.22)",
   boxShadow: "0 22px 48px rgba(120, 53, 15, 0.12)",
   display: "grid",
@@ -317,7 +317,7 @@ const panelStyle = {
 const trustBannerStyle = {
   padding: "14px 16px",
   borderRadius: 18,
-  background: "#fff7ed",
+  background: "rgba(244, 192, 73, 0.08)",
   border: "1px solid rgba(245, 158, 11, 0.22)",
   display: "grid",
   gap: 8,
@@ -326,7 +326,7 @@ const trustBannerStyle = {
 const receiptStyle = {
   padding: "14px 16px",
   borderRadius: 18,
-  background: "#f0fdf4",
+  background: "rgba(134, 239, 172, 0.08)",
   border: "1px solid rgba(34, 197, 94, 0.22)",
   display: "grid",
   gap: 6,
@@ -356,7 +356,7 @@ const beforeAfterGridStyle = {
 const valueCardStyle = {
   padding: 14,
   borderRadius: 16,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.16)",
   display: "grid",
   gap: 10,
@@ -371,7 +371,7 @@ const optionLabelStyle = {
   display: "flex",
   gap: 10,
   alignItems: "center",
-  color: "#0f172a",
+  color: "#dff4d3",
 };
 
 const valueChipStyle = {
@@ -379,14 +379,14 @@ const valueChipStyle = {
   alignItems: "center",
   padding: "7px 10px",
   borderRadius: 999,
-  background: "#fffbeb",
+  background: "rgba(244, 192, 73, 0.06)",
   color: "#92400e",
   fontSize: 12,
   fontWeight: 700,
 };
 
 const emptyValueStyle = {
-  color: "#64748b",
+  color: "#9eb79b",
   lineHeight: 1.6,
 };
 
@@ -402,7 +402,7 @@ const labelBlockStyle = {
 };
 
 const labelStyle = {
-  color: "#334155",
+  color: "#9eb79b",
   fontWeight: 700,
 };
 
@@ -410,8 +410,8 @@ const inputStyle = {
   padding: "12px 14px",
   borderRadius: 14,
   border: "1px solid rgba(148, 163, 184, 0.35)",
-  background: "#ffffff",
-  color: "#0f172a",
+  background: "rgba(10, 17, 11, 0.97)",
+  color: "#dff4d3",
 };
 
 const textareaStyle = {
@@ -424,7 +424,7 @@ const checkboxRowStyle = {
   display: "flex",
   gap: 10,
   alignItems: "center",
-  color: "#0f172a",
+  color: "#dff4d3",
   fontWeight: 600,
 };
 
@@ -432,8 +432,8 @@ const primaryButtonStyle = {
   padding: "12px 18px",
   borderRadius: 999,
   border: "none",
-  background: "#9a3412",
-  color: "#fff7ed",
+  background: "#fdba74",
+  color: "rgba(244, 192, 73, 0.08)",
   fontWeight: 700,
   cursor: "pointer",
 };
@@ -442,8 +442,8 @@ const secondaryButtonStyle = {
   padding: "12px 18px",
   borderRadius: 999,
   border: "1px solid rgba(148, 163, 184, 0.3)",
-  background: "#ffffff",
-  color: "#0f172a",
+  background: "rgba(10, 17, 11, 0.97)",
+  color: "#dff4d3",
   fontWeight: 600,
   cursor: "pointer",
 };

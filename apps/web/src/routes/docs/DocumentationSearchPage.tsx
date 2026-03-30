@@ -64,7 +64,7 @@ function FilterSelect(props: {
   onChange: (name: string, value: string) => void;
 }) {
   return (
-    <label style={{ display: "grid", gap: 8, color: "#334155", fontWeight: 600 }}>
+    <label style={{ display: "grid", gap: 8, color: "#9eb79b", fontWeight: 600 }}>
       <span>{props.label}</span>
       <select
         value={props.value}
@@ -90,7 +90,7 @@ function FilterInput(props: {
   onChange: (name: string, value: string) => void;
 }) {
   return (
-    <label style={{ display: "grid", gap: 8, color: "#334155", fontWeight: 600 }}>
+    <label style={{ display: "grid", gap: 8, color: "#9eb79b", fontWeight: 600 }}>
       <span>{props.label}</span>
       <input
         value={props.value}
@@ -151,7 +151,7 @@ export function DocumentationSearchPage({ trustBoundaryCopy }: DocumentationSear
           <div>
             <p style={eyebrowStyle}>Search inventory</p>
             <h2 style={{ margin: "10px 0 8px", fontSize: "2rem" }}>Search inventory</h2>
-            <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 760 }}>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6, maxWidth: 760 }}>
               Filters stay bookmarkable because URL params flow directly into the server-owned docs
               search contract instead of filtering rows in memory.
             </p>
@@ -161,7 +161,7 @@ export function DocumentationSearchPage({ trustBoundaryCopy }: DocumentationSear
               padding: 16,
               borderRadius: 18,
               background: "#eff6ff",
-              color: "#0f172a",
+              color: "#dff4d3",
               maxWidth: 320,
             }}
           >
@@ -235,7 +235,7 @@ export function DocumentationSearchPage({ trustBoundaryCopy }: DocumentationSear
             options={reviewStateOptions}
             onChange={updateFilter}
           />
-          <label style={{ display: "grid", gap: 8, color: "#334155", fontWeight: 600 }}>
+          <label style={{ display: "grid", gap: 8, color: "#9eb79b", fontWeight: 600 }}>
             <span>staleOnly</span>
             <label style={checkboxWrapStyle}>
               <input
@@ -255,8 +255,8 @@ export function DocumentationSearchPage({ trustBoundaryCopy }: DocumentationSear
               padding: "0 16px",
               borderRadius: 14,
               border: "1px solid rgba(148, 163, 184, 0.35)",
-              background: "#f8fafc",
-              color: "#0f172a",
+              background: "rgba(10, 17, 11, 0.97)",
+              color: "#dff4d3",
               fontWeight: 600,
               cursor: "pointer",
             }}
@@ -283,7 +283,7 @@ export function DocumentationSearchPage({ trustBoundaryCopy }: DocumentationSear
           <strong style={{ display: "block", marginBottom: 8 }}>
             No documentation results match the current filters
           </strong>
-          <span style={{ color: "#475569", lineHeight: 1.6 }}>
+          <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>
             Try search terms from SOPs, vendors, contacts, infrastructure notes, or recovery procedures
           </span>
         </div>
@@ -299,7 +299,7 @@ const filterControlStyle = {
   borderRadius: 14,
   border: "1px solid rgba(148, 163, 184, 0.42)",
   padding: "10px 12px",
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
 };
 
 const checkboxWrapStyle = {
@@ -310,8 +310,8 @@ const checkboxWrapStyle = {
   padding: "10px 12px",
   borderRadius: 14,
   border: "1px solid rgba(148, 163, 184, 0.42)",
-  background: "#ffffff",
-  color: "#334155",
+  background: "rgba(10, 17, 11, 0.97)",
+  color: "#9eb79b",
   fontWeight: 500,
 };
 
@@ -321,13 +321,13 @@ const summaryChipStyle = {
   padding: "10px 14px",
   borderRadius: 999,
   background: "#eff6ff",
-  color: "#0f172a",
+  color: "#dff4d3",
   fontWeight: 700,
 };
 
 const eyebrowStyle = {
   margin: 0,
-  color: "#0369a1",
+  color: "#89ff93",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -337,7 +337,7 @@ const eyebrowStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
 };

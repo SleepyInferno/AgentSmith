@@ -18,11 +18,11 @@ function toneForResult(result: string) {
     case "signed_out":
       return { background: "#dcfce7", color: "#166534" };
     case "failure":
-      return { background: "#fee2e2", color: "#991b1b" };
+      return { background: "#fee2e2", color: "#fca5a5" };
     case "partial":
       return { background: "#fef3c7", color: "#92400e" };
     default:
-      return { background: "#e2e8f0", color: "#334155" };
+      return { background: "rgba(129, 255, 164, 0.08)", color: "#9eb79b" };
   }
 }
 
@@ -61,7 +61,7 @@ export function AuditTrailPage() {
         style={{
           padding: 24,
           borderRadius: 24,
-          background: "#ffffff",
+          background: "rgba(10, 17, 11, 0.97)",
           border: "1px solid rgba(148, 163, 184, 0.22)",
           boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
         }}
@@ -69,7 +69,7 @@ export function AuditTrailPage() {
         <p
           style={{
             margin: 0,
-            color: "#0369a1",
+            color: "#89ff93",
             fontSize: 13,
             textTransform: "uppercase",
             letterSpacing: "0.14em",
@@ -79,7 +79,7 @@ export function AuditTrailPage() {
           Traceability
         </p>
         <h2 style={{ margin: "10px 0 8px" }}>Audit trail</h2>
-        <p style={{ margin: 0, color: "#475569", lineHeight: 1.6, maxWidth: 760 }}>
+        <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6, maxWidth: 760 }}>
           Review operator and workflow activity in reverse chronological order with target, result,
           and structured metadata before approving follow-on work.
         </p>
@@ -97,7 +97,7 @@ export function AuditTrailPage() {
             <article key={`${event.timestamp}-${event.action}-${event.targetId ?? "unknown"}`} style={panelStyle}>
               <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
                 <div>
-                  <p style={{ margin: 0, color: "#64748b", fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                  <p style={{ margin: 0, color: "#9eb79b", fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase" }}>
                     {new Date(event.timestamp).toLocaleString()}
                   </p>
                   <h2 style={{ margin: "8px 0 0", fontSize: "1.15rem" }}>{formatAction(event.action)}</h2>
@@ -140,7 +140,7 @@ export function AuditTrailPage() {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
 };
@@ -156,7 +156,7 @@ const badgeStyle = {
 };
 
 const labelStyle = {
-  color: "#64748b",
+  color: "#9eb79b",
   fontSize: 12,
   textTransform: "uppercase" as const,
   letterSpacing: "0.08em",
@@ -164,6 +164,6 @@ const labelStyle = {
 
 const valueStyle = {
   margin: "4px 0 0",
-  color: "#0f172a",
+  color: "#dff4d3",
   lineHeight: 1.5,
 };

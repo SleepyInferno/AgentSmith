@@ -24,13 +24,15 @@ export function AssetDashboardPage() {
       <PageTitle title="Needs Attention" />
 
       <div className="agent-dashboard__hero">
-        <img
-          src="/mockups/hero-agent-smith.png"
-          alt="AgentSmith operator console"
-          className="agent-dashboard__hero-image"
-        />
+        <div className="agent-dashboard__hero-image-wrap">
+          <img
+            src="/mockups/AgentSmithBanner.png"
+            alt="AgentSmith — IT Management. It is inevitable."
+            className="agent-dashboard__hero-image"
+          />
+        </div>
         <div className="agent-dashboard__hero-copy">
-          <p className="agent-dashboard__hero-label">Agent-OS</p>
+          <p className="agent-dashboard__hero-label">S-OS</p>
           <p className="agent-dashboard__hero-tagline">Operator Console</p>
         </div>
       </div>

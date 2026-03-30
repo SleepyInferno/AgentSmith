@@ -86,20 +86,13 @@ export function ProtectedLayout() {
   return (
     <div>
       <header className="agent-topbar">
-        <div className="agent-topbar__brand">
-          <svg className="agent-topbar__brand-mark" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 3 4.5 6v5.4c0 4.4 2.8 8.5 7.5 10.6 4.7-2.1 7.5-6.2 7.5-10.6V6Z" />
-            <path d="M12 8.1c-1.9 0-3.4 1.5-3.4 3.4 0 1 .4 1.9 1.2 2.5-.2 1.3-.8 2.5-1.8 3.4 1.3-.4 2.7-.6 4-.6s2.7.2 4 .6c-1-.9-1.6-2.1-1.8-3.4.8-.6 1.2-1.5 1.2-2.5 0-1.9-1.5-3.4-3.4-3.4Z" />
-          </svg>
-          <span className="agent-topbar__brand-name">AgentSmith</span>
-        </div>
-
-        <div className="agent-topbar__identity">
-          <span className="agent-topbar__label">Protected Operator Shell</span>
-          <strong className="agent-topbar__user">{user.displayName}</strong>
-        </div>
-
+        <img
+          className="agent-topbar__banner-img"
+          src="/mockups/AgentSmithBannerv2.png"
+          alt="AgentSmith — IT Management. It is inevitable."
+        />
         <div className="agent-topbar__actions">
+          <span className="agent-topbar__user">{user.displayName}</span>
           <button
             type="button"
             className="agent-topbar__signout"

@@ -13,7 +13,7 @@ export function DocumentLinkedSystemsCard({
     <article style={panelStyle}>
       <p style={eyebrowStyle}>Linked systems</p>
       <h3 style={{ margin: "10px 0 8px" }}>Linked systems</h3>
-      <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>{linkedSystemSummary}</p>
+      <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>{linkedSystemSummary}</p>
 
       {linkedSystems.length === 0 ? (
         <div style={emptyStateStyle}>
@@ -25,8 +25,8 @@ export function DocumentLinkedSystemsCard({
             <article key={system.systemId} style={systemCardStyle}>
               <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
                 <div>
-                  <strong style={{ display: "block", color: "#0f172a", fontSize: "1rem" }}>{system.systemName}</strong>
-                  <span style={{ color: "#334155", lineHeight: 1.6 }}>{system.relationshipLabel}</span>
+                  <strong style={{ display: "block", color: "#dff4d3", fontSize: "1rem" }}>{system.systemName}</strong>
+                  <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>{system.relationshipLabel}</span>
                 </div>
                 <span style={relationshipChipStyle}>{system.relationshipLabel}</span>
               </div>
@@ -48,14 +48,14 @@ function DefinitionItem(props: { label: string; value: string }) {
   return (
     <div style={definitionItemStyle}>
       <span style={labelStyle}>{props.label}</span>
-      <strong style={{ color: "#0f172a", lineHeight: 1.5 }}>{props.value}</strong>
+      <strong style={{ color: "#dff4d3", lineHeight: 1.5 }}>{props.value}</strong>
     </div>
   );
 }
 
 const eyebrowStyle = {
   margin: 0,
-  color: "#0369a1",
+  color: "#89ff93",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -65,7 +65,7 @@ const eyebrowStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
   display: "grid",
@@ -75,7 +75,7 @@ const panelStyle = {
 const systemCardStyle = {
   padding: 18,
   borderRadius: 20,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.16)",
   display: "grid",
   gap: 12,
@@ -86,8 +86,8 @@ const relationshipChipStyle = {
   alignItems: "center",
   padding: "6px 10px",
   borderRadius: 999,
-  background: "#e0f2fe",
-  color: "#0c4a6e",
+  background: "rgba(59, 130, 246, 0.15)",
+  color: "#93c5fd",
   fontSize: 12,
   fontWeight: 700,
 };
@@ -101,14 +101,14 @@ const definitionGridStyle = {
 const definitionItemStyle = {
   padding: 12,
   borderRadius: 16,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.16)",
   display: "grid",
   gap: 6,
 };
 
 const labelStyle = {
-  color: "#64748b",
+  color: "#9eb79b",
   fontSize: 12,
   textTransform: "uppercase" as const,
   letterSpacing: "0.1em",
@@ -118,8 +118,8 @@ const labelStyle = {
 const emptyStateStyle = {
   padding: "16px 18px",
   borderRadius: 18,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.16)",
-  color: "#475569",
+  color: "#9eb79b",
   lineHeight: 1.6,
 };

@@ -9,26 +9,26 @@ type BackupFindingsQueueProps = {
 function toneForConfidence(confidenceState: string) {
   switch (confidenceState) {
     case "high_risk":
-      return { color: "#991b1b", background: "#fee2e2" };
+      return { color: "#fca5a5", background: "rgba(220, 38, 38, 0.15)" };
     case "watch":
-      return { color: "#9a3412", background: "#fed7aa" };
+      return { color: "#fdba74", background: "rgba(234, 88, 12, 0.15)" };
     case "unknown":
-      return { color: "#1d4ed8", background: "#dbeafe" };
+      return { color: "#93c5fd", background: "rgba(59, 130, 246, 0.15)" };
     default:
-      return { color: "#166534", background: "#dcfce7" };
+      return { color: "#86efac", background: "rgba(134, 239, 172, 0.12)" };
   }
 }
 
 function toneForCoverage(coverageState: string) {
   switch (coverageState) {
     case "missing":
-      return { color: "#991b1b", background: "#fee2e2" };
+      return { color: "#fca5a5", background: "rgba(220, 38, 38, 0.15)" };
     case "partial":
-      return { color: "#9a3412", background: "#ffedd5" };
+      return { color: "#fdba74", background: "rgba(234, 88, 12, 0.12)" };
     case "excluded":
-      return { color: "#475569", background: "#e2e8f0" };
+      return { color: "#9eb79b", background: "rgba(129, 255, 164, 0.08)" };
     default:
-      return { color: "#0f766e", background: "#ccfbf1" };
+      return { color: "#5eead4", background: "rgba(20, 184, 166, 0.15)" };
   }
 }
 
@@ -68,18 +68,18 @@ function buildFindingBadges(item: BackupFinding) {
 
 function toneForBadge(label: string) {
   if (label === "Duplicate match needs review") {
-    return { color: "#9a3412", background: "#ffedd5" };
+    return { color: "#fdba74", background: "rgba(234, 88, 12, 0.12)" };
   }
 
   if (label === "Telemetry unknown") {
-    return { color: "#1d4ed8", background: "#dbeafe" };
+    return { color: "#93c5fd", background: "rgba(59, 130, 246, 0.15)" };
   }
 
   if (label === "Operator-attested proof") {
-    return { color: "#0369a1", background: "#e0f2fe" };
+    return { color: "#89ff93", background: "rgba(59, 130, 246, 0.15)" };
   }
 
-  return { color: "#334155", background: "#e2e8f0" };
+  return { color: "#9eb79b", background: "rgba(129, 255, 164, 0.08)" };
 }
 
 export function BackupFindingsQueue({ items, emptyTitle }: BackupFindingsQueueProps) {
@@ -87,7 +87,7 @@ export function BackupFindingsQueue({ items, emptyTitle }: BackupFindingsQueuePr
     return (
       <section style={panelStyle}>
         <h2 style={{ marginTop: 0 }}>{emptyTitle ?? "No backup findings need review right now"}</h2>
-        <p style={{ marginBottom: 0, color: "#475569", lineHeight: 1.6 }}>
+        <p style={{ marginBottom: 0, color: "#9eb79b", lineHeight: 1.6 }}>
           The backup queue is clear. Open inventory if you want to review excluded scope, provider
           alignment, or the wider protected-system baseline.
         </p>
@@ -112,7 +112,7 @@ export function BackupFindingsQueue({ items, emptyTitle }: BackupFindingsQueuePr
               color: "inherit",
               borderRadius: 24,
               padding: 20,
-              background: "#ffffff",
+              background: "rgba(10, 17, 11, 0.97)",
               border: "1px solid rgba(148, 163, 184, 0.22)",
               boxShadow: "0 12px 36px rgba(15, 23, 42, 0.08)",
             }}
@@ -130,13 +130,13 @@ export function BackupFindingsQueue({ items, emptyTitle }: BackupFindingsQueuePr
                 <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
                   <span style={{ ...chipStyle, ...confidenceTone }}>{item.confidenceState}</span>
                   <span style={{ ...chipStyle, ...coverageTone }}>{item.coverageState}</span>
-                  <span style={{ color: "#475569", fontSize: 13 }}>Queue rank #{item.queueRank}</span>
-                  <span style={{ color: "#475569", fontSize: 13 }}>{formatProvider(item.providerKey)}</span>
-                  {item.siteName ? <span style={{ color: "#475569", fontSize: 13 }}>{item.siteName}</span> : null}
+                  <span style={{ color: "#9eb79b", fontSize: 13 }}>Queue rank #{item.queueRank}</span>
+                  <span style={{ color: "#9eb79b", fontSize: 13 }}>{formatProvider(item.providerKey)}</span>
+                  {item.siteName ? <span style={{ color: "#9eb79b", fontSize: 13 }}>{item.siteName}</span> : null}
                 </div>
 
                 <h3 style={{ margin: "12px 0 8px", fontSize: "1.25rem" }}>{item.systemName}</h3>
-                <p style={{ margin: 0, color: "#334155", lineHeight: 1.6 }}>{item.summary}</p>
+                <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>{item.summary}</p>
 
                 {badges.length > 0 ? (
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 14 }}>
@@ -153,9 +153,9 @@ export function BackupFindingsQueue({ items, emptyTitle }: BackupFindingsQueuePr
                     marginTop: 14,
                     padding: 14,
                     borderRadius: 18,
-                    background: "#f8fafc",
+                    background: "rgba(10, 17, 11, 0.97)",
                     border: "1px solid rgba(148, 163, 184, 0.14)",
-                    color: "#334155",
+                    color: "#9eb79b",
                   }}
                 >
                   <strong style={{ display: "block", marginBottom: 6 }}>suggestedNextStep</strong>
@@ -197,15 +197,15 @@ const chipStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
 };
 
 const statusCardStyle = {
   padding: 14,
   borderRadius: 18,
-  background: "#eff6ff",
-  color: "#0f172a",
+  background: "rgba(10, 17, 11, 0.97)",
+  color: "#dff4d3",
   display: "grid",
   gap: 6,
 };

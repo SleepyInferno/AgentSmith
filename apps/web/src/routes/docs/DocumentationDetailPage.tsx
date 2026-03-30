@@ -68,14 +68,14 @@ export function DocumentationDetailPage({ trustBoundaryCopy }: DocumentationDeta
       <article
         style={{
           ...panelStyle,
-          background: "linear-gradient(135deg, rgba(240, 249, 255, 0.96), rgba(255, 255, 255, 0.98))",
+          background: "rgba(10, 17, 11, 0.97)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", alignItems: "flex-start" }}>
           <div>
             <p style={eyebrowStyle}>Document detail</p>
             <h2 style={{ margin: "10px 0 8px", fontSize: "2rem" }}>{detail.title}</h2>
-            <p style={{ margin: 0, color: "#334155", lineHeight: 1.7, maxWidth: 760 }}>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.7, maxWidth: 760 }}>
               {detail.summary ?? "No summary is available for this documentation record yet."}
             </p>
           </div>
@@ -104,10 +104,10 @@ export function DocumentationDetailPage({ trustBoundaryCopy }: DocumentationDeta
         ) : null}
 
         <div style={introCalloutStyle}>
-          <strong style={{ color: "#0f172a" }}>
+          <strong style={{ color: "#dff4d3" }}>
             This page explains document relevance and staleness before any metadata review is started.
           </strong>
-          <span style={{ color: "#475569", lineHeight: 1.6 }}>{trustBoundaryCopy}</span>
+          <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>{trustBoundaryCopy}</span>
         </div>
       </article>
 
@@ -134,8 +134,8 @@ export function DocumentationDetailPage({ trustBoundaryCopy }: DocumentationDeta
 
       {reviewMutation.isError ? (
         <section style={reviewErrorStyle}>
-          <strong style={{ color: "#991b1b" }}>Metadata review failed.</strong>
-          <span style={{ color: "#991b1b", lineHeight: 1.6 }}>
+          <strong style={{ color: "#fca5a5" }}>Metadata review failed.</strong>
+          <span style={{ color: "#fca5a5", lineHeight: 1.6 }}>
             The explicit review was not saved. Check the required fields and try again.
           </span>
         </section>
@@ -146,7 +146,7 @@ export function DocumentationDetailPage({ trustBoundaryCopy }: DocumentationDeta
           <div>
             <p style={eyebrowStyle}>Why this surfaced</p>
             <h3 style={{ margin: "10px 0 8px" }}>Why this surfaced</h3>
-            <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>
               The handoff preserves the surfaced reason and origin so the operator can see whether this record came from the queue or the search inventory.
             </p>
           </div>
@@ -158,9 +158,9 @@ export function DocumentationDetailPage({ trustBoundaryCopy }: DocumentationDeta
               <article key={reason.code} style={reasonCardStyle}>
                 <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
                   <span style={reasonChipStyle}>{reason.label}</span>
-                  <span style={{ color: "#475569", fontSize: 13 }}>{reason.code}</span>
+                  <span style={{ color: "#9eb79b", fontSize: 13 }}>{reason.code}</span>
                 </div>
-                <p style={{ margin: "8px 0 0", color: "#334155", lineHeight: 1.6 }}>{reason.summary}</p>
+                <p style={{ margin: "8px 0 0", color: "#9eb79b", lineHeight: 1.6 }}>{reason.summary}</p>
               </article>
             ))}
           </div>
@@ -172,7 +172,7 @@ export function DocumentationDetailPage({ trustBoundaryCopy }: DocumentationDeta
           <div>
             <p style={eyebrowStyle}>Operational context</p>
             <h3 style={{ margin: "10px 0 8px" }}>Operational context</h3>
-            <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>
               Summary, content snapshot, metadata tags, and review posture stay together so the document can be assessed without opening an edit flow.
             </p>
           </div>
@@ -187,19 +187,19 @@ export function DocumentationDetailPage({ trustBoundaryCopy }: DocumentationDeta
           </div>
 
           <article style={contentCardStyle}>
-            <strong style={{ color: "#0f172a" }}>Summary</strong>
-            <span style={{ color: "#334155", lineHeight: 1.7 }}>
+            <strong style={{ color: "#dff4d3" }}>Summary</strong>
+            <span style={{ color: "#9eb79b", lineHeight: 1.7 }}>
               {detail.summary ?? "No summary is available for this documentation record yet."}
             </span>
           </article>
 
           <article style={contentCardStyle}>
-            <strong style={{ color: "#0f172a" }}>Content snapshot</strong>
+            <strong style={{ color: "#dff4d3" }}>Content snapshot</strong>
             <div style={contentTextStyle}>{detail.contentText}</div>
           </article>
 
           <div style={{ display: "grid", gap: 10 }}>
-            <strong style={{ color: "#0f172a" }}>Metadata tags</strong>
+            <strong style={{ color: "#dff4d3" }}>Metadata tags</strong>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               {detail.metadataTags.length === 0 ? (
                 <span style={emptyInlineStyle}>No metadata tags are assigned yet.</span>
@@ -214,8 +214,8 @@ export function DocumentationDetailPage({ trustBoundaryCopy }: DocumentationDeta
           </div>
 
           <article style={contentCardStyle}>
-            <strong style={{ color: "#0f172a" }}>Suggested next step</strong>
-            <span style={{ color: "#334155", lineHeight: 1.6 }}>
+            <strong style={{ color: "#dff4d3" }}>Suggested next step</strong>
+            <span style={{ color: "#9eb79b", lineHeight: 1.6 }}>
               {detail.suggestedNextStep ?? "No explicit next step is queued for this documentation record."}
             </span>
           </article>
@@ -366,14 +366,14 @@ function DefinitionItem(props: { label: string; value: string }) {
   return (
     <div style={definitionItemStyle}>
       <span style={labelStyle}>{props.label}</span>
-      <strong style={{ color: "#0f172a", lineHeight: 1.5 }}>{props.value}</strong>
+      <strong style={{ color: "#dff4d3", lineHeight: 1.5 }}>{props.value}</strong>
     </div>
   );
 }
 
 const eyebrowStyle = {
   margin: 0,
-  color: "#0369a1",
+  color: "#89ff93",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -383,7 +383,7 @@ const eyebrowStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
 };
@@ -411,16 +411,16 @@ const introCalloutStyle = {
 const handoffNoteStyle = {
   padding: "14px 16px",
   borderRadius: 18,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.16)",
-  color: "#334155",
+  color: "#9eb79b",
   lineHeight: 1.6,
 };
 
 const reasonCardStyle = {
   padding: 16,
   borderRadius: 20,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.14)",
 };
 
@@ -444,14 +444,14 @@ const definitionGridStyle = {
 const definitionItemStyle = {
   padding: 14,
   borderRadius: 16,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.14)",
   display: "grid",
   gap: 6,
 };
 
 const labelStyle = {
-  color: "#64748b",
+  color: "#9eb79b",
   fontSize: 12,
   textTransform: "uppercase" as const,
   letterSpacing: "0.1em",
@@ -461,14 +461,14 @@ const labelStyle = {
 const contentCardStyle = {
   padding: 18,
   borderRadius: 20,
-  background: "#f8fafc",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.16)",
   display: "grid",
   gap: 8,
 };
 
 const contentTextStyle = {
-  color: "#334155",
+  color: "#9eb79b",
   lineHeight: 1.7,
   whiteSpace: "pre-wrap" as const,
 };
@@ -485,7 +485,7 @@ const tagChipStyle = {
 };
 
 const emptyInlineStyle = {
-  color: "#475569",
+  color: "#9eb79b",
   lineHeight: 1.6,
 };
 
@@ -494,8 +494,8 @@ const primaryLinkStyle = {
   alignItems: "center",
   padding: "12px 18px",
   borderRadius: 999,
-  background: "#0f172a",
-  color: "#f8fafc",
+  background: "#dff4d3",
+  color: "rgba(10, 17, 11, 0.97)",
   textDecoration: "none",
   fontWeight: 600,
 };
@@ -505,8 +505,8 @@ const ghostLinkStyle = {
   alignItems: "center",
   padding: "12px 18px",
   borderRadius: 999,
-  background: "#e2e8f0",
-  color: "#0f172a",
+  background: "rgba(129, 255, 164, 0.08)",
+  color: "#dff4d3",
   textDecoration: "none",
   fontWeight: 600,
 };
@@ -518,7 +518,7 @@ const reviewButtonStyle = {
   borderRadius: 999,
   border: "none",
   background: "#9a3412",
-  color: "#fff7ed",
+  color: "rgba(244, 192, 73, 0.08)",
   fontWeight: 700,
   cursor: "pointer",
 };
@@ -535,7 +535,7 @@ const auditReceiptStyle = {
 const reviewErrorStyle = {
   padding: "16px 18px",
   borderRadius: 20,
-  background: "#fef2f2",
+  background: "rgba(220, 38, 38, 0.15)",
   border: "1px solid rgba(248, 113, 113, 0.24)",
   display: "grid",
   gap: 6,

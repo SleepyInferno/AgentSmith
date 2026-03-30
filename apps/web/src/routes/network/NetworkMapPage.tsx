@@ -13,9 +13,9 @@ function freshnessTone(state: string) {
       return { color: "#9a3412", background: "#ffedd5" };
     case "stale":
     case "error":
-      return { color: "#991b1b", background: "#fee2e2" };
+      return { color: "#fca5a5", background: "#fee2e2" };
     default:
-      return { color: "#334155", background: "#e2e8f0" };
+      return { color: "#9eb79b", background: "rgba(129, 255, 164, 0.08)" };
   }
 }
 
@@ -45,12 +45,12 @@ export function NetworkMapPage() {
   return (
     <section style={{ display: "grid", gap: 20 }}>
       <PageTitle title="Network Map" />
-      <article style={{ ...panelStyle, background: "linear-gradient(135deg, rgba(240, 249, 255, 0.96), rgba(255, 255, 255, 0.98))" }}>
+      <article style={{ ...panelStyle, background: "rgba(10, 17, 11, 0.97)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", alignItems: "flex-start" }}>
           <div>
             <p style={eyebrowStyle}>Network mapper</p>
             <h2 style={{ margin: "10px 0 8px", fontSize: "2rem" }}>Site topology</h2>
-            <p style={{ margin: 0, color: "#334155", lineHeight: 1.7, maxWidth: 760 }}>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.7, maxWidth: 760 }}>
               Review which site scopes are confirmed, which links are still inferred, and where freshness gaps mean
               the map should be treated as context instead of ground truth.
             </p>
@@ -110,7 +110,7 @@ export function NetworkMapPage() {
       >
         <article style={panelStyle}>
           <h3 style={{ marginTop: 0, fontSize: "1.25rem" }}>Relationship legend</h3>
-          <p style={{ margin: "0 0 18px", color: "#475569", lineHeight: 1.6 }}>
+          <p style={{ margin: "0 0 18px", color: "#9eb79b", lineHeight: 1.6 }}>
             The line treatment tells you how much confidence the server has in each mapped relationship. Use solid
             links for immediate review and dashed links as prompts to confirm what the source could only infer.
           </p>
@@ -119,7 +119,7 @@ export function NetworkMapPage() {
 
         <article style={panelStyle}>
           <h3 style={{ marginTop: 0, fontSize: "1.25rem" }}>Freshness watch</h3>
-          <p style={{ margin: "0 0 18px", color: "#475569", lineHeight: 1.6 }}>
+          <p style={{ margin: "0 0 18px", color: "#9eb79b", lineHeight: 1.6 }}>
             Stale scopes are the first place to verify before you depend on the topology for a change or outage review.
           </p>
 
@@ -131,18 +131,18 @@ export function NetworkMapPage() {
                   padding: 16,
                   borderRadius: 18,
                   border: "1px solid rgba(148, 163, 184, 0.16)",
-                  background: "#f8fafc",
+                  background: "rgba(10, 17, 11, 0.97)",
                   display: "grid",
                   gap: 8,
                 }}
               >
                 <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
-                  <strong style={{ color: "#0f172a" }}>{site.siteName}</strong>
+                  <strong style={{ color: "#dff4d3" }}>{site.siteName}</strong>
                   <span style={{ ...statusPillStyle, ...freshnessTone(site.freshnessState) }}>
                     {formatLabel(site.freshnessState)}
                   </span>
                 </div>
-                <span style={{ color: "#475569" }}>
+                <span style={{ color: "#9eb79b" }}>
                   {site.resourceIds.length} resources in scope, {site.relationshipCount} mapped relationships
                 </span>
               </div>
@@ -167,7 +167,7 @@ export function NetworkMapPage() {
 
 const eyebrowStyle = {
   margin: 0,
-  color: "#0369a1",
+  color: "#89ff93",
   fontSize: 13,
   textTransform: "uppercase" as const,
   letterSpacing: "0.14em",
@@ -177,7 +177,7 @@ const eyebrowStyle = {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
   boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
 };
@@ -192,7 +192,7 @@ const metricCardStyle = {
 };
 
 const metricLabelStyle = {
-  color: "#475569",
+  color: "#9eb79b",
   fontSize: 12,
   textTransform: "uppercase" as const,
   letterSpacing: "0.1em",
@@ -200,7 +200,7 @@ const metricLabelStyle = {
 };
 
 const metricValueStyle = {
-  color: "#0f172a",
+  color: "#dff4d3",
   fontSize: "1.8rem",
 };
 
@@ -219,8 +219,8 @@ const primaryLinkStyle = {
   alignItems: "center",
   padding: "12px 18px",
   borderRadius: 999,
-  background: "#0f172a",
-  color: "#f8fafc",
+  background: "#dff4d3",
+  color: "rgba(10, 17, 11, 0.97)",
   textDecoration: "none",
   fontWeight: 600,
 };
@@ -230,8 +230,8 @@ const ghostLinkStyle = {
   alignItems: "center",
   padding: "12px 18px",
   borderRadius: 999,
-  background: "#e2e8f0",
-  color: "#0f172a",
+  background: "rgba(129, 255, 164, 0.08)",
+  color: "#dff4d3",
   textDecoration: "none",
   fontWeight: 600,
 };

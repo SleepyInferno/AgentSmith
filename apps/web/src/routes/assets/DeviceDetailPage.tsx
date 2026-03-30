@@ -40,21 +40,21 @@ export function DeviceDetailPage() {
         style={{
           padding: 24,
           borderRadius: 24,
-          background: "#ffffff",
+          background: "rgba(10, 17, 11, 0.97)",
           border: "1px solid rgba(148, 163, 184, 0.22)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div>
-            <p style={{ margin: 0, color: "#0f172a", fontSize: 14, textTransform: "uppercase", letterSpacing: "0.14em" }}>
+            <p style={{ margin: 0, color: "#dff4d3", fontSize: 14, textTransform: "uppercase", letterSpacing: "0.14em" }}>
               Device detail
             </p>
             <h2 style={{ margin: "10px 0 8px", fontSize: "2rem" }}>{detail.deviceName}</h2>
-            <p style={{ margin: 0, color: "#475569", lineHeight: 1.6 }}>
+            <p style={{ margin: 0, color: "#9eb79b", lineHeight: 1.6 }}>
               {detail.summary ?? "No summary returned by the asset API."}
             </p>
           </div>
-          <Link to="/devices" style={{ color: "#0f172a", fontWeight: 700 }}>
+          <Link to="/devices" style={{ color: "#dff4d3", fontWeight: 700 }}>
             Back to inventory
           </Link>
         </div>
@@ -64,7 +64,7 @@ export function DeviceDetailPage() {
               marginTop: 18,
               padding: 16,
               borderRadius: 18,
-              background: "#fff7ed",
+              background: "rgba(244, 192, 73, 0.08)",
               color: "#9a3412",
             }}
           >
@@ -82,7 +82,7 @@ export function DeviceDetailPage() {
       >
         <article style={panelStyle}>
           <h3 style={{ marginTop: 0 }}>Risk summary</h3>
-          <div style={{ display: "grid", gap: 10, color: "#334155" }}>
+          <div style={{ display: "grid", gap: 10, color: "#9eb79b" }}>
             <div>riskLevel: {valueOrUnknown(detail.riskLevel)}</div>
             <div>riskScore: {valueOrUnknown(detail.riskScore)}</div>
             <div>queueRank: {valueOrUnknown(detail.queueRank)}</div>
@@ -93,7 +93,7 @@ export function DeviceDetailPage() {
         </article>
         <article style={panelStyle}>
           <h3 style={{ marginTop: 0 }}>Data freshness</h3>
-          <div style={{ display: "grid", gap: 10, color: "#334155" }}>
+          <div style={{ display: "grid", gap: 10, color: "#9eb79b" }}>
             <div>sourceFreshnessState: {valueOrUnknown(detail.sourceFreshnessState)}</div>
             <div>lastCheckInAt: {valueOrUnknown(detail.lastCheckInAt)}</div>
             <div>calculatedAt: {valueOrUnknown(detail.calculatedAt)}</div>
@@ -115,7 +115,7 @@ export function DeviceDetailPage() {
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
             gap: 14,
-            color: "#334155",
+            color: "#9eb79b",
           }}
         >
           <div>encryptionStatus: {valueOrUnknown(detail.encryptionStatus)}</div>
@@ -139,6 +139,6 @@ export function DeviceDetailPage() {
 const panelStyle = {
   padding: 24,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
 };

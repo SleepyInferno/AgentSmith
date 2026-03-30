@@ -175,14 +175,14 @@ UI hint: yes
 
 Goal: Refresh the shared operator shell so the operator can move through the app without hunting for controls. Covers persistent navigation consolidation, active-state styling, shared browser chrome, route context visibility, and a functional home dashboard.
 
-**Plans:** 4/5 plans executed
+**Plans:** 5/5 plans complete
 
 Plans:
 - [x] 07-01-PLAN.md - Remove dead shell components (BrowserToolbar, ReviewPanel) and unify home route into full shell layout
 - [x] 07-02-PLAN.md - Introduce clean agent-topbar replacing the ProtectedLayout inline-styled header nav
 - [x] 07-03-PLAN.md - Add active-state styling and route context chrome
 - [x] 07-04-PLAN.md - Replace mockup dashboard with functional risk card dashboard
-- [ ] 07-05-PLAN.md - Rebrand sidebar subtitle and finalize shell polish
+- [x] 07-05-PLAN.md - Rebrand sidebar subtitle and finalize shell polish
 
 Requirements:
 - SHELL-01

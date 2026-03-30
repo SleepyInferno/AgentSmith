@@ -10,7 +10,7 @@
 
 - [x] **SHELL-01**: Operator can move between primary tools and utility routes from persistent navigation with clear active-state feedback.
 - [x] **SHELL-02**: Operator can understand where they are and what to do next from shared shell chrome, route context, and review-side infrastructure.
-- [ ] **SHELL-03**: Operator can use the shell comfortably on common laptop and tablet widths without clipped, overlapping, or hidden navigation.
+- [x] **SHELL-03**: Operator can use the shell comfortably on common laptop and tablet widths without clipped, overlapping, or hidden navigation.
 
 ### Workflow Surfaces
 
@@ -54,7 +54,7 @@
 |-------------|-------|--------|
 | SHELL-01 | Phase 07 | Complete |
 | SHELL-02 | Phase 07 | Complete |
-| SHELL-03 | Phase 07 | Pending |
+| SHELL-03 | Phase 07 | Complete |
 | FLOW-01 | Phase 08 | Pending |
 | FLOW-02 | Phase 08 | Pending |
 | FLOW-03 | Phase 08 | Pending |

@@ -1,14 +1,15 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.2
-milestone_name: Intune Integration
-status: Roadmap defined — ready for Phase 10 planning
-last_updated: "2026-03-30T00:00:00.000Z"
+milestone: v1.0
+milestone_name: — Core Operational Workflow Foundation
+status: planning
+last_updated: "2026-03-30T22:07:54.744Z"
+last_activity: 2026-03-30 — v1.2 roadmap committed (Phases 10-15)
 progress:
-  total_phases: 6
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_phases: 11
+  completed_phases: 7
+  total_plans: 33
+  completed_plans: 32
 ---
 
 # State: Solo IT Ops Suite
@@ -30,10 +31,10 @@ See: `.planning/PROJECT.md` (updated 2026-03-30)
 
 ## Current Position
 
-Phase: Phase 10 — Schema and Credential Foundation (not started)
-Plan: —
-Status: Roadmap defined — ready for Phase 10 planning
-Last activity: 2026-03-30 — v1.2 roadmap committed (Phases 10-15)
+Phase: Phase 10 — Schema and Credential Foundation (in progress)
+Plan: 10-01 complete (1 of 2)
+Status: Plan 10-01 executed — schema additions, migrations, optional Entra env vars
+Last activity: 2026-03-30 — Plan 10-01 executed (schema and credential foundation)
 
 ## Immediate Next Steps
 
@@ -55,6 +56,9 @@ Last activity: 2026-03-30 — v1.2 roadmap committed (Phases 10-15)
 
 ## Recent Decisions
 
+- [Phase 10-01] Manual SQL migration files used (no live DB available; consistent with existing project migration pattern in prisma/migrations/).
+- [Phase 10-01] Env test placed in apps/api/src/lib/ rather than packages/shared/src/ because shared package has no test runner configured.
+- [Phase 10-01] Non-null assertions used in auth.ts for optional Entra vars; Phase 11 will add proper conditional MicrosoftEntraAuthProvider guard.
 - [Phase 07-05] Responsive CSS audited and confirmed correct (no calc(100vh - 71px), no dead media rules); shell-navigation.spec.ts expanded with PageTitle assertions, sidebar-on-home-route guard, and five risk card link checks using aria-label colon-suffix disambiguation.
 - [Phase 07-05] Task 3 human verification approved via automated coverage — CSS audit + 16 passing Playwright tests accepted in lieu of live browser visual check.
 - [Phase 07-04] Replaced mockup dashboard image and hotspot overlay with functional risk card dashboard; five static risk cards with ok/warn/critical variants; live data integration deferred (D-07, D-08, D-09).
@@ -111,11 +115,12 @@ Last activity: 2026-03-30 — v1.2 roadmap committed (Phases 10-15)
 | 07 | 04 | 10 min | 3 | 5 | 2026-03-29 |
 | Phase 07 P03 | 5 min | 2 tasks | 17 files | |
 | Phase 07 P05 | 15min | 3 tasks | 1 files | |
+| Phase 10 P01 | 6min | 2 tasks | 7 files |
 
 ## Session Info
 
-- Last session: 2026-03-30T00:00:00Z
-- Stopped at: v1.2 roadmap committed — Phases 10-15 defined, traceability updated
+- Last session: 2026-03-30T22:06:36Z
+- Stopped at: Completed 10-01-PLAN.md — Schema and Credential Foundation plan 1 of 2
 
 ## Notes
 

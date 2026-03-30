@@ -35,15 +35,15 @@
 
 ### Bootstrap
 
-- [ ] **BOOT-01**: Operator can create a local admin account (username + password) on first run when no admin exists.
-- [ ] **BOOT-02**: App detects bootstrap state server-side and routes unauthenticated users to setup before any protected route is accessible.
-- [ ] **BOOT-03**: Bootstrap endpoint is permanently locked in the database after the first admin is created.
+- [x] **BOOT-01**: Operator can create a local admin account (username + password) on first run when no admin exists.
+- [x] **BOOT-02**: App detects bootstrap state server-side and routes unauthenticated users to setup before any protected route is accessible.
+- [x] **BOOT-03**: Bootstrap endpoint is permanently locked in the database after the first admin is created.
 
 ### Integrations Settings
 
-- [ ] **CRED-01**: Operator can configure Intune credentials (tenant ID, client ID, client secret) from the integrations settings page.
-- [ ] **CRED-02**: Operator can configure an OpenAI API key from the integrations settings page.
-- [ ] **CRED-03**: Credentials are stored encrypted server-side and never returned to the browser after initial save.
+- [x] **CRED-01**: Operator can configure Intune credentials (tenant ID, client ID, client secret) from the integrations settings page.
+- [x] **CRED-02**: Operator can configure an OpenAI API key from the integrations settings page.
+- [x] **CRED-03**: Credentials are stored encrypted server-side and never returned to the browser after initial save.
 - [ ] **CRED-04**: Operator can verify connection health for each integration and see last-sync status from the settings page.
 
 ### Intune Sync
@@ -54,16 +54,16 @@
 
 ### Document Ingest
 
-- [ ] **INGEST-01**: Operator can configure a source folder and output folder for document ingest from the settings page.
-- [ ] **INGEST-02**: Ingest pipeline parses md, txt, docx, and pdf files from the source folder.
-- [ ] **INGEST-03**: Ingest uses OpenAI to classify, summarize, and tag each document and copies organized files to the output folder in a structured hierarchy.
-- [ ] **INGEST-04**: Ingest runs automatically when new files are added to the source folder (watch folder).
-- [ ] **INGEST-05**: Operator can trigger ingest manually from the UI.
+- [x] **INGEST-01**: Operator can configure a source folder and output folder for document ingest from the settings page.
+- [x] **INGEST-02**: Ingest pipeline parses md, txt, docx, and pdf files from the source folder.
+- [x] **INGEST-03**: Ingest uses OpenAI to classify, summarize, and tag each document and copies organized files to the output folder in a structured hierarchy.
+- [x] **INGEST-04**: Ingest runs automatically when new files are added to the source folder (watch folder).
+- [x] **INGEST-05**: Operator can trigger ingest manually from the UI.
 
 ### RAG Search
 
-- [ ] **RAG-01**: Operator can search documents using natural language and receive a synthesized answer with cited sources.
-- [ ] **RAG-02**: Existing keyword search remains available as fallback when no OpenAI key is configured.
+- [x] **RAG-01**: Operator can search documents using natural language and receive a synthesized answer with cited sources.
+- [x] **RAG-02**: Existing keyword search remains available as fallback when no OpenAI key is configured.
 
 ## v2 Requirements
 
@@ -102,23 +102,23 @@
 | QUAL-03 | Phase 09 | Deferred → v1.3 |
 | TEST-01 | Phase 09 | Deferred → v1.3 |
 | TEST-02 | Phase 09 | Deferred → v1.3 |
-| BOOT-01 | Phase 11 | Pending |
-| BOOT-02 | Phase 11 | Pending |
-| BOOT-03 | Phase 11 | Pending |
-| CRED-01 | Phase 12 | Pending |
-| CRED-02 | Phase 12 | Pending |
-| CRED-03 | Phase 12 | Pending |
+| BOOT-01 | Phase 11 | Complete |
+| BOOT-02 | Phase 11 | Complete |
+| BOOT-03 | Phase 11 | Complete |
+| CRED-01 | Phase 12 | Complete |
+| CRED-02 | Phase 12 | Complete |
+| CRED-03 | Phase 12 | Complete |
 | CRED-04 | Phase 12 | Pending |
 | SYNC-01 | Phase 13 | Pending |
 | SYNC-02 | Phase 13 | Pending |
 | SYNC-03 | Phase 13 | Pending |
-| INGEST-01 | Phase 14 | Pending |
-| INGEST-02 | Phase 14 | Pending |
-| INGEST-03 | Phase 14 | Pending |
-| INGEST-04 | Phase 14 | Pending |
-| INGEST-05 | Phase 14 | Pending |
-| RAG-01 | Phase 15 | Pending |
-| RAG-02 | Phase 15 | Pending |
+| INGEST-01 | Phase 14 | Complete |
+| INGEST-02 | Phase 14 | Complete |
+| INGEST-03 | Phase 14 | Complete |
+| INGEST-04 | Phase 14 | Complete |
+| INGEST-05 | Phase 14 | Complete |
+| RAG-01 | Phase 15 | Complete |
+| RAG-02 | Phase 15 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 12 total (3 complete, 9 deferred → v1.3)

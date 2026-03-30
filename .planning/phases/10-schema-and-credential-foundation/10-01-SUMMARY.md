@@ -161,6 +161,19 @@ Note: The pgvector migration requires the pgvector extension to be available on 
 - Phase 15 (RAG Search) can proceed once Phase 14 is complete: pgvector HNSW index is defined
 - Blocker to note: migrations need to be applied against a live database before any Phase 11-15 runtime features can actually store data
 
+## Self-Check: PASSED
+
+- prisma/schema.prisma — FOUND
+- prisma/migrations/20260330_0001_user_auth_fields/migration.sql — FOUND
+- prisma/migrations/20260330_0002_integration_credential_system_key/migration.sql — FOUND
+- prisma/migrations/20260330_0003_pgvector_document_embedding/migration.sql — FOUND
+- packages/shared/src/env.ts — FOUND
+- apps/api/src/plugins/auth.ts — FOUND
+- apps/api/src/lib/env-optional.test.ts — FOUND
+- .planning/phases/10-schema-and-credential-foundation/10-01-SUMMARY.md — FOUND
+- Commit 2209e53 — FOUND
+- Commit ed9e34f — FOUND
+
 ---
 *Phase: 10-schema-and-credential-foundation*
 *Completed: 2026-03-30*

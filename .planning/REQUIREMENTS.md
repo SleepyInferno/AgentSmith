@@ -13,23 +13,57 @@
 - [x] **SHELL-02**: Operator can understand where they are and what to do next from shared shell chrome, route context, and review-side infrastructure.
 - [x] **SHELL-03**: Operator can use the shell comfortably on common laptop and tablet widths without clipped, overlapping, or hidden navigation.
 
-### Workflow Surfaces *(deferred to v1.2)*
+### Workflow Surfaces *(deferred to v1.3)*
 
 - [ ] **FLOW-01**: Operator can move from each overview queue to its matching inventory or detail screen through clear, consistent calls to action.
 - [ ] **FLOW-02**: Operator can move back from every detail screen to the right queue or inventory context without losing relevant filter state.
 - [ ] **FLOW-03**: Operator sees consistent layout patterns for queue cards, inventory tables, detail summaries, and review panels across the five tools.
 - [ ] **FLOW-04**: Operator can distinguish loading, empty, stale, error, read-only, and action-required states without relearning page-specific conventions.
 
-### Experience Hardening *(deferred to v1.2)*
+### Experience Hardening *(deferred to v1.3)*
 
 - [ ] **QUAL-01**: Operator can navigate primary routes, filters, dialogs, and review forms with keyboard access and visible focus treatment.
 - [ ] **QUAL-02**: Operator can rely on accessible labels, headings, and readable contrast across shared navigation and workflow surfaces.
 - [ ] **QUAL-03**: Operator gets responsive layouts that preserve hierarchy, spacing, and tap targets at narrower widths.
 
-### Verification *(deferred to v1.2)*
+### Verification *(deferred to v1.3)*
 
 - [ ] **TEST-01**: Team can run automated UI coverage for shell navigation, route links, back-links, and key workflows from the standard root test command.
 - [ ] **TEST-02**: Team can verify shared UI infrastructure and major workflow components with targeted automated tests before human visual review.
+
+## v1.2 Requirements
+
+### Bootstrap
+
+- [ ] **BOOT-01**: Operator can create a local admin account (username + password) on first run when no admin exists.
+- [ ] **BOOT-02**: App detects bootstrap state server-side and routes unauthenticated users to setup before any protected route is accessible.
+- [ ] **BOOT-03**: Bootstrap endpoint is permanently locked in the database after the first admin is created.
+
+### Integrations Settings
+
+- [ ] **CRED-01**: Operator can configure Intune credentials (tenant ID, client ID, client secret) from the integrations settings page.
+- [ ] **CRED-02**: Operator can configure an OpenAI API key from the integrations settings page.
+- [ ] **CRED-03**: Credentials are stored encrypted server-side and never returned to the browser after initial save.
+- [ ] **CRED-04**: Operator can verify connection health for each integration and see last-sync status from the settings page.
+
+### Intune Sync
+
+- [ ] **SYNC-01**: Operator can see live Intune device inventory with device name, compliance state, OS/version, last check-in, and encryption status.
+- [ ] **SYNC-02**: Operator can see per-device compliance policy assignment and pass/fail state.
+- [ ] **SYNC-03**: Operator can see when Intune data was last synced and whether it is stale or failed.
+
+### Document Ingest
+
+- [ ] **INGEST-01**: Operator can configure a source folder and output folder for document ingest from the settings page.
+- [ ] **INGEST-02**: Ingest pipeline parses md, txt, docx, and pdf files from the source folder.
+- [ ] **INGEST-03**: Ingest uses OpenAI to classify, summarize, and tag each document and copies organized files to the output folder in a structured hierarchy.
+- [ ] **INGEST-04**: Ingest runs automatically when new files are added to the source folder (watch folder).
+- [ ] **INGEST-05**: Operator can trigger ingest manually from the UI.
+
+### RAG Search
+
+- [ ] **RAG-01**: Operator can search documents using natural language and receive a synthesized answer with cited sources.
+- [ ] **RAG-02**: Existing keyword search remains available as fallback when no OpenAI key is configured.
 
 ## v2 Requirements
 
@@ -48,6 +82,9 @@
 | New high-trust write actions | The overhaul should strengthen clarity and review UX before action expansion |
 | Full design-system extraction or token platform work | Keep this milestone focused on the production app experience, not a parallel platform project |
 | Mobile-native app work | The operator web experience remains the priority |
+| Intune app inventory per device (detectedApps) | High data volume, lower urgency than device compliance — defer to v1.3 |
+| Multi-user accounts or role management | Solo IT admin tool — single admin account is sufficient for v1.2 |
+| Real-time sync / webhooks | Polling-based sync is sufficient for v1.2; webhook infra adds significant complexity |
 
 ## Traceability
 
@@ -56,21 +93,37 @@
 | SHELL-01 | Phase 07 | Complete |
 | SHELL-02 | Phase 07 | Complete |
 | SHELL-03 | Phase 07 | Complete |
-| FLOW-01 | Phase 08 | Deferred → v1.2 |
-| FLOW-02 | Phase 08 | Deferred → v1.2 |
-| FLOW-03 | Phase 08 | Deferred → v1.2 |
-| FLOW-04 | Phase 08 | Deferred → v1.2 |
-| QUAL-01 | Phase 09 | Deferred → v1.2 |
-| QUAL-02 | Phase 09 | Deferred → v1.2 |
-| QUAL-03 | Phase 09 | Deferred → v1.2 |
-| TEST-01 | Phase 09 | Deferred → v1.2 |
-| TEST-02 | Phase 09 | Deferred → v1.2 |
+| FLOW-01 | Phase 08 | Deferred → v1.3 |
+| FLOW-02 | Phase 08 | Deferred → v1.3 |
+| FLOW-03 | Phase 08 | Deferred → v1.3 |
+| FLOW-04 | Phase 08 | Deferred → v1.3 |
+| QUAL-01 | Phase 09 | Deferred → v1.3 |
+| QUAL-02 | Phase 09 | Deferred → v1.3 |
+| QUAL-03 | Phase 09 | Deferred → v1.3 |
+| TEST-01 | Phase 09 | Deferred → v1.3 |
+| TEST-02 | Phase 09 | Deferred → v1.3 |
+| BOOT-01 | TBD | Pending |
+| BOOT-02 | TBD | Pending |
+| BOOT-03 | TBD | Pending |
+| CRED-01 | TBD | Pending |
+| CRED-02 | TBD | Pending |
+| CRED-03 | TBD | Pending |
+| CRED-04 | TBD | Pending |
+| SYNC-01 | TBD | Pending |
+| SYNC-02 | TBD | Pending |
+| SYNC-03 | TBD | Pending |
+| INGEST-01 | TBD | Pending |
+| INGEST-02 | TBD | Pending |
+| INGEST-03 | TBD | Pending |
+| INGEST-04 | TBD | Pending |
+| INGEST-05 | TBD | Pending |
+| RAG-01 | TBD | Pending |
+| RAG-02 | TBD | Pending |
 
 **Coverage:**
-- v1.1 requirements: 12 total
-- Mapped to phases: 12
-- Unmapped: 0 - complete
+- v1.1 requirements: 12 total (3 complete, 9 deferred → v1.3)
+- v1.2 requirements: 16 total, mapped to phases by roadmap
 
 ---
 *Requirements defined: 2026-03-28*
-*Last updated: 2026-03-28 after starting milestone v1.1 Operator Experience*
+*Last updated: 2026-03-30 — v1.2 requirements added*

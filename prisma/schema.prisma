@@ -156,6 +156,8 @@ model User {
   email            String?
   jobTitle         String?
   department       String?
+  passwordHash     String?
+  role             String?
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
   auditEvents      AuditEvent[] @relation("AuditActor")
@@ -256,6 +258,7 @@ model Document {
   metadataAssignments DocumentMetadataAssignment[]
   systemLinks         DocumentSystemLink[]
   revisions           DocumentRevision[]
+  embeddings          DocumentEmbedding[]
 
   @@unique([sourceSystem, sourceId])
 }
@@ -529,4 +532,33 @@ model BackupRestoreTest {
   @@index([systemId, testedAt(sort: Desc)])
   @@index([backupEvidenceId])
   @@index([evidenceSource, testedAt(sort: Desc)])
+}
+
+model IntegrationCredential {
+  id             String   @id @default(cuid())
+  key            String   @unique
+  encryptedValue String   @db.Text
+  iv             String
+  authTag        String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model SystemKey {
+  id         String   @id @default(cuid())
+  purpose    String   @unique
+  wrappedKey String   @db.Text
+  createdAt  DateTime @default(now())
+}
+
+model DocumentEmbedding {
+  id         String                        @id @default(cuid())
+  documentId String
+  document   Document                      @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  chunkIndex Int
+  chunkText  String                        @db.Text
+  embedding  Unsupported("vector(1536)")?
+  createdAt  DateTime                      @default(now())
+
+  @@index([documentId])
 }

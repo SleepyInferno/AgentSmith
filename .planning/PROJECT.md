@@ -31,7 +31,7 @@ One overextended IT generalist can see the highest-risk issues first and complet
 
 ### Active
 
-- [ ] The protected shell makes primary routes, utility routes, context rails, and review actions easy to scan from any page.
+- [x] The protected shell makes primary routes, utility routes, context rails, and review actions easy to scan from any page. Validated in Phase 7: Operator Shell Refresh.
 - [ ] Queue, inventory, detail, and review flows feel visually and behaviorally consistent across devices, lifecycle, network, backup, and docs.
 - [ ] Shared UI states are responsive, keyboard-accessible, and explicit for loading, empty, stale, error, and read-only conditions.
 - [ ] Automated browser and component coverage protects the shell, route links, back-links, and non-human workflow expectations during the overhaul.
@@ -61,8 +61,9 @@ One overextended IT generalist can see the highest-risk issues first and complet
 ## Current State
 
 - v1.0 shipped the protected shell and the five-tool operational workflow set.
-- v1.1 Operator Experience is active and scoped around UI overhaul, navigation consistency, responsive hardening, and stronger automation coverage.
-- The standard root test command now passes across API tests, web unit tests, and Playwright browser tests.
+- v1.1 Operator Experience is active. Phase 7 (Operator Shell Refresh) is complete — dead chrome removed, unified home route, clean top bar, PageTitle on every route, functional risk card dashboard, 16 Playwright tests green.
+- Phase 8 (Queue and Detail Refresh) is next.
+- The standard root test command now passes across API tests, web unit tests, and Playwright browser tests (16 e2e).
 - The full API typecheck still has pre-existing docs and lifecycle TypeScript debt outside this milestone.
 
 ## Constraints

@@ -109,7 +109,8 @@ export function createAuthService(options: CreateAuthServiceOptions): AgentSmith
     },
 
     async completeCallback(request, reply) {
-      const currentUrl = new URL(request.raw.url ?? request.url, options.env.ENTRA_REDIRECT_URI);
+      const currentUrl = new URL(request.raw.url ?? request.url, options.env.ENTRA_REDIRECT_URI!);
+      // TODO Phase 11: guard ENTRA_REDIRECT_URI presence before using
       const flow = readSignedCookie<AuthFlowCookiePayload>(options.env.SESSION_SECRET, request, authFlowCookieName);
 
       if (!flow) {
@@ -300,7 +301,8 @@ class MicrosoftEntraAuthProvider implements AuthProvider {
   private configurationPromise: Promise<oidc.Configuration> | null = null;
 
   constructor(private readonly env: ServerEnv) {
-    this.issuer = new URL(`https://login.microsoftonline.com/${this.env.ENTRA_TENANT_ID}/v2.0`);
+    this.issuer = new URL(`https://login.microsoftonline.com/${this.env.ENTRA_TENANT_ID!}/v2.0`);
+    // TODO Phase 11: guard — do not construct MicrosoftEntraAuthProvider when Entra vars are absent
   }
 
   async buildAuthorizationUrl(flow: AuthFlowCookiePayload) {
@@ -308,7 +310,7 @@ class MicrosoftEntraAuthProvider implements AuthProvider {
     const codeChallenge = await oidc.calculatePKCECodeChallenge(flow.codeVerifier);
 
     return oidc.buildAuthorizationUrl(configuration, {
-      redirect_uri: this.env.ENTRA_REDIRECT_URI,
+      redirect_uri: this.env.ENTRA_REDIRECT_URI!,
       scope: "openid profile email",
       code_challenge: codeChallenge,
       code_challenge_method: "S256",
@@ -344,7 +346,7 @@ class MicrosoftEntraAuthProvider implements AuthProvider {
 
   private getConfiguration() {
     if (!this.configurationPromise) {
-      this.configurationPromise = oidc.discovery(this.issuer, this.env.ENTRA_CLIENT_ID, this.env.ENTRA_CLIENT_SECRET);
+      this.configurationPromise = oidc.discovery(this.issuer, this.env.ENTRA_CLIENT_ID!, this.env.ENTRA_CLIENT_SECRET!);
     }
 
     return this.configurationPromise;

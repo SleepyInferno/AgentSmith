@@ -1,14 +1,14 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.1
-milestone_name: milestone
-status: Milestone complete
-last_updated: "2026-03-30T01:37:09.770Z"
+milestone: v1.2
+milestone_name: Intune Integration
+status: Defining requirements
+last_updated: "2026-03-30T00:00:00.000Z"
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 31
-  completed_plans: 31
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # State: Solo IT Ops Suite
@@ -29,19 +29,15 @@ See: `.planning/PROJECT.md` (updated 2026-03-28)
 
 ## Current Position
 
-Phase: 07
-Plan: Not started
-
-- Current Phase: 07 of 09 (Phase 07 complete, Phase 08 next)
-- Current Plan: Phase 07 all plans complete
-- Last Completed Plan: 07-05-PLAN.md
-- Phase Progress: Phase 07 complete — shell refresh, sidebar-only nav, PageTitle on all routes, responsive CSS verified, expanded shell-navigation Playwright suite
-- Overall Progress: [██████████] 100%
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-03-30 — Milestone v1.2 started
 
 ## Immediate Next Steps
 
-1. Execute Phase 08: Queue and Detail Refresh (FLOW-01 through FLOW-04).
-2. Keep `npx pnpm test` green after each plan.
+1. Requirements and roadmap being finalized for v1.2.
+2. Run `/gsd:plan-phase [N]` once roadmap is committed.
 
 ## Recent Decisions
 

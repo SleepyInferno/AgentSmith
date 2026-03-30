@@ -8,15 +8,17 @@ Solo IT Ops Suite is an internal operations console for a one-person or very sma
 
 One overextended IT generalist can see the highest-risk issues first and complete critical operational workflows consistently without relying on memory.
 
-## Current Milestone: v1.1 Operator Experience
+## Current Milestone: v1.2 Intune Integration
 
-**Goal:** Refresh the existing five-tool experience so the solo operator can move through the app faster, with clearer hierarchy, stronger consistency, and broader non-human UI verification.
+**Goal:** Connect the app to live Microsoft Intune data, add an AI-powered document ingest pipeline, and introduce a first-run bootstrap so the app can be set up without Entra ID as a hard dependency.
 
 **Target features:**
-- Refresh the protected shell, primary navigation, and shared page chrome
-- Unify queue, inventory, detail, and review-panel patterns across the five tools
-- Improve responsive behavior, accessibility, and shared loading, empty, error, stale, and read-only states
-- Expand automated UI verification for route links, back-links, shell infrastructure, and key workflows
+- First-run bootstrap: one-time setup screen to create a local admin account; Entra ID becomes optional
+- Integrations settings page: configure Intune credentials and OpenAI API key with server-side storage and connection health indicators
+- Intune sync: live device inventory, compliance policies, app inventory, and sync status/freshness
+- Document ingest pipeline: parse md/txt/docx/pdf from a source folder, use OpenAI to classify/summarize/tag, copy to an organized output folder
+- Watch folder (auto) and UI button (on-demand) ingest triggers
+- RAG search: embeddings at ingest time, GPT synthesis at query time; existing keyword search as fallback
 
 ## Requirements
 
@@ -31,10 +33,11 @@ One overextended IT generalist can see the highest-risk issues first and complet
 
 ### Active
 
-- [x] The protected shell makes primary routes, utility routes, context rails, and review actions easy to scan from any page. Validated in Phase 7: Operator Shell Refresh.
-- [ ] Queue, inventory, detail, and review flows feel visually and behaviorally consistent across devices, lifecycle, network, backup, and docs.
-- [ ] Shared UI states are responsive, keyboard-accessible, and explicit for loading, empty, stale, error, and read-only conditions.
-- [ ] Automated browser and component coverage protects the shell, route links, back-links, and non-human workflow expectations during the overhaul.
+- [ ] First-run bootstrap allows the operator to create a local admin account on initial setup without requiring Entra ID pre-configuration.
+- [ ] Integrations settings page lets the operator configure and verify Intune and OpenAI credentials from within the app.
+- [ ] Live Intune sync surfaces real device inventory, compliance state, and app inventory with freshness indicators.
+- [ ] Document ingest pipeline parses a source folder, uses OpenAI to classify and organize files, and writes to a structured output folder.
+- [ ] RAG-powered search lets the operator find documents using natural language, with existing keyword search as fallback.
 
 ### Out of Scope
 
@@ -61,9 +64,9 @@ One overextended IT generalist can see the highest-risk issues first and complet
 ## Current State
 
 - v1.0 shipped the protected shell and the five-tool operational workflow set.
-- v1.1 Operator Experience is active. Phase 7 (Operator Shell Refresh) is complete — dead chrome removed, unified home route, clean top bar, PageTitle on every route, functional risk card dashboard, 16 Playwright tests green.
-- Phase 8 (Queue and Detail Refresh) is next.
-- The standard root test command now passes across API tests, web unit tests, and Playwright browser tests (16 e2e).
+- v1.1 shipped sidebar-only navigation, full dark theme, banner topbar, and functional risk-card dashboard. Phases 08–09 deferred to v1.3.
+- v1.2 Intune Integration is active. Requirements and roadmap are being defined.
+- The standard root test command passes across API tests, web unit tests, and 16 Playwright browser tests.
 - The full API typecheck still has pre-existing docs and lifecycle TypeScript debt outside this milestone.
 
 ## Constraints
@@ -106,4 +109,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-28 after starting milestone v1.1 Operator Experience*
+*Last updated: 2026-03-30 after starting milestone v1.2 Intune Integration*

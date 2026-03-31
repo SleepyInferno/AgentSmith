@@ -27,6 +27,7 @@ export type MockRequestLogEntry = {
 
 export type CreateMockApiOptions = {
   authenticated?: boolean;
+  bootstrapRequired?: boolean; // defaults to false — most tests assume bootstrap is complete
 };
 
 export type MockApi = ReturnType<typeof createMockApi>;
@@ -717,6 +718,7 @@ function cloneTemplateIntoRun(template: LifecycleTemplate, input: StartLifecycle
 export function createMockApi(options: CreateMockApiOptions = {}) {
   const requestLog: MockRequestLogEntry[] = [];
   let authenticated = options.authenticated ?? true;
+  let bootstrapRequired = options.bootstrapRequired ?? false;
   let mutationIndex = 0;
   const docsState = clone(docsDetailRecords);
   const lifecycleState = clone(lifecycleRuns);
@@ -747,6 +749,22 @@ export function createMockApi(options: CreateMockApiOptions = {}) {
     if (method === "POST" && url.pathname === "/auth/logout") {
       authenticated = false;
       return { status: 204 };
+    }
+
+    if (method === "GET" && url.pathname === "/api/bootstrap-status") {
+      return jsonResponse({ bootstrapRequired });
+    }
+
+    if (method === "POST" && url.pathname === "/api/bootstrap") {
+      if (bootstrapRequired) {
+        bootstrapRequired = false;
+        return jsonResponse({ userId: "bootstrap-admin-1" }, 201);
+      }
+      return jsonResponse({ error: "bootstrap_already_completed" }, 409);
+    }
+
+    if (method === "POST" && url.pathname === "/api/auth/local/login") {
+      return jsonResponse({ redirectPath: "/" });
     }
 
     if (method === "GET" && url.pathname === "/api/assets/queue") return jsonResponse(assetQueueResponse);

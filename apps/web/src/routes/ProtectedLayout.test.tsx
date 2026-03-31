@@ -6,10 +6,15 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { ProtectedLayout } from "./ProtectedLayout";
 
 const useSessionMock = vi.fn();
+const useBootstrapStatusMock = vi.fn();
 const apiRequestMock = vi.fn();
 
 vi.mock("../hooks/useSession", () => ({
   useSession: () => useSessionMock(),
+}));
+
+vi.mock("../hooks/useBootstrapStatus", () => ({
+  useBootstrapStatus: () => useBootstrapStatusMock(),
 }));
 
 vi.mock("../lib/api", () => ({
@@ -76,6 +81,7 @@ function renderProtectedLayout(initialEntry: string) {
 afterEach(() => {
   apiRequestMock.mockReset();
   useSessionMock.mockReset();
+  useBootstrapStatusMock.mockReset();
 });
 
 describe("ProtectedLayout", () => {
@@ -84,6 +90,10 @@ describe("ProtectedLayout", () => {
       authenticated: false,
       isLoading: true,
       user: null,
+    });
+    useBootstrapStatusMock.mockReturnValue({
+      data: { bootstrapRequired: false },
+      isLoading: false,
     });
 
     renderProtectedLayout("/");
@@ -96,6 +106,10 @@ describe("ProtectedLayout", () => {
       authenticated: false,
       isLoading: false,
       user: null,
+    });
+    useBootstrapStatusMock.mockReturnValue({
+      data: { bootstrapRequired: false },
+      isLoading: false,
     });
 
     const { router } = renderProtectedLayout("/connectors?staleOnly=true");
@@ -114,6 +128,10 @@ describe("ProtectedLayout", () => {
         email: "operator@example.com",
         id: "user-1",
       },
+    });
+    useBootstrapStatusMock.mockReturnValue({
+      data: { bootstrapRequired: false },
+      isLoading: false,
     });
     apiRequestMock.mockResolvedValue(undefined);
 
@@ -139,6 +157,10 @@ describe("ProtectedLayout", () => {
         email: "operator@example.com",
         id: "user-1",
       },
+    });
+    useBootstrapStatusMock.mockReturnValue({
+      data: { bootstrapRequired: false },
+      isLoading: false,
     });
     apiRequestMock.mockRejectedValue(new Error("Sign-out failed upstream"));
 

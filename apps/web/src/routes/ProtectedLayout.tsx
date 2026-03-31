@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSession } from "../hooks/useSession";
+import { useBootstrapStatus } from "../hooks/useBootstrapStatus";
 import { apiRequest } from "../lib/api";
 
 function LoadingShell() {
@@ -47,15 +48,20 @@ function LoadingShell() {
 }
 
 export function ProtectedLayout() {
-  const { authenticated, isLoading, user } = useSession();
+  const { authenticated, isLoading: sessionLoading, user } = useSession();
+  const { data: bootstrapData, isLoading: bootstrapLoading } = useBootstrapStatus();
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [signOutError, setSignOutError] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const location = useLocation();
 
-  if (isLoading) {
+  if (sessionLoading || bootstrapLoading) {
     return <LoadingShell />;
+  }
+
+  if (bootstrapData?.bootstrapRequired) {
+    return <Navigate to="/setup" replace />;
   }
 
   if (!authenticated || !user) {

@@ -10,6 +10,13 @@ vi.mock("../hooks/useSession", () => ({
   useSession: vi.fn(),
 }));
 
+vi.mock("../hooks/useBootstrapStatus", () => ({
+  useBootstrapStatus: vi.fn(() => ({
+    data: { bootstrapRequired: false },
+    isLoading: false,
+  })),
+}));
+
 const mockedUseSession = vi.mocked(useSession);
 
 function renderRouter(initialEntries: string[], routes: Parameters<typeof createMemoryRouter>[0]) {

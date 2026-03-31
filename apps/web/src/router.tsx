@@ -17,6 +17,7 @@ import { DocumentationDetailPage } from "./routes/docs/DocumentationDetailPage";
 import { AuditTrailPage } from "./routes/audit/AuditTrailPage";
 import { ConnectorStatusPage } from "./routes/connectors/ConnectorStatusPage";
 import { LoginPage } from "./routes/LoginPage";
+import { SetupPage } from "./routes/SetupPage";
 import { ProtectedLayout } from "./routes/ProtectedLayout";
 
 type NavItem = {
@@ -190,6 +191,10 @@ export const appRoutes: RouteObject[] = [
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/setup",
+    element: <SetupPage />,
   },
   {
     element: <ProtectedLayout />,

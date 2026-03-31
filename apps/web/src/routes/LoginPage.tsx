@@ -1,15 +1,56 @@
-import { Navigate, useSearchParams } from "react-router-dom";
-import { useSession } from "../hooks/useSession";
+import { useState } from "react";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import { useSession, sessionQueryKey } from "../hooks/useSession";
+import { useBootstrapStatus } from "../hooks/useBootstrapStatus";
+import { ApiError, apiRequest } from "../lib/api";
 
 export function LoginPage() {
-  const { authenticated, isLoading } = useSession();
+  const { authenticated, isLoading: sessionLoading } = useSession();
+  const { data: bootstrapData, isLoading: bootstrapLoading } = useBootstrapStatus();
   const [searchParams] = useSearchParams();
   const authFailed = searchParams.get("error") === "auth_failed";
   const redirect = searchParams.get("redirect");
   const signInHref = redirect ? `/auth/login?redirect=${encodeURIComponent(redirect)}` : "/auth/login";
 
-  if (!isLoading && authenticated) {
+  const [localUsername, setLocalUsername] = useState("");
+  const [localPassword, setLocalPassword] = useState("");
+  const [localError, setLocalError] = useState<string | null>(null);
+  const [isSigningIn, setIsSigningIn] = useState(false);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  if (!sessionLoading && authenticated) {
     return <Navigate to="/" replace />;
+  }
+
+  // If bootstrap hasn't been done yet, send to setup
+  if (!bootstrapLoading && bootstrapData?.bootstrapRequired === true) {
+    return <Navigate to="/setup" replace />;
+  }
+
+  async function handleLocalLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setLocalError(null);
+    setIsSigningIn(true);
+
+    try {
+      await apiRequest("/api/auth/local/login", {
+        method: "POST",
+        body: JSON.stringify({ username: localUsername, password: localPassword }),
+      });
+
+      await queryClient.invalidateQueries({ queryKey: sessionQueryKey });
+      navigate(redirect ?? "/", { replace: true });
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 401) {
+        setLocalError("Invalid credentials.");
+      } else {
+        setLocalError(error instanceof Error ? error.message : "Sign-in failed.");
+      }
+    } finally {
+      setIsSigningIn(false);
+    }
   }
 
   return (
@@ -57,7 +98,7 @@ export function LoginPage() {
           <h1
             style={{
               margin: "14px 0 0",
-              fontFamily: "\"Cormorant Garamond\", Georgia, serif",
+              fontFamily: '"Cormorant Garamond", Georgia, serif',
               fontSize: "clamp(2.8rem, 6vw, 4.6rem)",
               lineHeight: 0.95,
             }}
@@ -136,6 +177,124 @@ export function LoginPage() {
           >
             Sign in with Microsoft
           </a>
+
+          {/* Local login form — shown when bootstrap is complete */}
+          <div
+            style={{
+              display: "grid",
+              placeItems: "center",
+              gap: "6px",
+              color: "#5a7a5b",
+              fontSize: "0.85rem",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+            }}
+          >
+            or
+          </div>
+
+          <form onSubmit={(e) => void handleLocalLogin(e)} style={{ display: "grid", gap: "12px" }}>
+            <label style={{ display: "grid", gap: "5px" }}>
+              <span
+                style={{
+                  fontSize: "0.8rem",
+                  color: "#89ff93",
+                  fontWeight: 600,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Username
+              </span>
+              <input
+                type="text"
+                value={localUsername}
+                onChange={(e) => setLocalUsername(e.target.value)}
+                required
+                autoComplete="username"
+                style={{
+                  padding: "11px 13px",
+                  borderRadius: "12px",
+                  border: "1px solid rgba(129, 255, 164, 0.22)",
+                  background: "rgba(6, 10, 6, 0.74)",
+                  color: "#e2f5e3",
+                  fontSize: "1rem",
+                  outline: "none",
+                }}
+              />
+            </label>
+
+            <label style={{ display: "grid", gap: "5px" }}>
+              <span
+                style={{
+                  fontSize: "0.8rem",
+                  color: "#89ff93",
+                  fontWeight: 600,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Password
+              </span>
+              <input
+                type="password"
+                value={localPassword}
+                onChange={(e) => setLocalPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+                style={{
+                  padding: "11px 13px",
+                  borderRadius: "12px",
+                  border: "1px solid rgba(129, 255, 164, 0.22)",
+                  background: "rgba(6, 10, 6, 0.74)",
+                  color: "#e2f5e3",
+                  fontSize: "1rem",
+                  outline: "none",
+                }}
+              />
+            </label>
+
+            {localError ? (
+              <div
+                role="alert"
+                style={{
+                  borderRadius: "12px",
+                  border: "1px solid rgba(216, 93, 70, 0.34)",
+                  background: "rgba(216, 93, 70, 0.12)",
+                  color: "#ffd8cf",
+                  padding: "10px 12px",
+                  fontSize: "0.85rem",
+                }}
+              >
+                {localError}
+              </div>
+            ) : null}
+
+            <button
+              type="submit"
+              disabled={isSigningIn}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                minHeight: "48px",
+                padding: "0 20px",
+                borderRadius: "14px",
+                border: "none",
+                cursor: isSigningIn ? "not-allowed" : "pointer",
+                color: "#061006",
+                background: isSigningIn
+                  ? "rgba(105, 221, 119, 0.5)"
+                  : "linear-gradient(180deg, #9bffa3, #67dd77)",
+                fontWeight: 700,
+                fontSize: "1rem",
+                letterSpacing: "0.02em",
+                boxShadow: isSigningIn ? "none" : "0 0 20px rgba(105, 221, 119, 0.2)",
+              }}
+            >
+              {isSigningIn ? "Signing in..." : "Sign in"}
+            </button>
+          </form>
         </div>
       </section>
     </main>

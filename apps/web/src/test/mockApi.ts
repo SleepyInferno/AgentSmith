@@ -111,6 +111,7 @@ const assetInventoryResponse = {
       summary: "Encryption is missing and the device has not checked in recently.",
       signals: assetQueueResponse.items[0].signals,
       sourceFreshnessState: "warning",
+      complianceState: "noncompliant",
     },
     {
       deviceId: "agentsmith-2",
@@ -135,6 +136,7 @@ const assetInventoryResponse = {
         },
       ],
       sourceFreshnessState: "healthy",
+      complianceState: "compliant",
     },
   ],
 };
@@ -152,6 +154,9 @@ const assetDetails = {
     sourceId: "intune-device-001",
     calculatedAt: "2026-03-28T14:55:00.000Z",
     queueRank: 1,
+    complianceAssignments: [
+      { policyName: "Windows 10 Baseline", platform: "windows10AndLater", status: "compliant", lastReportedAt: "2026-03-28T14:55:00.000Z" },
+    ],
   },
   "agentsmith-2": {
     ...assetInventoryResponse.items[1],
@@ -160,11 +165,12 @@ const assetDetails = {
     deviceAgeDays: 620,
     supportStatus: "supported",
     serialNumber: "ASMITH-SRF-02",
-    complianceState: "warning",
+    complianceState: "compliant",
     sourceSystem: "intune",
     sourceId: "intune-device-002",
     calculatedAt: "2026-03-28T14:55:00.000Z",
     queueRank: 2,
+    complianceAssignments: [],
   },
 };
 
@@ -777,6 +783,9 @@ export function createMockApi(options: CreateMockApiOptions = {}) {
     }
 
     if (method === "GET" && url.pathname === "/api/connectors") return jsonResponse(connectorCards);
+    if (method === "POST" && url.pathname === "/api/connectors/intune/sync") {
+      return jsonResponse({ ok: true, connectorId: "intune", result: "success" });
+    }
     if (method === "GET" && url.pathname === "/api/audit-events") return jsonResponse(auditEvents);
     if (method === "GET" && url.pathname === "/api/backup/overview") return jsonResponse(backupOverviewResponse);
     if (method === "GET" && url.pathname === "/api/backup/findings") return jsonResponse(backupFindingsResponse);

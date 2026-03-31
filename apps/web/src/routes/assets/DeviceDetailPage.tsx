@@ -132,6 +132,62 @@ export function DeviceDetailPage() {
           <div>ownerEmail: {valueOrUnknown(detail.ownerEmail)}</div>
         </div>
       </article>
+
+      <article style={panelStyle}>
+        <h3 style={{ marginTop: 0 }}>Compliance Policies</h3>
+        {!detail.complianceAssignments || detail.complianceAssignments.length === 0 ? (
+          <p style={{ color: "#9eb79b" }}>No compliance policies assigned</p>
+        ) : (
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead style={{ background: "rgba(129, 255, 164, 0.08)" }}>
+                <tr>
+                  <th style={thStyle}>Policy</th>
+                  <th style={thStyle}>Platform</th>
+                  <th style={thStyle}>Status</th>
+                  <th style={thStyle}>Last reported</th>
+                </tr>
+              </thead>
+              <tbody>
+                {detail.complianceAssignments.map((a, i) => (
+                  <tr key={i} style={{ borderTop: "1px solid rgba(226, 232, 240, 0.9)" }}>
+                    <td style={tdStyle}>{a.policyName}</td>
+                    <td style={tdStyle}>{a.platform}</td>
+                    <td style={tdStyle}>
+                      <span
+                        style={{
+                          padding: "4px 10px",
+                          borderRadius: 999,
+                          fontSize: 12,
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          background:
+                            a.status === "compliant"
+                              ? "#dcfce7"
+                              : a.status === "nonCompliant"
+                                ? "#fecaca"
+                                : "rgba(129, 255, 164, 0.08)",
+                          color:
+                            a.status === "compliant"
+                              ? "#166534"
+                              : a.status === "nonCompliant"
+                                ? "#7f1d1d"
+                                : "#9eb79b",
+                        }}
+                      >
+                        {a.status}
+                      </span>
+                    </td>
+                    <td style={tdStyle}>
+                      {a.lastReportedAt ? new Date(a.lastReportedAt).toLocaleString() : "Unknown"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </article>
     </section>
   );
 }
@@ -141,4 +197,19 @@ const panelStyle = {
   borderRadius: 24,
   background: "rgba(10, 17, 11, 0.97)",
   border: "1px solid rgba(148, 163, 184, 0.22)",
+};
+
+const thStyle = {
+  textAlign: "left" as const,
+  padding: "14px 16px",
+  color: "#9eb79b",
+  fontSize: 13,
+  textTransform: "uppercase" as const,
+  letterSpacing: "0.08em",
+};
+
+const tdStyle = {
+  padding: "14px 16px",
+  color: "#dff4d3",
+  verticalAlign: "top" as const,
 };

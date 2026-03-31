@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PageTitle } from "../../components/PageTitle";
-import { apiGet } from "../../lib/api";
+import { apiGet, apiRequest } from "../../lib/api";
 
 type ConnectorCard = {
   id: string;
@@ -40,6 +41,22 @@ export function ConnectorStatusPage() {
     queryKey: ["connectors"],
     queryFn: () => apiGet<ConnectorCard[]>("/api/connectors"),
   });
+  const queryClient = useQueryClient();
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncError, setSyncError] = useState<string | null>(null);
+
+  async function handleIntuneSync() {
+    setIsSyncing(true);
+    setSyncError(null);
+    try {
+      await apiRequest<{ ok: boolean }>("/api/connectors/intune/sync", { method: "POST" });
+      await queryClient.invalidateQueries({ queryKey: ["connectors"] });
+    } catch (err) {
+      setSyncError(err instanceof Error ? err.message : "Sync failed");
+    } finally {
+      setIsSyncing(false);
+    }
+  }
 
   const connectors = connectorsQuery.data ?? [];
 
@@ -128,6 +145,30 @@ export function ConnectorStatusPage() {
                   <dd style={{ margin: "4px 0 0", color: "#dff4d3" }}>{formatTimestamp(connector.lastAttemptedSyncAt)}</dd>
                 </div>
               </dl>
+              {connector.id === "intune" && (
+                <>
+                  <button
+                    onClick={handleIntuneSync}
+                    disabled={isSyncing}
+                    style={{
+                      marginTop: 14,
+                      padding: "10px 18px",
+                      borderRadius: 14,
+                      border: "1px solid rgba(148, 163, 184, 0.42)",
+                      background: isSyncing ? "rgba(10, 17, 11, 0.6)" : "rgba(129, 255, 164, 0.12)",
+                      color: "#dff4d3",
+                      fontWeight: 700,
+                      cursor: isSyncing ? "not-allowed" : "pointer",
+                      fontSize: 14,
+                    }}
+                  >
+                    {isSyncing ? "Syncing..." : "Sync now"}
+                  </button>
+                  {syncError && (
+                    <div style={{ marginTop: 8, color: "#fca5a5", fontSize: 13 }}>{syncError}</div>
+                  )}
+                </>
+              )}
             </article>
           ))}
         </div>

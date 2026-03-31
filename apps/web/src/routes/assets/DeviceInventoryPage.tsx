@@ -3,6 +3,17 @@ import { useSearchParams } from "react-router-dom";
 import { PageTitle } from "../../components/PageTitle";
 import { DeviceInventoryTable } from "../../components/assets/DeviceInventoryTable";
 import { getDeviceInventory, type DeviceInventoryParams } from "../../lib/assets";
+import { apiGet } from "../../lib/api";
+
+type ConnectorCard = {
+  id: string;
+  label: string;
+  health: string;
+  freshnessState: string;
+  lastSuccessfulSyncAt: string | null;
+  lastAttemptedSyncAt: string | null;
+  lastResult: string;
+};
 
 function readParams(searchParams: URLSearchParams): DeviceInventoryParams {
   const params: DeviceInventoryParams = {};
@@ -90,6 +101,11 @@ export function DeviceInventoryPage() {
     queryKey: ["device-inventory", params],
     queryFn: () => getDeviceInventory(params),
   });
+  const connectorsQuery = useQuery({
+    queryKey: ["connectors"],
+    queryFn: () => apiGet<ConnectorCard[]>("/api/connectors"),
+  });
+  const intuneConnector = (connectorsQuery.data ?? []).find((c) => c.id === "intune");
 
   function updateFilter(name: string, value: string) {
     const nextParams = new URLSearchParams(searchParams);
@@ -120,6 +136,46 @@ export function DeviceInventoryPage() {
   return (
     <section style={{ display: "grid", gap: 20 }}>
       <PageTitle title="Device Inventory" />
+      {intuneConnector && (
+        <div
+          style={{
+            padding: "12px 20px",
+            borderRadius: 18,
+            background: "rgba(10, 17, 11, 0.97)",
+            border: "1px solid rgba(148, 163, 184, 0.22)",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 16,
+            flexWrap: "wrap",
+            fontSize: 14,
+            color: "#9eb79b",
+          }}
+        >
+          <span>
+            Last Intune sync:{" "}
+            {intuneConnector.lastSuccessfulSyncAt
+              ? new Date(intuneConnector.lastSuccessfulSyncAt).toLocaleString()
+              : "Never"}
+          </span>
+          <span>{rows.length} devices</span>
+          {intuneConnector.freshnessState !== "healthy" && (
+            <span
+              style={{
+                padding: "4px 10px",
+                borderRadius: 999,
+                fontSize: 12,
+                fontWeight: 700,
+                textTransform: "uppercase",
+                background: intuneConnector.freshnessState === "error" ? "#fecaca" : "#fef3c7",
+                color: intuneConnector.freshnessState === "error" ? "#7f1d1d" : "#92400e",
+              }}
+            >
+              {intuneConnector.freshnessState}
+            </span>
+          )}
+        </div>
+      )}
       <article
         style={{
           padding: 24,
@@ -143,7 +199,8 @@ export function DeviceInventoryPage() {
               padding: 16,
               borderRadius: 18,
               background:
-                rows.some((row) => row.sourceFreshnessState !== "healthy") ? "rgba(244, 192, 73, 0.08)" : "#eff6ff",
+                rows.some((row) => row.sourceFreshnessState !== "healthy") ? "rgba(244, 192, 73, 0.08)" : "rgba(8, 14, 20, 0.97)",
+              border: "1px solid rgba(59, 130, 246, 0.22)",
               color: "#9eb79b",
             }}
           >

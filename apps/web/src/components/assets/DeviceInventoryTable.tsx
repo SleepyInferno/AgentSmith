@@ -13,6 +13,19 @@ type DeviceInventoryTableProps = {
 
 const columnHelper = createColumnHelper<AssetInventoryRow>();
 
+function complianceTone(state: string) {
+  switch (state) {
+    case "compliant":
+      return { background: "#dcfce7", color: "#166534" };
+    case "noncompliant":
+      return { background: "#fecaca", color: "#7f1d1d" };
+    case "unknown":
+      return { background: "rgba(129, 255, 164, 0.08)", color: "#9eb79b" };
+    default:
+      return { background: "rgba(129, 255, 164, 0.08)", color: "#9eb79b" };
+  }
+}
+
 const columns = [
   columnHelper.accessor("deviceName", {
     header: "Device",
@@ -29,6 +42,30 @@ const columns = [
   columnHelper.accessor("encryptionStatus", { header: "Encryption" }),
   columnHelper.accessor("antivirusStatus", { header: "Antivirus" }),
   columnHelper.accessor("patchStatus", { header: "Patch" }),
+  columnHelper.accessor("complianceState", {
+    header: "Compliance",
+    cell: (info) => {
+      const value = info.getValue();
+      if (!value) return <>Unknown</>;
+      const tone = complianceTone(value);
+      return (
+        <span
+          style={{
+            padding: "4px 10px",
+            borderRadius: 999,
+            fontSize: 12,
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: "0.06em",
+            background: tone.background,
+            color: tone.color,
+          }}
+        >
+          {value}
+        </span>
+      );
+    },
+  }),
   columnHelper.accessor("lastCheckInAt", {
     header: "Last check-in",
     cell: (info) => formatDateTime(info.getValue()),

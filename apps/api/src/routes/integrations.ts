@@ -116,6 +116,7 @@ export async function registerIntegrationRoutes(app: FastifyInstance, options: I
       // openai
       return {
         configured: Boolean(cred.apiKey),
+        selectedModel: typeof cred.selectedModel === "string" && cred.selectedModel ? cred.selectedModel : null,
         lastTestedAt: row.lastTestedAt?.toISOString() ?? null,
         lastTestResult: row.lastTestResult ?? null,
       };
@@ -166,6 +167,10 @@ export async function registerIntegrationRoutes(app: FastifyInstance, options: I
             typeof body.apiKey === "string" && body.apiKey.trim() !== ""
               ? body.apiKey
               : (existingCred.apiKey ?? ""),
+          selectedModel:
+            typeof body.selectedModel === "string"
+              ? body.selectedModel
+              : (existingCred.selectedModel ?? ""),
         };
       }
 
@@ -189,6 +194,41 @@ export async function registerIntegrationRoutes(app: FastifyInstance, options: I
 
       reply.code(200);
       return { ok: true };
+    }
+  );
+
+  // GET /api/integrations/openai/models — fetch available chat models for model selector
+  app.get(
+    "/api/integrations/openai/models",
+    { preHandler: requireAuth },
+    async (_request, reply) => {
+      const row = await options.prisma.integrationCredential.findUnique({ where: { key: "openai" } });
+      if (!row) {
+        reply.code(400);
+        return { error: "openai_not_configured" };
+      }
+
+      const plainJson = decryptCredential(options.systemKey, row.encryptedValue, row.iv, row.authTag);
+      const cred = JSON.parse(plainJson) as Record<string, unknown>;
+      const apiKey = typeof cred.apiKey === "string" ? cred.apiKey : "";
+      if (!apiKey) {
+        reply.code(400);
+        return { error: "openai_not_configured" };
+      }
+
+      try {
+        const client = new OpenAI({ apiKey, timeout: 10_000 });
+        const modelsPage = await client.models.list();
+        const models = modelsPage.data
+          .map((m) => m.id)
+          .filter((id) => /^(gpt-|o1|o3|o4)/.test(id))
+          .sort();
+        return { models };
+      } catch (error) {
+        reply.code(502);
+        const message = error instanceof Error ? error.message : String(error);
+        return { error: "models_fetch_failed", message };
+      }
     }
   );
 

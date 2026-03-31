@@ -83,7 +83,7 @@ export function BackupOverviewPage({ trustBoundaryCopy }: BackupOverviewPageProp
         <article
           style={{
             ...panelStyle,
-            background: hasStaleTelemetry ? "rgba(244, 192, 73, 0.08)" : "#ecfeff",
+            background: hasStaleTelemetry ? "rgba(244, 192, 73, 0.08)" : "rgba(8, 18, 16, 0.97)",
             border: `1px solid ${hasStaleTelemetry ? "rgba(249, 115, 22, 0.28)" : "rgba(14, 165, 233, 0.25)"}`,
           }}
         >
@@ -258,7 +258,7 @@ const panelStyle = {
 const metricCardStyle = {
   padding: 14,
   borderRadius: 18,
-  background: "rgba(255, 255, 255, 0.78)",
+  background: "rgba(4, 10, 6, 0.85)",
   border: "1px solid rgba(148, 163, 184, 0.18)",
   display: "grid",
   gap: 6,

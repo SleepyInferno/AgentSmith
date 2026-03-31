@@ -11,6 +11,7 @@ type IntegrationStatus = {
   clientId?: string;
   lastTestedAt?: string | null;
   lastTestResult?: string | null;
+  selectedModel?: string | null;
 };
 
 type TestResult = {
@@ -319,6 +320,107 @@ function IntegrationSection({ title, integrationKey, fields }: IntegrationSectio
   );
 }
 
+function ModelSelector({ integrationKey }: { integrationKey: string }) {
+  const queryClient = useQueryClient();
+  const { toast, showToast } = useToast();
+
+  const statusQuery = useQuery({
+    queryKey: ["integrations", integrationKey],
+    queryFn: () => apiGet<IntegrationStatus>(`/api/integrations/${integrationKey}`),
+  });
+
+  const modelsQuery = useQuery({
+    queryKey: ["integrations", integrationKey, "models"],
+    queryFn: () => apiGet<{ models: string[] }>(`/api/integrations/${integrationKey}/models`),
+    enabled: statusQuery.data?.configured === true,
+    retry: false,
+  });
+
+  const saveMutation = useMutation({
+    mutationFn: (selectedModel: string) =>
+      apiRequest(`/api/integrations/${integrationKey}`, {
+        method: "PUT",
+        body: JSON.stringify({ selectedModel }),
+      }),
+    onSuccess: () => {
+      showToast("Model saved.", true);
+      void queryClient.invalidateQueries({ queryKey: ["integrations", integrationKey] });
+    },
+    onError: (err: Error) => {
+      showToast(err.message || "Save failed.", false);
+    },
+  });
+
+  if (!statusQuery.data?.configured) return null;
+
+  const currentModel = statusQuery.data?.selectedModel ?? "";
+  const models = modelsQuery.data?.models ?? [];
+
+  return (
+    <>
+      <Toast toast={toast} />
+      <article
+        style={{
+          padding: "28px",
+          borderRadius: "24px",
+          background: "rgba(10, 17, 11, 0.97)",
+          border: "1px solid rgba(148, 163, 184, 0.22)",
+          boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
+          display: "grid",
+          gap: "16px",
+        }}
+      >
+        <div>
+          <h2 style={{ margin: "0 0 4px", fontSize: "1.25rem" }}>OpenAI Model</h2>
+          <p style={{ margin: 0, color: "#9eb79b", fontSize: "0.9rem", lineHeight: 1.6 }}>
+            Select the model used for AI-powered features. Queried live from your API key.
+          </p>
+        </div>
+
+        {modelsQuery.isPending ? (
+          <p style={{ margin: 0, color: "#9eb79b", fontSize: "0.9rem" }}>Loading models...</p>
+        ) : modelsQuery.isError ? (
+          <p style={{ margin: 0, color: "#ffd8cf", fontSize: "0.9rem" }}>
+            Unable to load models — check that your API key is saved and valid, then test the connection.
+          </p>
+        ) : (
+          <div style={{ display: "grid", gap: "8px", maxWidth: 400 }}>
+            <select
+              value={currentModel}
+              disabled={saveMutation.isPending}
+              onChange={(e) => saveMutation.mutate(e.target.value)}
+              style={{
+                padding: "12px 14px",
+                borderRadius: "12px",
+                border: "1px solid rgba(129, 255, 164, 0.22)",
+                background: "rgba(6, 10, 6, 0.74)",
+                color: currentModel ? "#e2f5e3" : "#9eb79b",
+                fontSize: "1rem",
+                outline: "none",
+                cursor: saveMutation.isPending ? "not-allowed" : "pointer",
+              }}
+            >
+              <option value="">Select a model...</option>
+              {models.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+            {saveMutation.isPending ? (
+              <p style={{ margin: 0, color: "#9eb79b", fontSize: "0.85rem" }}>Saving...</p>
+            ) : currentModel ? (
+              <p style={{ margin: 0, color: "#9eb79b", fontSize: "0.85rem" }}>
+                Active model: <strong style={{ color: "#dff4d3" }}>{currentModel}</strong>
+              </p>
+            ) : null}
+          </div>
+        )}
+      </article>
+    </>
+  );
+}
+
 const intuneFields: IntegrationSectionProps["fields"] = [
   { name: "tenantId", label: "Tenant ID", type: "text", isSecret: false },
   { name: "clientId", label: "Client ID", type: "text", isSecret: false },
@@ -343,6 +445,7 @@ export function IntegrationsPage() {
         integrationKey="openai"
         fields={openaiFields}
       />
+      <ModelSelector integrationKey="openai" />
     </section>
   );
 }

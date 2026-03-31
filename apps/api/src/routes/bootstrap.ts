@@ -1,5 +1,5 @@
 import type { FastifyInstance, FastifyPluginOptions } from "fastify";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import type { AgentSmithAuthService } from "../plugins/auth.js";
 import type { AuditService } from "../modules/audit/audit.service.js";
 import type { PrismaClient } from "@prisma/client";

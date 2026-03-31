@@ -281,7 +281,7 @@ test("POST /api/auth/local/login with valid credentials returns 200 with redirec
   // Use a real bcrypt hash for "correctpassword"
   // $2b$12$ hash of "correctpassword" - pre-computed for test determinism
   // We'll use a low round count for speed in tests by using the actual bcrypt module
-  const bcrypt = await import("bcrypt");
+  const bcrypt = await import("bcryptjs");
   const hash = await bcrypt.hash("correctpassword", 4); // low rounds for test speed
 
   const { app } = buildServer({
@@ -317,7 +317,7 @@ test("POST /api/auth/local/login with valid credentials returns 200 with redirec
 // ─── Test 8: POST /api/auth/local/login with wrong password returns 401 ───
 
 test("POST /api/auth/local/login with wrong password returns 401", async (t) => {
-  const bcrypt = await import("bcrypt");
+  const bcrypt = await import("bcryptjs");
   const hash = await bcrypt.hash("correctpassword", 4);
 
   const { app } = buildServer({

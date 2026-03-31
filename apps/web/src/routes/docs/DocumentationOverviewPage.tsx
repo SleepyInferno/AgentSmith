@@ -79,8 +79,8 @@ export function DocumentationOverviewPage({ trustBoundaryCopy }: DocumentationOv
         <article
           style={{
             ...panelStyle,
-            background: "#eff6ff",
-            border: "1px solid rgba(59, 130, 246, 0.18)",
+            background: "rgba(8, 14, 20, 0.97)",
+            border: "1px solid rgba(59, 130, 246, 0.22)",
           }}
         >
           <p style={eyebrowStyle}>Search coverage</p>
@@ -256,7 +256,7 @@ const panelStyle = {
 const metricCardStyle = {
   padding: 14,
   borderRadius: 18,
-  background: "rgba(255, 255, 255, 0.78)",
+  background: "rgba(4, 10, 6, 0.85)",
   border: "1px solid rgba(148, 163, 184, 0.18)",
   display: "grid",
   gap: 6,
@@ -286,7 +286,8 @@ const agingCardStyle = {
 const summaryBadgeStyle = {
   padding: "14px 16px",
   borderRadius: 18,
-  background: "#eff6ff",
+  background: "rgba(8, 14, 20, 0.97)",
+  border: "1px solid rgba(59, 130, 246, 0.18)",
   color: "#dff4d3",
   fontWeight: 700,
   alignSelf: "start",
@@ -298,7 +299,8 @@ const infoPillStyle = {
   alignItems: "center",
   padding: "12px 18px",
   borderRadius: 999,
-  background: "#e0f2fe",
-  color: "#082f49",
+  background: "rgba(8, 14, 20, 0.97)",
+  border: "1px solid rgba(59, 130, 246, 0.22)",
+  color: "#7dd3fc",
   fontWeight: 700,
 };

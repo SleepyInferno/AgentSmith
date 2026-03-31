@@ -335,7 +335,14 @@ Plans:
 3. Operator can see when the last sync completed, how many devices were retrieved, and whether the data is stale or the last sync failed.
 4. Operator can trigger a manual sync from the UI and see the inventory refresh when it completes.
 
-**Plans:** TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 13-01-PLAN.md — Prisma schema migration + Graph API helpers + real Intune provider + connector registry factory + sync trigger route
+- [ ] 13-02-PLAN.md — Compliance API endpoint + UI changes (freshness bar, compliance badge, compliance table, sync button)
+- [ ] 13-03-PLAN.md — Playwright E2E tests + human verification checkpoint
+
+**UI hint**: yes
 
 ### Phase 14: Document Ingest Pipeline
 
@@ -401,6 +408,6 @@ Plans:
 | 10. Schema and Credential Foundation | 2/2 | Complete   | 2026-03-30 |
 | 11. First-Run Bootstrap | 2/2 | Complete    | 2026-03-31 |
 | 12. Integrations Settings UI | 2/3 | Complete    | 2026-03-31 |
-| 13. Intune Device Sync | 0/TBD | Not started | - |
+| 13. Intune Device Sync | 0/3 | Planned | - |
 | 14. Document Ingest Pipeline | 0/TBD | Not started | - |
 | 15. RAG Search | 0/TBD | Not started | - |

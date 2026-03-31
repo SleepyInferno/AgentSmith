@@ -166,6 +166,10 @@ async function handleApiRoute(
     return json(route, state.connectors);
   }
 
+  if (pathname === "/api/connectors/intune/sync" && method === "POST") {
+    return json(route, { ok: true, connectorId: "intune", result: "success" });
+  }
+
   if (pathname === "/api/audit-events" && method === "GET") {
     return json(route, state.auditEvents);
   }
@@ -587,6 +591,7 @@ function createMockState(): MockState {
           },
         ],
         sourceFreshnessState: "warning",
+        complianceState: "noncompliant",
       },
     ],
     deviceDetails: {
@@ -623,6 +628,14 @@ function createMockState(): MockState {
         sourceId: "intune-asset-1",
         calculatedAt: "2026-03-28T12:00:00.000Z",
         queueRank: 1,
+        complianceAssignments: [
+          {
+            policyName: "Windows 10 Baseline",
+            platform: "windows10AndLater",
+            status: "compliant",
+            lastReportedAt: "2026-03-28T14:55:00.000Z",
+          },
+        ],
       },
     },
     connectors: [

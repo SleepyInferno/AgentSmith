@@ -26,7 +26,7 @@
 
 - [x] **Phase 10: Schema and Credential Foundation** - Lay the database and encryption infrastructure that every v1.2 feature depends on (completed 2026-03-30)
 - [x] **Phase 11: First-Run Bootstrap** - Let the operator create a local admin account and reach the app without Entra ID (completed 2026-03-31)
-- [ ] **Phase 12: Integrations Settings UI** - Give the operator a secure page to configure and verify Intune and OpenAI credentials
+- [x] **Phase 12: Integrations Settings UI** - Give the operator a secure page to configure and verify Intune and OpenAI credentials (completed 2026-03-31)
 - [ ] **Phase 13: Intune Device Sync** - Replace mock device data with live Intune inventory and compliance state
 - [ ] **Phase 14: Document Ingest Pipeline** - Parse, classify, and organize documents automatically with AI assistance
 - [ ] **Phase 15: RAG Search** - Let the operator find documents using natural language with synthesized answers
@@ -312,7 +312,7 @@ Plans:
 3. Operator can press a test-connection button for each integration and see a clear pass or fail result with a human-readable hint on failure.
 4. Operator can see the last-verified time and current health status for each integration from the settings page without leaving it.
 
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [x] 12-01-PLAN.md — Schema migration + ensureSystemKey startup wiring + integration API routes + unit tests
@@ -400,7 +400,7 @@ Plans:
 | 9. Interface Consistency and Hardening | 0/TBD | Deferred -> v1.3 | - |
 | 10. Schema and Credential Foundation | 2/2 | Complete   | 2026-03-30 |
 | 11. First-Run Bootstrap | 2/2 | Complete    | 2026-03-31 |
-| 12. Integrations Settings UI | 2/3 | In Progress|  |
+| 12. Integrations Settings UI | 2/3 | Complete    | 2026-03-31 |
 | 13. Intune Device Sync | 0/TBD | Not started | - |
 | 14. Document Ingest Pipeline | 0/TBD | Not started | - |
 | 15. RAG Search | 0/TBD | Not started | - |

@@ -230,6 +230,40 @@ async function handleApiRoute(
     return detail ? json(route, detail) : json(route, { message: "Network resource not found" }, 404);
   }
 
+  if (pathname === "/api/integrations/intune" && method === "GET") {
+    return json(route, {
+      configured: true,
+      tenantId: "mock-tenant-id",
+      clientId: "mock-client-id",
+      lastTestedAt: null,
+      lastTestResult: null,
+    });
+  }
+
+  if (pathname === "/api/integrations/intune" && method === "PUT") {
+    return json(route, { ok: true });
+  }
+
+  if (pathname === "/api/integrations/intune/test" && method === "POST") {
+    return json(route, { ok: true, message: "Connected successfully" });
+  }
+
+  if (pathname === "/api/integrations/openai" && method === "GET") {
+    return json(route, {
+      configured: false,
+      lastTestedAt: null,
+      lastTestResult: null,
+    });
+  }
+
+  if (pathname === "/api/integrations/openai" && method === "PUT") {
+    return json(route, { ok: true });
+  }
+
+  if (pathname === "/api/integrations/openai/test" && method === "POST") {
+    return json(route, { ok: true, message: "Connected successfully" });
+  }
+
   if (pathname === "/api/backup/overview" && method === "GET") {
     return json(route, state.backupOverview);
   }

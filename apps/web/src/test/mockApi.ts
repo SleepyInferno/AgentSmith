@@ -911,6 +911,40 @@ export function createMockApi(options: CreateMockApiOptions = {}) {
         : jsonResponse({ message: "Network resource not found" }, 404);
     }
 
+    if (method === "GET" && url.pathname === "/api/integrations/intune") {
+      return jsonResponse({
+        configured: true,
+        tenantId: "mock-tenant-id",
+        clientId: "mock-client-id",
+        lastTestedAt: null,
+        lastTestResult: null,
+      });
+    }
+
+    if (method === "PUT" && url.pathname === "/api/integrations/intune") {
+      return jsonResponse({ ok: true });
+    }
+
+    if (method === "POST" && url.pathname === "/api/integrations/intune/test") {
+      return jsonResponse({ ok: true, message: "Connected successfully" });
+    }
+
+    if (method === "GET" && url.pathname === "/api/integrations/openai") {
+      return jsonResponse({
+        configured: false,
+        lastTestedAt: null,
+        lastTestResult: null,
+      });
+    }
+
+    if (method === "PUT" && url.pathname === "/api/integrations/openai") {
+      return jsonResponse({ ok: true });
+    }
+
+    if (method === "POST" && url.pathname === "/api/integrations/openai/test") {
+      return jsonResponse({ ok: true, message: "Connected successfully" });
+    }
+
     return {
       status: 404,
       headers: {

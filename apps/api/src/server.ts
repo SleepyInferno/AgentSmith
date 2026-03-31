@@ -29,12 +29,15 @@ import { registerBootstrapRoutes } from "./routes/bootstrap.js";
 import { registerMeRoutes } from "./routes/me.js";
 import type { NetworkRoutesDependencies } from "./routes/network.js";
 import { registerNetworkRoutes } from "./routes/network.js";
+import { registerIntegrationRoutes } from "./routes/integrations.js";
+import { ensureSystemKey } from "./lib/system-key.js";
 
 export type BuildServerOptions = {
   env?: ServerEnv;
   prisma?: PrismaClient;
   authService?: AgentSmithAuthService;
   auditService?: Pick<AuditService, "write">;
+  systemKey?: Buffer;
   assetRoutes?: Partial<AssetRoutesDependencies>;
   auditRoutes?: Partial<AuditRoutesDependencies>;
   backupRoutes?: Partial<BackupRoutesDependencies>;
@@ -52,6 +55,8 @@ export function buildServer(options: BuildServerOptions = {}) {
   const prisma = options.prisma ?? new PrismaClient();
   const auditService = options.auditService ?? new AuditService(prisma);
   const authService = options.authService ?? createAuthService({ env, prisma });
+  // systemKey is provided by tests as a fixed Buffer; production sets it in start()
+  const systemKey = options.systemKey ?? Buffer.alloc(32);
   const assetHealthRepository = options.assetRoutes?.assetHealthRepository ?? new AssetHealthRepository(prisma);
   const backupRepository = options.backupRoutes?.backupRepository ?? new BackupRepository(prisma);
   const connectorsService = options.connectorsRoutes?.connectorsService ?? new ConnectorsService(prisma);
@@ -191,6 +196,11 @@ export function buildServer(options: BuildServerOptions = {}) {
   app.register(registerDocsRoutes, docsRouteOptions);
   app.register(registerLifecycleRoutes, lifecycleRouteOptions);
   app.register(registerNetworkRoutes, networkRouteOptions);
+  app.register(registerIntegrationRoutes, {
+    prisma,
+    authService,
+    systemKey,
+  });
 
   app.get("/", async () => ({
     name: "AgentSmith API",
@@ -206,7 +216,10 @@ export function buildServer(options: BuildServerOptions = {}) {
 }
 
 async function start() {
-  const { app, env } = buildServer();
+  const env = parseServerEnv();
+  const prisma = new PrismaClient();
+  const systemKey = await ensureSystemKey(prisma, env.SESSION_SECRET);
+  const { app } = buildServer({ env, prisma, systemKey });
 
   try {
     await app.listen({

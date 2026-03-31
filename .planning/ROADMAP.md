@@ -25,7 +25,7 @@
 ### v1.2 — Intune Integration
 
 - [x] **Phase 10: Schema and Credential Foundation** - Lay the database and encryption infrastructure that every v1.2 feature depends on (completed 2026-03-30)
-- [ ] **Phase 11: First-Run Bootstrap** - Let the operator create a local admin account and reach the app without Entra ID
+- [x] **Phase 11: First-Run Bootstrap** - Let the operator create a local admin account and reach the app without Entra ID (completed 2026-03-31)
 - [ ] **Phase 12: Integrations Settings UI** - Give the operator a secure page to configure and verify Intune and OpenAI credentials
 - [ ] **Phase 13: Intune Device Sync** - Replace mock device data with live Intune inventory and compliance state
 - [ ] **Phase 14: Document Ingest Pipeline** - Parse, classify, and organize documents automatically with AI assistance
@@ -290,11 +290,11 @@ Plans:
 3. After the first admin is created, the setup endpoint returns a permanent error for any further attempt — the screen is inaccessible to all subsequent visitors.
 4. Operator can reach all protected routes using local credentials without configuring Entra ID.
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 11-01-PLAN.md — API-side bootstrap and local auth (auth service loginLocal, Entra guard, bootstrap routes, local login route, tests)
-- [ ] 11-02-PLAN.md — Web-side bootstrap UI (SetupPage, useBootstrapStatus hook, ProtectedLayout redirect, LoginPage dual-mode, mock API, tests)
+- [x] 11-02-PLAN.md — Web-side bootstrap UI (SetupPage, useBootstrapStatus hook, ProtectedLayout redirect, LoginPage dual-mode, mock API, tests)
 
 **UI hint**: yes
 
@@ -393,7 +393,7 @@ Plans:
 | 8. Queue and Detail Refresh | 0/TBD | Deferred -> v1.3 | - |
 | 9. Interface Consistency and Hardening | 0/TBD | Deferred -> v1.3 | - |
 | 10. Schema and Credential Foundation | 2/2 | Complete   | 2026-03-30 |
-| 11. First-Run Bootstrap | 1/2 | In Progress|  |
+| 11. First-Run Bootstrap | 2/2 | Complete   | 2026-03-31 |
 | 12. Integrations Settings UI | 0/TBD | Not started | - |
 | 13. Intune Device Sync | 0/TBD | Not started | - |
 | 14. Document Ingest Pipeline | 0/TBD | Not started | - |

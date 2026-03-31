@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Core Operational Workflow Foundation
 status: executing
-last_updated: "2026-03-31T00:33:43.511Z"
-last_activity: 2026-03-30 — Phase 11 Plan 01 executed (bootstrap routes + local auth API)
+last_updated: "2026-03-31T00:45:53.560Z"
+last_activity: 2026-03-31
 progress:
   total_phases: 12
-  completed_phases: 8
+  completed_phases: 9
   total_plans: 35
-  completed_plans: 34
+  completed_plans: 35
 ---
 
 # State: Solo IT Ops Suite
@@ -31,17 +31,16 @@ See: `.planning/PROJECT.md` (updated 2026-03-30)
 
 ## Current Position
 
-Phase: Phase 11 — First-Run Bootstrap (in progress)
-Plan: 1 of 2 complete
-Status: Phase 11 Plan 01 complete — bootstrap API, local login, Entra guard, 12 new tests green.
-Last activity: 2026-03-30 — Phase 11 Plan 01 executed (bootstrap routes + local auth API)
+Phase: Phase 11 — First-Run Bootstrap (complete)
+Plan: 2 of 2 complete
+Status: Phase 11 complete — all BOOT requirements delivered (API + web UI)
+Last activity: 2026-03-30 — Phase 11 Plan 02 executed (bootstrap web UI, SetupPage, local login)
 
 ## Immediate Next Steps
 
-1. Phase 11 (First-Run Bootstrap) — plan and execute next (BOOT-01, BOOT-02, BOOT-03).
-2. Phase 12 (Integrations Settings UI) can also be planned in parallel with Phase 11.
-3. Phases 13 (Intune Sync) and 14 (Document Ingest Pipeline) unblock once Phase 12 is complete.
-4. Before Phase 11: apply the three migration SQL files to the live PostgreSQL instance (pgvector extension required for migration 3).
+1. Phase 12 (Integrations Settings UI) — next phase (CRED-01 through CRED-04).
+2. Phases 13 (Intune Sync) and 14 (Document Ingest Pipeline) unblock once Phase 12 is complete.
+3. Before live deployment: apply the three migration SQL files to the live PostgreSQL instance (pgvector extension required for migration 3).
 
 ## v1.2 Phase Summary
 
@@ -56,6 +55,9 @@ Last activity: 2026-03-30 — Phase 11 Plan 01 executed (bootstrap routes + loca
 
 ## Recent Decisions
 
+- [Phase 11-02] SetupPage checks bootstrapRequired === false (not falsy) to avoid redirect during loading state when data is undefined
+- [Phase 11-02] LoginPage always shows local form when bootstrap complete — Entra and local auth coexist on the same login page
+- [Phase 11-02] mockApi.ts bootstrapRequired defaults to false — all 29 existing tests continue to work without any changes
 - [Phase 11-01] bootstrap.ts keeps local login route separate from auth.ts to isolate Entra-coupled code from local auth
 - [Phase 11-01] DUMMY_HASH used in local login for timing-safe comparison when username not found — prevents user enumeration
 - [Phase 11-01] createAuthService guards MicrosoftEntraAuthProvider construction — server starts without Entra env vars via entraConfigured boolean check
@@ -84,6 +86,7 @@ Last activity: 2026-03-30 — Phase 11 Plan 01 executed (bootstrap routes + loca
 
 ## Recent Execution
 
+- Phase 11 Plan 02 executed on 2026-03-30; summary recorded in `.planning/phases/11-first-run-bootstrap/11-02-SUMMARY.md`.
 - Phase 11 Plan 01 executed on 2026-03-30; summary recorded in `.planning/phases/11-first-run-bootstrap/11-01-SUMMARY.md`.
 - Phase 10 Plan 02 executed on 2026-03-30; summary recorded in `.planning/phases/10-schema-and-credential-foundation/10-02-SUMMARY.md`.
 - Phase 07 Plan 05 executed on 2026-03-29; summary recorded in `.planning/phases/07-operator-shell-refresh/07-05-SUMMARY.md`.
@@ -127,11 +130,12 @@ Last activity: 2026-03-30 — Phase 11 Plan 01 executed (bootstrap routes + loca
 | Phase 10 P01 | 6min | 2 tasks | 7 files |
 | Phase 10 P02 | 2min | 2 tasks | 4 files |
 | 11 | 01 | 35min | 2 | 6 | 2026-03-30 |
+| Phase 11 P02 | 7min | 2 tasks | 9 files |
 
 ## Session Info
 
-- Last session: 2026-03-30T01:00:00Z
-- Stopped at: Completed 11-01-PLAN.md — First-Run Bootstrap plan 1 of 2
+- Last session: 2026-03-30T20:44:00Z
+- Stopped at: Completed 11-02-PLAN.md — Phase 11 First-Run Bootstrap fully complete (2 of 2 plans)
 
 ## Notes
 

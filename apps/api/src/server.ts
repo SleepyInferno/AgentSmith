@@ -31,6 +31,8 @@ import type { NetworkRoutesDependencies } from "./routes/network.js";
 import { registerNetworkRoutes } from "./routes/network.js";
 import { registerIntegrationRoutes } from "./routes/integrations.js";
 import { ensureSystemKey } from "./lib/system-key.js";
+import { initConnectorRegistry } from "./modules/connectors/connector.registry.js";
+import { runConnectorSync } from "./jobs/runConnectorSync.js";
 
 export type BuildServerOptions = {
   env?: ServerEnv;
@@ -57,6 +59,7 @@ export function buildServer(options: BuildServerOptions = {}) {
   const authService = options.authService ?? createAuthService({ env, prisma });
   // systemKey is provided by tests as a fixed Buffer; production sets it in start()
   const systemKey = options.systemKey ?? Buffer.alloc(32);
+  initConnectorRegistry({ prisma, systemKey });
   const assetHealthRepository = options.assetRoutes?.assetHealthRepository ?? new AssetHealthRepository(prisma);
   const backupRepository = options.backupRoutes?.backupRepository ?? new BackupRepository(prisma);
   const connectorsService = options.connectorsRoutes?.connectorsService ?? new ConnectorsService(prisma);
@@ -91,6 +94,8 @@ export function buildServer(options: BuildServerOptions = {}) {
       };
   const connectorsRouteOptions = {
     connectorsService,
+    runConnectorSync: options.connectorsRoutes?.runConnectorSync ??
+      ((connectorId: string) => runConnectorSync(connectorId, { prisma, auditService })),
     preHandler: options.connectorsRoutes?.preHandler ?? requireAuthenticatedSession,
   };
   const docsRouteOptions = options.docsRoutes?.preHandler

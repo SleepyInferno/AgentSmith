@@ -3,6 +3,7 @@ import type { ConnectorsService, ConnectorCard } from "../modules/connectors/con
 
 export type ConnectorsRoutesDependencies = {
   connectorsService: Pick<ConnectorsService, "listConnectors">;
+  runConnectorSync?: (connectorId: string) => Promise<{ connectorId: string; result: string }>;
   preHandler?: preHandlerHookHandler | preHandlerHookHandler[];
 };
 
@@ -15,6 +16,27 @@ export async function registerConnectorsRoutes(app: FastifyInstance, options: Co
     const items = await options.connectorsService.listConnectors();
 
     return items.map(mapConnectorCardResponse);
+  });
+
+  // POST /api/connectors/intune/sync — authenticated, triggers a real Intune sync
+  app.post("/api/connectors/intune/sync", routeOptions, async (_, reply) => {
+    const runSync = options.runConnectorSync;
+    if (!runSync) {
+      reply.code(503);
+      return { ok: false, error: "Sync not configured" };
+    }
+
+    try {
+      const result = await runSync("intune");
+      reply.code(200);
+      return { ok: true, ...result };
+    } catch (error) {
+      reply.code(500);
+      return {
+        ok: false,
+        error: error instanceof Error ? error.message : "Sync failed",
+      };
+    }
   });
 }
 

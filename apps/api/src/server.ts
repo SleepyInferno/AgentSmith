@@ -25,6 +25,7 @@ import { registerDocsRoutes } from "./routes/docs.js";
 import { registerHealthRoute } from "./routes/health.js";
 import type { LifecycleRoutesDependencies } from "./routes/lifecycle.js";
 import { registerLifecycleRoutes } from "./routes/lifecycle.js";
+import { registerBootstrapRoutes } from "./routes/bootstrap.js";
 import { registerMeRoutes } from "./routes/me.js";
 import type { NetworkRoutesDependencies } from "./routes/network.js";
 import { registerNetworkRoutes } from "./routes/network.js";
@@ -174,6 +175,11 @@ export function buildServer(options: BuildServerOptions = {}) {
     authService,
     auditService,
     webOrigin: env.WEB_ORIGIN,
+  });
+  app.register(registerBootstrapRoutes, {
+    authService,
+    auditService,
+    prisma,
   });
   app.register(registerMeRoutes, {
     authService,

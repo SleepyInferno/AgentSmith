@@ -393,7 +393,7 @@ Plans:
 | 8. Queue and Detail Refresh | 0/TBD | Deferred -> v1.3 | - |
 | 9. Interface Consistency and Hardening | 0/TBD | Deferred -> v1.3 | - |
 | 10. Schema and Credential Foundation | 2/2 | Complete   | 2026-03-30 |
-| 11. First-Run Bootstrap | 2/2 | Complete   | 2026-03-31 |
+| 11. First-Run Bootstrap | 2/2 | Complete    | 2026-03-31 |
 | 12. Integrations Settings UI | 0/TBD | Not started | - |
 | 13. Intune Device Sync | 0/TBD | Not started | - |
 | 14. Document Ingest Pipeline | 0/TBD | Not started | - |

@@ -145,6 +145,16 @@ None — no external service configuration required for this plan. API routes ex
 - `lastTestedAt` and `lastTestResult` persist — ready for Plan 03 health badge display
 - `@azure/identity` and `openai` are installed — Plan 13/14 can import these packages
 
+## Self-Check: PASSED
+
+- FOUND: apps/api/src/routes/integrations.ts
+- FOUND: apps/api/src/routes/integrations.test.ts
+- FOUND: prisma/migrations/20260330_0004_integration_credential_test_fields/migration.sql
+- FOUND: commit ded2b06 (feat: Task 1)
+- FOUND: commit d2a124a (test: Task 2)
+- All 101 API tests pass (npx pnpm --filter @agentsmith/api test)
+- All 16 Playwright E2E tests pass (npx pnpm test)
+
 ---
 *Phase: 12-integrations-settings-ui*
 *Completed: 2026-03-30*

@@ -27,7 +27,7 @@
 - [x] **Phase 10: Schema and Credential Foundation** - Lay the database and encryption infrastructure that every v1.2 feature depends on (completed 2026-03-30)
 - [x] **Phase 11: First-Run Bootstrap** - Let the operator create a local admin account and reach the app without Entra ID (completed 2026-03-31)
 - [x] **Phase 12: Integrations Settings UI** - Give the operator a secure page to configure and verify Intune and OpenAI credentials (completed 2026-03-31)
-- [ ] **Phase 13: Intune Device Sync** - Replace mock device data with live Intune inventory and compliance state
+- [x] **Phase 13: Intune Device Sync** - Replace mock device data with live Intune inventory and compliance state (completed 2026-03-31)
 - [ ] **Phase 14: Document Ingest Pipeline** - Parse, classify, and organize documents automatically with AI assistance
 - [ ] **Phase 15: RAG Search** - Let the operator find documents using natural language with synthesized answers
 
@@ -335,12 +335,12 @@ Plans:
 3. Operator can see when the last sync completed, how many devices were retrieved, and whether the data is stale or the last sync failed.
 4. Operator can trigger a manual sync from the UI and see the inventory refresh when it completes.
 
-**Plans:** 1/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [x] 13-01-PLAN.md � Prisma schema migration + Graph API helpers + real Intune provider + connector registry factory + sync trigger route
-- [ ] 13-02-PLAN.md � Compliance API endpoint + UI changes (freshness bar, compliance badge, compliance table, sync button)
-- [ ] 13-03-PLAN.md � Playwright E2E tests + human verification checkpoint
+- [x] 13-02-PLAN.md � Compliance API endpoint + UI changes (freshness bar, compliance badge, compliance table, sync button)
+- [x] 13-03-PLAN.md � Playwright E2E tests + human verification checkpoint
 
 **UI hint**: yes
 
@@ -408,6 +408,6 @@ Plans:
 | 10. Schema and Credential Foundation | 2/2 | Complete   | 2026-03-30 |
 | 11. First-Run Bootstrap | 2/2 | Complete    | 2026-03-31 |
 | 12. Integrations Settings UI | 2/3 | Complete    | 2026-03-31 |
-| 13. Intune Device Sync | 1/3 | In Progress|  |
+| 13. Intune Device Sync | 3/3 | Complete   | 2026-03-31 |
 | 14. Document Ingest Pipeline | 0/TBD | Not started | - |
 | 15. RAG Search | 0/TBD | Not started | - |

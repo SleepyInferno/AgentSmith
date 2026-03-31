@@ -49,7 +49,7 @@
 ### Intune Sync
 
 - [x] **SYNC-01**: Operator can see live Intune device inventory with device name, compliance state, OS/version, last check-in, and encryption status.
-- [ ] **SYNC-02**: Operator can see per-device compliance policy assignment and pass/fail state.
+- [x] **SYNC-02**: Operator can see per-device compliance policy assignment and pass/fail state.
 - [x] **SYNC-03**: Operator can see when Intune data was last synced and whether it is stale or failed.
 
 ### Document Ingest
@@ -110,7 +110,7 @@
 | CRED-03 | Phase 12 | Complete |
 | CRED-04 | Phase 12 | Complete |
 | SYNC-01 | Phase 13 | Complete |
-| SYNC-02 | Phase 13 | Pending |
+| SYNC-02 | Phase 13 | Complete |
 | SYNC-03 | Phase 13 | Complete |
 | INGEST-01 | Phase 14 | Complete |
 | INGEST-02 | Phase 14 | Complete |

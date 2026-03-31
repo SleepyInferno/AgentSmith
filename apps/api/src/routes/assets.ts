@@ -203,6 +203,7 @@ function mapInventoryRowResponse(item: AssetInventoryRow) {
     summary: item.summary,
     signals: item.signals,
     sourceFreshnessState: item.freshnessState,
+    complianceState: item.complianceState,
   };
 }
 
@@ -219,5 +220,6 @@ function mapAssetDetailResponse(detail: AssetDetail) {
     sourceId: detail.sourceId,
     calculatedAt: detail.calculatedAt,
     queueRank: detail.queueRank,
+    complianceAssignments: detail.complianceAssignments,
   };
 }

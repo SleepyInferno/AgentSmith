@@ -9,11 +9,15 @@ import type {
   AssetInventorySortField,
   AssetRiskSignal,
   AssetRiskSignalCode,
+  ComplianceAssignmentDetail,
 } from "./asset-health.types.js";
 
 type AssetDeviceRecord = Prisma.DeviceGetPayload<{
   include: {
     riskAssessment: true;
+    complianceAssignments?: {
+      include: { policy: true };
+    };
   };
 }>;
 
@@ -117,6 +121,9 @@ export class AssetHealthRepository {
       },
       include: {
         riskAssessment: true,
+        complianceAssignments: {
+          include: { policy: true },
+        },
       },
     });
 
@@ -135,6 +142,14 @@ export class AssetHealthRepository {
       sourceSystem: device.sourceSystem,
       sourceId: device.sourceId,
       calculatedAt: device.riskAssessment?.calculatedAt.toISOString() ?? null,
+      complianceAssignments: (device.complianceAssignments ?? []).map(
+        (a): ComplianceAssignmentDetail => ({
+          policyName: a.policy.name,
+          platform: a.policy.platform,
+          status: a.status,
+          lastReportedAt: a.lastReportedAt?.toISOString() ?? null,
+        }),
+      ),
     };
   }
 
@@ -264,6 +279,7 @@ function mapInventoryRow(device: AssetDeviceRecord, owner?: AssetOwnerRecord): A
     freshnessState: device.riskAssessment?.sourceFreshnessState ?? null,
     summary: device.riskAssessment?.summary ?? null,
     signals: parseSignals(device.riskAssessment?.signals),
+    complianceState: device.complianceState ?? null,
   };
 }
 

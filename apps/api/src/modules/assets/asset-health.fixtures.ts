@@ -30,6 +30,7 @@ export const assetFixtureInventory: AssetInventoryRow[] = [
       { code: "missing_patch", severity: "high", label: "Patch overdue", explanation: "Device is outside the required patch window." },
       { code: "low_disk", severity: "medium", label: "Low disk space", explanation: "Less than 15% free disk space remaining." },
     ],
+    complianceState: "noncompliant",
   },
   {
     id: "fixture-device-002",
@@ -57,6 +58,7 @@ export const assetFixtureInventory: AssetInventoryRow[] = [
       { code: "old_device", severity: "medium", label: "Ageing hardware", explanation: "Device is over 7 years old and may not meet security baseline." },
       { code: "missing_patch", severity: "high", label: "Patch overdue", explanation: "Device is outside the required patch window." },
     ],
+    complianceState: "noncompliant",
   },
   {
     id: "fixture-device-003",
@@ -82,6 +84,7 @@ export const assetFixtureInventory: AssetInventoryRow[] = [
       { code: "missing_patch", severity: "high", label: "Patch overdue", explanation: "Device is outside the required patch window." },
       { code: "low_disk", severity: "high", label: "Critical disk space", explanation: "Less than 10% free disk space remaining." },
     ],
+    complianceState: "noncompliant",
   },
   {
     id: "fixture-device-004",
@@ -107,6 +110,7 @@ export const assetFixtureInventory: AssetInventoryRow[] = [
       { code: "missing_antivirus", severity: "medium", label: "Antivirus warning", explanation: "Antivirus agent is reporting a degraded state." },
       { code: "stale_check_in", severity: "low", label: "Check-in late", explanation: "Device has not checked in for 8 days." },
     ],
+    complianceState: "noncompliant",
   },
   {
     id: "fixture-device-005",
@@ -131,6 +135,7 @@ export const assetFixtureInventory: AssetInventoryRow[] = [
     signals: [
       { code: "missing_patch", severity: "low", label: "Patch behind schedule", explanation: "Device is within grace period but approaching the patch deadline." },
     ],
+    complianceState: "compliant",
   },
   {
     id: "fixture-device-006",
@@ -153,6 +158,7 @@ export const assetFixtureInventory: AssetInventoryRow[] = [
     freshnessState: "healthy",
     summary: "All signals healthy",
     signals: [],
+    complianceState: "compliant",
   },
   {
     id: "fixture-device-007",
@@ -177,6 +183,7 @@ export const assetFixtureInventory: AssetInventoryRow[] = [
     signals: [
       { code: "data_incomplete", severity: "low", label: "No assigned owner", explanation: "This device has no owner assigned in Intune." },
     ],
+    complianceState: "compliant",
   },
 ];
 
@@ -206,6 +213,7 @@ export const assetFixtureDetails: Record<string, AssetDetail> = Object.fromEntri
       sourceSystem: "seeded_example",
       sourceId: d.id,
       calculatedAt: daysAgo(0),
+      complianceAssignments: [],
     },
   ])
 );

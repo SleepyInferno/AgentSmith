@@ -42,6 +42,7 @@ export type AssetInventoryRow = {
   freshnessState: string | null;
   summary: string | null;
   signals: AssetRiskSignal[];
+  complianceState: string | null;
 };
 
 export type AssetQueueItem = {
@@ -56,12 +57,20 @@ export type AssetQueueItem = {
   signals: AssetRiskSignal[];
 };
 
+export type ComplianceAssignmentDetail = {
+  policyName: string;
+  platform: string;
+  status: string;
+  lastReportedAt: string | null;
+};
+
 export type AssetDetail = AssetInventoryRow & {
   serialNumber: string | null;
   complianceState: string | null;
   sourceSystem: string;
   sourceId: string;
   calculatedAt: string | null;
+  complianceAssignments: ComplianceAssignmentDetail[];
 };
 
 export type AssetInventoryFilters = {

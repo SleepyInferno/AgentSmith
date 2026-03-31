@@ -31,10 +31,10 @@ See: `.planning/PROJECT.md` (updated 2026-03-30)
 
 ## Current Position
 
-Phase: 999.1
-Plan: Not started
-Status: Phase 11 complete — all BOOT requirements delivered (API + web UI)
-Last activity: 2026-03-31
+Phase: 12
+Plan: 01 complete (12-01-PLAN.md)
+Status: Phase 12 Plan 01 complete — integration credential API routes, schema migration, ensureSystemKey wiring
+Last activity: 2026-03-30
 
 ## Immediate Next Steps
 
@@ -55,6 +55,10 @@ Last activity: 2026-03-31
 
 ## Recent Decisions
 
+- [Phase 12-01] Injectable probe pattern (testIntuneConnection/testOpenAIConnection on IntegrationRoutesDependencies) chosen over module-level mocking — consistent with bootstrap.ts narrow-dependency injection
+- [Phase 12-01] systemKey defaults to Buffer.alloc(32) in buildServer when not provided; production start() calls ensureSystemKey before app.listen — server stays synchronous
+- [Phase 12-01] Blank-secret preservation: PUT merges body fields; empty/blank clientSecret or apiKey retains the existing stored secret — prevents accidental credential loss
+- [Phase 12-01] PUT upsert only writes encryptedValue/iv/authTag/updatedAt — never touches lastTestedAt/lastTestResult so health state is preserved on credential save
 - [Phase 11-02] SetupPage checks bootstrapRequired === false (not falsy) to avoid redirect during loading state when data is undefined
 - [Phase 11-02] LoginPage always shows local form when bootstrap complete — Entra and local auth coexist on the same login page
 - [Phase 11-02] mockApi.ts bootstrapRequired defaults to false — all 29 existing tests continue to work without any changes
@@ -86,6 +90,7 @@ Last activity: 2026-03-31
 
 ## Recent Execution
 
+- Phase 12 Plan 01 executed on 2026-03-30; summary recorded in `.planning/phases/12-integrations-settings-ui/12-01-SUMMARY.md`.
 - Phase 11 Plan 02 executed on 2026-03-30; summary recorded in `.planning/phases/11-first-run-bootstrap/11-02-SUMMARY.md`.
 - Phase 11 Plan 01 executed on 2026-03-30; summary recorded in `.planning/phases/11-first-run-bootstrap/11-01-SUMMARY.md`.
 - Phase 10 Plan 02 executed on 2026-03-30; summary recorded in `.planning/phases/10-schema-and-credential-foundation/10-02-SUMMARY.md`.
@@ -131,11 +136,12 @@ Last activity: 2026-03-31
 | Phase 10 P02 | 2min | 2 tasks | 4 files |
 | 11 | 01 | 35min | 2 | 6 | 2026-03-30 |
 | Phase 11 P02 | 7min | 2 tasks | 9 files |
+| 12 | 01 | 10min | 2 | 7 | 2026-03-30 |
 
 ## Session Info
 
-- Last session: 2026-03-30T20:44:00Z
-- Stopped at: Completed 11-02-PLAN.md — Phase 11 First-Run Bootstrap fully complete (2 of 2 plans)
+- Last session: 2026-03-30T10:17:00Z
+- Stopped at: Completed 12-01-PLAN.md — integration credential API routes (GET/PUT/POST test), schema migration, ensureSystemKey wiring, 14 unit tests
 
 ## Notes
 

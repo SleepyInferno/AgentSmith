@@ -315,7 +315,7 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 12-01-PLAN.md — Schema migration + ensureSystemKey startup wiring + integration API routes + unit tests
+- [x] 12-01-PLAN.md — Schema migration + ensureSystemKey startup wiring + integration API routes + unit tests
 - [ ] 12-02-PLAN.md — IntegrationsPage UI + Toast component + router wiring + web unit tests
 - [ ] 12-03-PLAN.md — Playwright E2E tests + human verification checkpoint
 

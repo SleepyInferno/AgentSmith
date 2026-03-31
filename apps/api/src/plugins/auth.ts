@@ -45,6 +45,7 @@ export interface AgentSmithAuthService {
   completeCallback(request: FastifyRequest, reply: FastifyReply): Promise<CompletedLogin>;
   getSession(request: FastifyRequest): Promise<OperatorSession | null>;
   clearSession(reply: FastifyReply): void;
+  loginLocal(reply: FastifyReply, userId: string): void;
 }
 
 export class AuthCallbackError extends Error {
@@ -83,11 +84,18 @@ export function createAuthService(options: CreateAuthServiceOptions): AgentSmith
     return createDevBypassAuthService(options.env);
   }
 
-  const provider = options.provider ?? new MicrosoftEntraAuthProvider(options.env);
+  const entraConfigured = !!(options.env.ENTRA_TENANT_ID && options.env.ENTRA_CLIENT_ID);
+  const provider = options.provider ?? (entraConfigured ? new MicrosoftEntraAuthProvider(options.env) : null);
   const now = options.now ?? (() => new Date());
 
   return {
     async beginLogin(reply, redirectPath = null) {
+      if (!provider) {
+        reply.code(503);
+        reply.send({ error: "entra_not_configured", message: "Entra ID is not configured. Use local login." });
+        return;
+      }
+
       const flow: AuthFlowCookiePayload = {
         state: oidc.randomState(),
         nonce: oidc.randomNonce(),
@@ -109,8 +117,15 @@ export function createAuthService(options: CreateAuthServiceOptions): AgentSmith
     },
 
     async completeCallback(request, reply) {
-      const currentUrl = new URL(request.raw.url ?? request.url, options.env.ENTRA_REDIRECT_URI!);
-      // TODO Phase 11: guard ENTRA_REDIRECT_URI presence before using
+      if (!provider) {
+        throw new AuthCallbackError("Entra ID not configured", null, { reason: "entra_not_configured" });
+      }
+
+      if (!options.env.ENTRA_REDIRECT_URI) {
+        throw new AuthCallbackError("ENTRA_REDIRECT_URI not configured", null, { reason: "entra_redirect_uri_missing" });
+      }
+
+      const currentUrl = new URL(request.raw.url ?? request.url, options.env.ENTRA_REDIRECT_URI);
       const flow = readSignedCookie<AuthFlowCookiePayload>(options.env.SESSION_SECRET, request, authFlowCookieName);
 
       if (!flow) {
@@ -240,6 +255,24 @@ export function createAuthService(options: CreateAuthServiceOptions): AgentSmith
     clearSession(reply) {
       appendCookies(reply, [clearCookie(sessionCookieName)]);
     },
+
+    loginLocal(reply, userId) {
+      const expiresAt = new Date(now().valueOf() + sessionLifetimeMs).toISOString();
+      const sessionPayload: SessionCookiePayload = {
+        sessionId: randomUUID(),
+        userId,
+        expiresAt,
+      };
+      appendCookies(reply, [
+        serializeCookie(sessionCookieName, signValue(options.env.SESSION_SECRET, sessionPayload), {
+          httpOnly: true,
+          maxAge: Math.floor(sessionLifetimeMs / 1000),
+          path: "/",
+          sameSite: "Lax",
+          secure: isSecureCookie(),
+        }),
+      ]);
+    },
   };
 }
 
@@ -293,6 +326,24 @@ function createDevBypassAuthService(env: Pick<ServerEnv, "SESSION_SECRET" | "WEB
     clearSession(reply) {
       appendCookies(reply, [clearCookie(sessionCookieName)]);
     },
+
+    loginLocal(reply, userId) {
+      const expiresAt = new Date(Date.now() + sessionLifetimeMs).toISOString();
+      const sessionPayload: SessionCookiePayload = {
+        sessionId: randomUUID(),
+        userId,
+        expiresAt,
+      };
+      appendCookies(reply, [
+        serializeCookie(sessionCookieName, signValue(env.SESSION_SECRET, sessionPayload), {
+          httpOnly: true,
+          maxAge: Math.floor(sessionLifetimeMs / 1000),
+          path: "/",
+          sameSite: "Lax",
+          secure: false,
+        }),
+      ]);
+    },
   };
 }
 
@@ -302,7 +353,6 @@ class MicrosoftEntraAuthProvider implements AuthProvider {
 
   constructor(private readonly env: ServerEnv) {
     this.issuer = new URL(`https://login.microsoftonline.com/${this.env.ENTRA_TENANT_ID!}/v2.0`);
-    // TODO Phase 11: guard — do not construct MicrosoftEntraAuthProvider when Entra vars are absent
   }
 
   async buildAuthorizationUrl(flow: AuthFlowCookiePayload) {

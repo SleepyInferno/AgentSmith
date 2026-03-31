@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Core Operational Workflow Foundation
-status: verifying
-last_updated: "2026-03-30T22:13:45.901Z"
-last_activity: 2026-03-30
+status: completed
+last_updated: "2026-03-31T00:33:43.511Z"
+last_activity: 2026-03-30 — Phase 11 Plan 01 executed (bootstrap routes + local auth API)
 progress:
-  total_phases: 11
+  total_phases: 12
   completed_phases: 8
-  total_plans: 33
-  completed_plans: 33
+  total_plans: 35
+  completed_plans: 35
 ---
 
 # State: Solo IT Ops Suite
@@ -31,10 +31,10 @@ See: `.planning/PROJECT.md` (updated 2026-03-30)
 
 ## Current Position
 
-Phase: Phase 11 — First-Run Bootstrap (next)
-Plan: 0 of N (not yet planned)
-Status: Phase 10 verified complete (13/13 must-haves). Ready for Phase 11 (First-Run Bootstrap) and Phase 12 (Integrations Settings UI) planning.
-Last activity: 2026-03-30 — Phase 10 verified (schema + credential encryption runtime complete)
+Phase: Phase 11 — First-Run Bootstrap (in progress)
+Plan: 1 of 2 complete
+Status: Phase 11 Plan 01 complete — bootstrap API, local login, Entra guard, 12 new tests green.
+Last activity: 2026-03-30 — Phase 11 Plan 01 executed (bootstrap routes + local auth API)
 
 ## Immediate Next Steps
 
@@ -56,6 +56,10 @@ Last activity: 2026-03-30 — Phase 10 verified (schema + credential encryption 
 
 ## Recent Decisions
 
+- [Phase 11-01] bootstrap.ts keeps local login route separate from auth.ts to isolate Entra-coupled code from local auth
+- [Phase 11-01] DUMMY_HASH used in local login for timing-safe comparison when username not found — prevents user enumeration
+- [Phase 11-01] createAuthService guards MicrosoftEntraAuthProvider construction — server starts without Entra env vars via entraConfigured boolean check
+- [Phase 11-01] loginLocal always generates fresh randomUUID sessionId — enforces session regeneration per CLAUDE.md security invariant
 - [Phase 10-02] HKDF-SHA256 used to derive wrapping key from SESSION_SECRET (fixed salt, domain-separated info) — avoids using raw secret as AES key directly.
 - [Phase 10-02] iv:authTag:ciphertext hex string format for SystemKey.wrappedKey — self-contained, no extra DB columns needed for wrapped key storage.
 - [Phase 10-02] ensureSystemKey not wired into server.ts in Phase 10 — Phase 12 will call it at startup when credential storage becomes active.
@@ -80,6 +84,7 @@ Last activity: 2026-03-30 — Phase 10 verified (schema + credential encryption 
 
 ## Recent Execution
 
+- Phase 11 Plan 01 executed on 2026-03-30; summary recorded in `.planning/phases/11-first-run-bootstrap/11-01-SUMMARY.md`.
 - Phase 10 Plan 02 executed on 2026-03-30; summary recorded in `.planning/phases/10-schema-and-credential-foundation/10-02-SUMMARY.md`.
 - Phase 07 Plan 05 executed on 2026-03-29; summary recorded in `.planning/phases/07-operator-shell-refresh/07-05-SUMMARY.md`.
 - Phase 07 Plan 04 executed on 2026-03-29; summary recorded in `.planning/phases/07-operator-shell-refresh/07-04-SUMMARY.md`.
@@ -121,11 +126,12 @@ Last activity: 2026-03-30 — Phase 10 verified (schema + credential encryption 
 | Phase 07 P05 | 15min | 3 tasks | 1 files | |
 | Phase 10 P01 | 6min | 2 tasks | 7 files |
 | Phase 10 P02 | 2min | 2 tasks | 4 files |
+| 11 | 01 | 35min | 2 | 6 | 2026-03-30 |
 
 ## Session Info
 
-- Last session: 2026-03-30T22:06:36Z
-- Stopped at: Completed 10-01-PLAN.md — Schema and Credential Foundation plan 1 of 2
+- Last session: 2026-03-30T01:00:00Z
+- Stopped at: Completed 11-01-PLAN.md — First-Run Bootstrap plan 1 of 2
 
 ## Notes
 

@@ -312,7 +312,13 @@ Plans:
 3. Operator can press a test-connection button for each integration and see a clear pass or fail result with a human-readable hint on failure.
 4. Operator can see the last-verified time and current health status for each integration from the settings page without leaving it.
 
-**Plans:** TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 12-01-PLAN.md — Schema migration + ensureSystemKey startup wiring + integration API routes + unit tests
+- [ ] 12-02-PLAN.md — IntegrationsPage UI + Toast component + router wiring + web unit tests
+- [ ] 12-03-PLAN.md — Playwright E2E tests + human verification checkpoint
+
 **UI hint**: yes
 
 ### Phase 13: Intune Device Sync
@@ -377,7 +383,7 @@ Plans:
 - Phases 13 and 14 can be developed in parallel once Phase 12 delivers a working credential store.
 
 ---
-*Last updated: 2026-03-30 — Phase 11 plans defined*
+*Last updated: 2026-03-30 — Phase 12 plans defined*
 
 ## Progress
 
@@ -394,7 +400,7 @@ Plans:
 | 9. Interface Consistency and Hardening | 0/TBD | Deferred -> v1.3 | - |
 | 10. Schema and Credential Foundation | 2/2 | Complete   | 2026-03-30 |
 | 11. First-Run Bootstrap | 2/2 | Complete    | 2026-03-31 |
-| 12. Integrations Settings UI | 0/TBD | Not started | - |
+| 12. Integrations Settings UI | 0/3 | Planned | - |
 | 13. Intune Device Sync | 0/TBD | Not started | - |
 | 14. Document Ingest Pipeline | 0/TBD | Not started | - |
 | 15. RAG Search | 0/TBD | Not started | - |

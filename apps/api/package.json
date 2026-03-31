@@ -14,6 +14,7 @@
   "dependencies": {
     "@agentsmith/shared": "workspace:*",
     "@azure/identity": "^4.13.1",
+    "@microsoft/microsoft-graph-client": "^3.0.7",
     "@prisma/client": "^6.6.0",
     "bcryptjs": "^3.0.3",
     "fastify": "^5.3.3",

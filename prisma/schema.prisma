@@ -166,27 +166,28 @@ model User {
 }
 
 model Device {
-  id                  String                @id @default(cuid())
-  sourceSystem        String
-  sourceId            String
-  name                String
-  serialNumber        String?
-  operatingSystem     String?
-  complianceState     String?
-  ownerId             String?
-  departmentSnapshot  String?
-  siteSnapshot        String?
-  encryptionStatus    AssetSignalStatus?
-  antivirusStatus     AssetSignalStatus?
-  patchStatus         AssetSignalStatus?
-  diskFreePercent     Int?
-  deviceAgeDays       Int?
-  supportStatus       AssetSignalStatus?
-  lastCheckInAt       DateTime?
-  lastSeenAt          DateTime?
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
-  riskAssessment      DeviceRiskAssessment?
+  id                    String                       @id @default(cuid())
+  sourceSystem          String
+  sourceId              String
+  name                  String
+  serialNumber          String?
+  operatingSystem       String?
+  complianceState       String?
+  ownerId               String?
+  departmentSnapshot    String?
+  siteSnapshot          String?
+  encryptionStatus      AssetSignalStatus?
+  antivirusStatus       AssetSignalStatus?
+  patchStatus           AssetSignalStatus?
+  diskFreePercent       Int?
+  deviceAgeDays         Int?
+  supportStatus         AssetSignalStatus?
+  lastCheckInAt         DateTime?
+  lastSeenAt            DateTime?
+  createdAt             DateTime                     @default(now())
+  updatedAt             DateTime                     @updatedAt
+  riskAssessment        DeviceRiskAssessment?
+  complianceAssignments DeviceComplianceAssignment[]
 
   @@unique([sourceSystem, sourceId])
 }
@@ -204,6 +205,34 @@ model DeviceRiskAssessment {
   calculatedAt         DateTime       @default(now())
   createdAt            DateTime       @default(now())
   updatedAt            DateTime       @updatedAt
+}
+
+model DeviceCompliancePolicy {
+  id           String                      @id @default(cuid())
+  sourceSystem String
+  sourceId     String
+  name         String
+  platform     String
+  createdAt    DateTime                    @default(now())
+  updatedAt    DateTime                    @updatedAt
+  assignments  DeviceComplianceAssignment[]
+
+  @@unique([sourceSystem, sourceId])
+}
+
+model DeviceComplianceAssignment {
+  id             String                 @id @default(cuid())
+  deviceId       String
+  device         Device                 @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  policyId       String
+  policy         DeviceCompliancePolicy @relation(fields: [policyId], references: [id], onDelete: Cascade)
+  status         String
+  lastReportedAt DateTime?
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+
+  @@unique([deviceId, policyId])
+  @@index([deviceId])
 }
 
 model System {

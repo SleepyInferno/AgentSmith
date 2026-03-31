@@ -16,6 +16,7 @@ import { DocumentationSearchPage } from "./routes/docs/DocumentationSearchPage";
 import { DocumentationDetailPage } from "./routes/docs/DocumentationDetailPage";
 import { AuditTrailPage } from "./routes/audit/AuditTrailPage";
 import { ConnectorStatusPage } from "./routes/connectors/ConnectorStatusPage";
+import { IntegrationsPage } from "./routes/settings/IntegrationsPage";
 import { LoginPage } from "./routes/LoginPage";
 import { SetupPage } from "./routes/SetupPage";
 import { ProtectedLayout } from "./routes/ProtectedLayout";
@@ -40,6 +41,7 @@ const utilityItems: NavItem[] = [
   { to: "/docs", label: "Documentation", icon: "docs" },
   { to: "/connectors", label: "Connectors", icon: "connectors" },
   { to: "/audit", label: "Audit Log", icon: "audit" },
+  { to: "/settings", label: "Integrations", icon: "settings" },
 ];
 
 function SidebarIcon(props: { icon: NavItem["icon"] }) {
@@ -220,6 +222,7 @@ export const appRoutes: RouteObject[] = [
           { path: "lifecycle/runs/:runId", element: <LifecycleRunDetailPage /> },
           { path: "connectors", element: <ConnectorStatusPage /> },
           { path: "audit", element: <AuditTrailPage /> },
+          { path: "settings", element: <IntegrationsPage /> },
         ],
       },
     ],

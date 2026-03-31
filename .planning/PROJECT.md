@@ -35,7 +35,7 @@ One overextended IT generalist can see the highest-risk issues first and complet
 
 - [x] First-run bootstrap allows the operator to create a local admin account on initial setup without requiring Entra ID pre-configuration. Validated in Phase 11: First-Run Bootstrap.
 - [x] Integrations settings page lets the operator configure and verify Intune and OpenAI credentials from within the app. Validated in Phase 12: Integrations Settings UI.
-- [ ] Live Intune sync surfaces real device inventory, compliance state, and app inventory with freshness indicators.
+- [x] Live Intune sync surfaces real device inventory, compliance state, and app inventory with freshness indicators. Validated in Phase 13: Intune Device Sync.
 - [ ] Document ingest pipeline parses a source folder, uses OpenAI to classify and organize files, and writes to a structured output folder.
 - [ ] RAG-powered search lets the operator find documents using natural language, with existing keyword search as fallback.
 
@@ -65,8 +65,8 @@ One overextended IT generalist can see the highest-risk issues first and complet
 
 - v1.0 shipped the protected shell and the five-tool operational workflow set.
 - v1.1 shipped sidebar-only navigation, full dark theme, banner topbar, and functional risk-card dashboard. Phases 08–09 deferred to v1.3.
-- v1.2 Intune Integration is active. Phases 10–12 complete. Phase 13 (Intune Device Sync) is next.
-- The standard root test command passes across API tests, web unit tests, and 16 Playwright browser tests.
+- v1.2 Intune Integration is active. Phases 10–13 complete. Phase 14 (Document Ingest Pipeline) is next.
+- The standard root test command passes across 123 API tests, web unit tests, and 29 Playwright browser tests.
 - The full API typecheck still has pre-existing docs and lifecycle TypeScript debt outside this milestone.
 
 ## Constraints

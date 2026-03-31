@@ -290,7 +290,12 @@ Plans:
 3. After the first admin is created, the setup endpoint returns a permanent error for any further attempt — the screen is inaccessible to all subsequent visitors.
 4. Operator can reach all protected routes using local credentials without configuring Entra ID.
 
-**Plans:** TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 11-01-PLAN.md — API-side bootstrap and local auth (auth service loginLocal, Entra guard, bootstrap routes, local login route, tests)
+- [ ] 11-02-PLAN.md — Web-side bootstrap UI (SetupPage, useBootstrapStatus hook, ProtectedLayout redirect, LoginPage dual-mode, mock API, tests)
+
 **UI hint**: yes
 
 ### Phase 12: Integrations Settings UI
@@ -372,7 +377,7 @@ Plans:
 - Phases 13 and 14 can be developed in parallel once Phase 12 delivers a working credential store.
 
 ---
-*Last updated: 2026-03-30 — Phase 10 plans defined*
+*Last updated: 2026-03-30 — Phase 11 plans defined*
 
 ## Progress
 
@@ -385,10 +390,10 @@ Plans:
 | 5. Backup Confidence Dashboard | 5/5 | Complete | 2026-03-27 |
 | 6. Documentation Assistant | 5/5 | Complete | 2026-03-28 |
 | 7. Operator Shell Refresh | 5/5 | Complete | 2026-03-29 |
-| 8. Queue and Detail Refresh | 0/TBD | Deferred → v1.3 | - |
-| 9. Interface Consistency and Hardening | 0/TBD | Deferred → v1.3 | - |
+| 8. Queue and Detail Refresh | 0/TBD | Deferred -> v1.3 | - |
+| 9. Interface Consistency and Hardening | 0/TBD | Deferred -> v1.3 | - |
 | 10. Schema and Credential Foundation | 2/2 | Complete   | 2026-03-30 |
-| 11. First-Run Bootstrap | 0/TBD | Not started | - |
+| 11. First-Run Bootstrap | 0/2 | Planned | - |
 | 12. Integrations Settings UI | 0/TBD | Not started | - |
 | 13. Intune Device Sync | 0/TBD | Not started | - |
 | 14. Document Ingest Pipeline | 0/TBD | Not started | - |

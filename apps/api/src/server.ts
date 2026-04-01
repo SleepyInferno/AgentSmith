@@ -30,6 +30,7 @@ import { registerMeRoutes } from "./routes/me.js";
 import type { NetworkRoutesDependencies } from "./routes/network.js";
 import { registerNetworkRoutes } from "./routes/network.js";
 import { registerIntegrationRoutes } from "./routes/integrations.js";
+import { registerSettingsRoutes } from "./routes/settings.js";
 import { ensureSystemKey } from "./lib/system-key.js";
 import { initConnectorRegistry } from "./modules/connectors/connector.registry.js";
 import { runConnectorSync } from "./jobs/runConnectorSync.js";
@@ -205,6 +206,10 @@ export function buildServer(options: BuildServerOptions = {}) {
     prisma,
     authService,
     systemKey,
+  });
+  app.register(registerSettingsRoutes, {
+    prisma,
+    authService,
   });
 
   app.get("/", async () => ({

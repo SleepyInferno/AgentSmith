@@ -288,6 +288,7 @@ model Document {
   systemLinks         DocumentSystemLink[]
   revisions           DocumentRevision[]
   embeddings          DocumentEmbedding[]
+  ingestFiles         IngestFile[]
 
   @@unique([sourceSystem, sourceId])
 }
@@ -592,4 +593,40 @@ model DocumentEmbedding {
   createdAt  DateTime                      @default(now())
 
   @@index([documentId])
+}
+
+model AppSetting {
+  key       String   @id @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model IngestRun {
+  id          String       @id @default(cuid())
+  triggeredBy String
+  status      String       @default("running")
+  startedAt   DateTime     @default(now())
+  completedAt DateTime?
+  fileCount   Int          @default(0)
+  doneCount   Int          @default(0)
+  failedCount Int          @default(0)
+  files       IngestFile[]
+}
+
+model IngestFile {
+  id           String    @id @default(cuid())
+  filePath     String
+  fileHash     String
+  status       String    @default("pending")
+  errorMessage String?
+  documentId   String?
+  document     Document? @relation(fields: [documentId], references: [id])
+  runId        String
+  run          IngestRun @relation(fields: [runId], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([fileHash])
+  @@index([runId])
 }

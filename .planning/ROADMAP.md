@@ -27,7 +27,7 @@
 - [x] **Phase 10: Schema and Credential Foundation** - Lay the database and encryption infrastructure that every v1.2 feature depends on (completed 2026-03-30)
 - [x] **Phase 11: First-Run Bootstrap** - Let the operator create a local admin account and reach the app without Entra ID (completed 2026-03-31)
 - [x] **Phase 12: Integrations Settings UI** - Give the operator a secure page to configure and verify Intune and OpenAI credentials (completed 2026-03-31)
-- [x] **Phase 13: Intune Device Sync** - Replace mock device data with live Intune inventory and compliance state (completed 2026-03-31)
+- [x] **Phase 13: Intune Device Sync** - Replace mock device data with live Intune inventory and compliance state (completed 2026-03-31)
 - [ ] **Phase 14: Document Ingest Pipeline** - Parse, classify, and organize documents automatically with AI assistance
 - [ ] **Phase 15: RAG Search** - Let the operator find documents using natural language with synthesized answers
 
@@ -338,9 +338,9 @@ Plans:
 **Plans:** 3/3 plans complete
 
 Plans:
-- [x] 13-01-PLAN.md � Prisma schema migration + Graph API helpers + real Intune provider + connector registry factory + sync trigger route
-- [x] 13-02-PLAN.md � Compliance API endpoint + UI changes (freshness bar, compliance badge, compliance table, sync button)
-- [x] 13-03-PLAN.md � Playwright E2E tests + human verification checkpoint
+- [x] 13-01-PLAN.md — Prisma schema migration + Graph API helpers + real Intune provider + connector registry factory + sync trigger route
+- [x] 13-02-PLAN.md — Compliance API endpoint + UI changes (freshness bar, compliance badge, compliance table, sync button)
+- [x] 13-03-PLAN.md — Playwright E2E tests + human verification checkpoint
 
 **UI hint**: yes
 
@@ -359,7 +359,15 @@ Plans:
 4. A file that fails to parse or classify is recorded with a failed status and does not block other files in the same run.
 5. Files already processed are not re-ingested on restart or re-trigger unless they have changed.
 
-**Plans:** TBD
+**Plans:** 4 plans
+
+Plans:
+- [ ] 14-01-PLAN.md — Prisma schema (AppSetting, IngestRun, IngestFile) + settings API routes + document parsers
+- [ ] 14-02-PLAN.md — Ingest service (classify/embed/copy) + chunker + queue + watcher + ingest API routes
+- [ ] 14-03-PLAN.md — IngestSection UI on IntegrationsPage (folder inputs, trigger, status table with polling)
+- [ ] 14-04-PLAN.md — Playwright E2E tests + human verification checkpoint
+
+**UI hint**: yes
 
 ### Phase 15: RAG Search
 
@@ -390,7 +398,7 @@ Plans:
 - Phases 13 and 14 can be developed in parallel once Phase 12 delivers a working credential store.
 
 ---
-*Last updated: 2026-03-30 — Phase 12 plans defined*
+*Last updated: 2026-04-01 — Phase 14 plans defined*
 
 ## Progress
 
@@ -409,5 +417,5 @@ Plans:
 | 11. First-Run Bootstrap | 2/2 | Complete    | 2026-03-31 |
 | 12. Integrations Settings UI | 2/3 | Complete    | 2026-03-31 |
 | 13. Intune Device Sync | 3/3 | Complete    | 2026-03-31 |
-| 14. Document Ingest Pipeline | 0/TBD | Not started | - |
+| 14. Document Ingest Pipeline | 0/4 | Planning complete | - |
 | 15. RAG Search | 0/TBD | Not started | - |

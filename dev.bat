@@ -16,14 +16,23 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-:: Check for pnpm
+:: Check for pnpm — try direct, then fall back to corepack
 where pnpm >nul 2>&1
 if %errorlevel% neq 0 (
-    echo  [ERROR] pnpm is not installed or not in PATH.
-    echo  Install: https://pnpm.io/installation
+    echo  [INFO] pnpm not found in PATH. Enabling via Corepack...
+    corepack enable >nul 2>&1
+    corepack prepare pnpm@10.11.1 --activate >nul 2>&1
+    where pnpm >nul 2>&1
+    if %errorlevel% neq 0 (
+        echo  [ERROR] Could not enable pnpm via Corepack.
+        echo  Install manually: https://pnpm.io/installation
+        echo  Or run: corepack enable
+        echo.
+        pause
+        exit /b 1
+    )
+    echo  [OK] pnpm enabled via Corepack.
     echo.
-    pause
-    exit /b 1
 )
 
 :: Check if node_modules exists

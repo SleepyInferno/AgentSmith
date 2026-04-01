@@ -31,9 +31,11 @@ import type { NetworkRoutesDependencies } from "./routes/network.js";
 import { registerNetworkRoutes } from "./routes/network.js";
 import { registerIntegrationRoutes } from "./routes/integrations.js";
 import { registerSettingsRoutes } from "./routes/settings.js";
+import { registerIngestRoutes } from "./routes/ingest.js";
 import { ensureSystemKey } from "./lib/system-key.js";
 import { initConnectorRegistry } from "./modules/connectors/connector.registry.js";
 import { runConnectorSync } from "./jobs/runConnectorSync.js";
+import { initWatcher, restartWatcher, closeWatcher } from "./modules/ingest/ingest.watcher.js";
 
 export type BuildServerOptions = {
   env?: ServerEnv;
@@ -210,6 +212,13 @@ export function buildServer(options: BuildServerOptions = {}) {
   app.register(registerSettingsRoutes, {
     prisma,
     authService,
+    onSourceFolderChanged: (newPath: string) =>
+      restartWatcher(newPath, { prisma, systemKey }),
+  });
+  app.register(registerIngestRoutes, {
+    prisma,
+    authService,
+    systemKey,
   });
 
   app.get("/", async () => ({
@@ -219,6 +228,7 @@ export function buildServer(options: BuildServerOptions = {}) {
   }));
 
   app.addHook("onClose", async () => {
+    await closeWatcher();
     await prisma.$disconnect();
   });
 
@@ -236,6 +246,8 @@ async function start() {
       host: "0.0.0.0",
       port: env.PORT,
     });
+    // Start the file watcher after the server is listening
+    await initWatcher({ prisma, systemKey });
   } catch (error) {
     app.log.error(error);
     process.exitCode = 1;

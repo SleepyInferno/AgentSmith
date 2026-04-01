@@ -362,7 +362,7 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 14-01-PLAN.md — Prisma schema (AppSetting, IngestRun, IngestFile) + settings API routes + document parsers
+- [x] 14-01-PLAN.md — Prisma schema (AppSetting, IngestRun, IngestFile) + settings API routes + document parsers
 - [ ] 14-02-PLAN.md — Ingest service (classify/embed/copy) + chunker + queue + watcher + ingest API routes
 - [ ] 14-03-PLAN.md — IngestSection UI on IntegrationsPage (folder inputs, trigger, status table with polling)
 - [ ] 14-04-PLAN.md — Playwright E2E tests + human verification checkpoint

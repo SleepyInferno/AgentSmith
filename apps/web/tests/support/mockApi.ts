@@ -4,6 +4,10 @@ type MockOperatorAppOptions = {
   authenticated?: boolean;
   docsReviewFails?: boolean;
   logoutFails?: boolean;
+  // Ingest-related overrides
+  ingestSettings?: { sourceFolder?: string; outputFolder?: string };
+  ingestStatus?: { run: IngestRunStatus | null };
+  ingestTriggerFails?: boolean;
 };
 
 type LifecycleRunDetail = {
@@ -89,6 +93,25 @@ type DocumentationDetail = {
     }>;
   };
   suggestedNextStep: string | null;
+};
+
+type IngestFileRow = {
+  id: string;
+  filePath: string;
+  status: string;
+  errorMessage: string | null;
+};
+
+type IngestRunStatus = {
+  id: string;
+  triggeredBy: string;
+  status: string;
+  startedAt: string;
+  completedAt: string | null;
+  fileCount: number;
+  doneCount: number;
+  failedCount: number;
+  files: IngestFileRow[];
 };
 
 type MockState = {
@@ -314,6 +337,37 @@ async function handleApiRoute(
     const documentId = pathname.replace("/api/docs/", "");
     const detail = state.docsDetails[documentId];
     return detail ? json(route, detail) : json(route, { message: "Documentation record not found" }, 404);
+  }
+
+  if (pathname === "/api/bootstrap-status" && method === "GET") {
+    return json(route, { bootstrapRequired: false });
+  }
+
+  if (pathname === "/api/settings" && method === "GET") {
+    const sourceFolder = options.ingestSettings?.sourceFolder ?? "/tmp/source";
+    const outputFolder = options.ingestSettings?.outputFolder ?? "/tmp/output";
+    const settings: Record<string, string> = {};
+    if (sourceFolder) settings["ingest.sourceFolder"] = sourceFolder;
+    if (outputFolder) settings["ingest.outputFolder"] = outputFolder;
+    return json(route, settings);
+  }
+
+  if (pathname === "/api/settings" && method === "PUT") {
+    return json(route, { ok: true });
+  }
+
+  if (pathname === "/api/ingest/run" && method === "POST") {
+    if (options.ingestTriggerFails) {
+      return json(route, { message: "Trigger failed" }, 500);
+    }
+    return json(route, { runId: "test-run-id" });
+  }
+
+  if (pathname === "/api/ingest/status" && method === "GET") {
+    if (options.ingestStatus !== undefined) {
+      return json(route, options.ingestStatus);
+    }
+    return json(route, { run: null });
   }
 
   return json(route, { message: `Unhandled mock route: ${method} ${pathname}` }, 500);

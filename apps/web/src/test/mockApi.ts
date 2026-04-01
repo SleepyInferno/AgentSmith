@@ -954,6 +954,22 @@ export function createMockApi(options: CreateMockApiOptions = {}) {
       return jsonResponse({ ok: true, message: "Connected successfully" });
     }
 
+    if (method === "GET" && url.pathname === "/api/settings") {
+      return jsonResponse({});
+    }
+
+    if (method === "PUT" && url.pathname === "/api/settings") {
+      return jsonResponse({ ok: true });
+    }
+
+    if (method === "POST" && url.pathname === "/api/ingest/run") {
+      return jsonResponse({ runId: "mock-run-id" });
+    }
+
+    if (method === "GET" && url.pathname === "/api/ingest/status") {
+      return jsonResponse({ run: null });
+    }
+
     return {
       status: 404,
       headers: {

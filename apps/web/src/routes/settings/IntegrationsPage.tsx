@@ -1,9 +1,28 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PageTitle } from "../../components/PageTitle";
 import { Toast } from "../../components/Toast";
 import { useToast } from "../../hooks/useToast";
 import { apiGet, apiRequest } from "../../lib/api";
+
+type IngestFileRow = {
+  id: string;
+  filePath: string;
+  status: string;
+  errorMessage: string | null;
+};
+
+type IngestRunStatus = {
+  id: string;
+  triggeredBy: string;
+  status: string;
+  startedAt: string;
+  completedAt: string | null;
+  fileCount: number;
+  doneCount: number;
+  failedCount: number;
+  files: IngestFileRow[];
+};
 
 type IntegrationStatus = {
   configured: boolean;
@@ -421,6 +440,281 @@ function ModelSelector({ integrationKey }: { integrationKey: string }) {
   );
 }
 
+function statusPillStyle(status: string): React.CSSProperties {
+  const base: React.CSSProperties = {
+    padding: "2px 10px",
+    borderRadius: 999,
+    fontSize: 12,
+    fontWeight: 700,
+    textTransform: "uppercase",
+    letterSpacing: "0.06em",
+  };
+  if (status === "done") return { ...base, background: "rgba(129, 255, 164, 0.18)", color: "#9bffa3" };
+  if (status === "failed") return { ...base, background: "rgba(216, 93, 70, 0.18)", color: "#ffd8cf" };
+  if (status === "processing") return { ...base, background: "rgba(96, 165, 250, 0.18)", color: "#93c5fd" };
+  // pending
+  return { ...base, background: "rgba(148, 163, 184, 0.18)", color: "#94a3b8" };
+}
+
+function basename(filePath: string): string {
+  return filePath.replace(/\\/g, "/").split("/").pop() ?? filePath;
+}
+
+function IngestSection() {
+  const queryClient = useQueryClient();
+  const { toast, showToast } = useToast();
+  const [sourceFolder, setSourceFolder] = useState("");
+  const [outputFolder, setOutputFolder] = useState("");
+
+  const settingsQuery = useQuery({
+    queryKey: ["settings"],
+    queryFn: () => apiGet<Record<string, string>>("/api/settings"),
+  });
+
+  useEffect(() => {
+    if (settingsQuery.data) {
+      setSourceFolder(settingsQuery.data["ingest.sourceFolder"] ?? "");
+      setOutputFolder(settingsQuery.data["ingest.outputFolder"] ?? "");
+    }
+  }, [settingsQuery.data]);
+
+  const saveMutation = useMutation({
+    mutationFn: () =>
+      apiRequest("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          settings: [
+            { key: "ingest.sourceFolder", value: sourceFolder },
+            { key: "ingest.outputFolder", value: outputFolder },
+          ],
+        }),
+      }),
+    onSuccess: () => {
+      showToast("Folder settings saved", true);
+      void queryClient.invalidateQueries({ queryKey: ["settings"] });
+    },
+    onError: (err: Error) => {
+      showToast(err.message || "Failed to save", false);
+    },
+  });
+
+  const triggerMutation = useMutation({
+    mutationFn: () =>
+      apiRequest<{ runId: string }>("/api/ingest/run", { method: "POST" }),
+    onSuccess: () => {
+      showToast("Ingest started", true);
+      void queryClient.invalidateQueries({ queryKey: ["ingest", "status"] });
+    },
+    onError: (err: Error) => {
+      showToast(err.message || "Failed to trigger ingest", false);
+    },
+  });
+
+  const statusQuery = useQuery({
+    queryKey: ["ingest", "status"],
+    queryFn: () => apiGet<{ run: IngestRunStatus | null }>("/api/ingest/status"),
+    refetchInterval: (query) => {
+      return query.state.data?.run?.status === "running" ? 2000 : false;
+    },
+  });
+
+  const foldersConfigured = sourceFolder.trim() !== "" && outputFolder.trim() !== "";
+  const run = statusQuery.data?.run;
+  const triggerDisabled = !foldersConfigured || triggerMutation.isPending || run?.status === "running";
+
+  return (
+    <>
+      <Toast toast={toast} />
+      <article
+        style={{
+          padding: "28px",
+          borderRadius: "24px",
+          background: "rgba(10, 17, 11, 0.97)",
+          border: "1px solid rgba(148, 163, 184, 0.22)",
+          boxShadow: "0 20px 45px rgba(15, 23, 42, 0.08)",
+          display: "grid",
+          gap: "20px",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "14px", flexWrap: "wrap" }}>
+          <h2 style={{ margin: 0, fontSize: "1.25rem" }}>Ingest</h2>
+        </div>
+
+        <div style={{ display: "grid", gap: "16px" }}>
+          <label style={{ display: "grid", gap: "6px" }}>
+            <span
+              style={{
+                fontSize: "0.85rem",
+                color: "#89ff93",
+                fontWeight: 600,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+              }}
+            >
+              Source folder
+            </span>
+            <input
+              type="text"
+              value={sourceFolder}
+              onChange={(e) => setSourceFolder(e.target.value)}
+              autoComplete="off"
+              placeholder="/path/to/source"
+              style={{
+                padding: "12px 14px",
+                borderRadius: "12px",
+                border: "1px solid rgba(129, 255, 164, 0.22)",
+                background: "rgba(6, 10, 6, 0.74)",
+                color: "#e2f5e3",
+                fontSize: "1rem",
+                outline: "none",
+              }}
+            />
+          </label>
+
+          <label style={{ display: "grid", gap: "6px" }}>
+            <span
+              style={{
+                fontSize: "0.85rem",
+                color: "#89ff93",
+                fontWeight: 600,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+              }}
+            >
+              Output folder
+            </span>
+            <input
+              type="text"
+              value={outputFolder}
+              onChange={(e) => setOutputFolder(e.target.value)}
+              autoComplete="off"
+              placeholder="/path/to/output"
+              style={{
+                padding: "12px 14px",
+                borderRadius: "12px",
+                border: "1px solid rgba(129, 255, 164, 0.22)",
+                background: "rgba(6, 10, 6, 0.74)",
+                color: "#e2f5e3",
+                fontSize: "1rem",
+                outline: "none",
+              }}
+            />
+          </label>
+        </div>
+
+        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+          <button
+            type="button"
+            disabled={saveMutation.isPending}
+            onClick={() => saveMutation.mutate()}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: "46px",
+              padding: "0 22px",
+              borderRadius: "14px",
+              border: "none",
+              cursor: saveMutation.isPending ? "not-allowed" : "pointer",
+              color: "#061006",
+              background: saveMutation.isPending
+                ? "rgba(105, 221, 119, 0.5)"
+                : "linear-gradient(180deg, #9bffa3, #67dd77)",
+              fontWeight: 700,
+              fontSize: "0.95rem",
+              letterSpacing: "0.02em",
+              boxShadow: saveMutation.isPending ? "none" : "0 0 28px rgba(105, 221, 119, 0.28)",
+              transition: "all 0.2s ease",
+            }}
+          >
+            {saveMutation.isPending ? "Saving..." : "Save"}
+          </button>
+
+          <button
+            type="button"
+            disabled={triggerDisabled}
+            onClick={() => triggerMutation.mutate()}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: "46px",
+              padding: "0 22px",
+              borderRadius: "14px",
+              border: "1px solid rgba(129, 255, 164, 0.28)",
+              cursor: triggerDisabled ? "not-allowed" : "pointer",
+              color: triggerDisabled ? "#9eb79b" : "#9bffa3",
+              background: "transparent",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+              letterSpacing: "0.02em",
+              transition: "all 0.2s ease",
+              opacity: triggerDisabled ? 0.5 : 1,
+            }}
+          >
+            {run?.status === "running" || triggerMutation.isPending ? "Running..." : "Trigger ingest"}
+          </button>
+        </div>
+
+        <div>
+          {run ? (
+            <>
+              <p
+                style={{
+                  margin: "0 0 12px",
+                  fontSize: "0.875rem",
+                  color: "#9eb79b",
+                }}
+              >
+                Last run: {run.triggeredBy} &mdash; {run.status} ({run.doneCount}/{run.fileCount} done,{" "}
+                {run.failedCount} failed)
+              </p>
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  fontSize: "0.85rem",
+                  color: "#dff4d3",
+                }}
+              >
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: "left", padding: "6px 10px", color: "#9eb79b", fontWeight: 600 }}>
+                      File
+                    </th>
+                    <th style={{ textAlign: "left", padding: "6px 10px", color: "#9eb79b", fontWeight: 600 }}>
+                      Status
+                    </th>
+                    <th style={{ textAlign: "left", padding: "6px 10px", color: "#9eb79b", fontWeight: 600 }}>
+                      Error
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {run.files.map((file) => (
+                    <tr key={file.id}>
+                      <td style={{ padding: "6px 10px" }}>{basename(file.filePath)}</td>
+                      <td style={{ padding: "6px 10px" }}>
+                        <span style={statusPillStyle(file.status)}>{file.status}</span>
+                      </td>
+                      <td style={{ padding: "6px 10px", color: "#ffd8cf" }}>
+                        {file.errorMessage ?? ""}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <p style={{ margin: 0, fontSize: "0.875rem", color: "#9eb79b" }}>No ingest runs yet</p>
+          )}
+        </div>
+      </article>
+    </>
+  );
+}
+
 const intuneFields: IntegrationSectionProps["fields"] = [
   { name: "tenantId", label: "Tenant ID", type: "text", isSecret: false },
   { name: "clientId", label: "Client ID", type: "text", isSecret: false },
@@ -446,6 +740,7 @@ export function IntegrationsPage() {
         fields={openaiFields}
       />
       <ModelSelector integrationKey="openai" />
+      <IngestSection />
     </section>
   );
 }

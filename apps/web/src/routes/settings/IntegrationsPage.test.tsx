@@ -245,4 +245,55 @@ describe("IntegrationsPage", () => {
     // Intune section shows verified timestamp
     expect(screen.getByText(/last verified/i)).toBeInTheDocument();
   });
+
+  it("renders Ingest section with folder inputs", async () => {
+    apiGetMock.mockImplementation((url: string) => {
+      if (url === "/api/settings") return Promise.resolve({});
+      if (url === "/api/ingest/status") return Promise.resolve({ run: null });
+      if (url.includes("intune")) return Promise.resolve(baseIntune);
+      return Promise.resolve(baseOpenAI);
+    });
+
+    renderIntegrationsPage();
+
+    await waitFor(() => {
+      expect(screen.getByText("Ingest")).toBeInTheDocument();
+    });
+
+    expect(screen.getByLabelText(/source folder/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/output folder/i)).toBeInTheDocument();
+  });
+
+  it("Trigger ingest button is disabled when folders are not configured", async () => {
+    apiGetMock.mockImplementation((url: string) => {
+      if (url === "/api/settings") return Promise.resolve({});
+      if (url === "/api/ingest/status") return Promise.resolve({ run: null });
+      if (url.includes("intune")) return Promise.resolve(baseIntune);
+      return Promise.resolve(baseOpenAI);
+    });
+
+    renderIntegrationsPage();
+
+    await waitFor(() => {
+      expect(screen.getByText("Ingest")).toBeInTheDocument();
+    });
+
+    const triggerButton = screen.getByRole("button", { name: /trigger ingest/i });
+    expect(triggerButton).toBeDisabled();
+  });
+
+  it("shows 'No ingest runs yet' when no runs exist", async () => {
+    apiGetMock.mockImplementation((url: string) => {
+      if (url === "/api/settings") return Promise.resolve({});
+      if (url === "/api/ingest/status") return Promise.resolve({ run: null });
+      if (url.includes("intune")) return Promise.resolve(baseIntune);
+      return Promise.resolve(baseOpenAI);
+    });
+
+    renderIntegrationsPage();
+
+    await waitFor(() => {
+      expect(screen.getByText("No ingest runs yet")).toBeInTheDocument();
+    });
+  });
 });
